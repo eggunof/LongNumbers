@@ -30,7 +30,18 @@ Z SUB_ZZ_Z(Z a, Z b) {
 }
 
 Z MUL_ZZ_Z(Z a, Z b) {
-  return Z();
+  // Абсолютные значения чисел
+	N absA = ABS_Z_N(a);
+	N absB = ABS_Z_N(b);
+
+	// Умножение двух натуральных чисел
+	N product = MUL_NN_N(absA, absB);
+
+	// Определяем знак результата
+	bool resultSign = a.sign != b.sign;
+
+	// Возвращаем результат в виде структуры Z
+	return Z{product, resultSign};
 }
 
 Z DIV_ZZ_Z(Z a, Z b) {
