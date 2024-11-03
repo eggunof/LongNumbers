@@ -4,5 +4,7 @@ project(LongNumbers)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(LongNumbers src/main.cc
+        src/modules/N.cc
         src/modules/N.h
-        src/modules/N.cc)
+        src/modules/Z.cc
+        src/modules/Z.h)
