@@ -41,8 +41,37 @@ Digit DIV_NN_Dk(N a, N b, uint32_t k) {
   return 0;
 }
 
+//Неполное частное
 N DIV_NN_N(N a, N b) {
-  return N();
+    // Если A < B, то неполное частное равно 0
+    if (COM_NN_D(a, b) == 1) {
+        return N({0});
+    }
+
+    size_t counter = 0;
+    // Вычитаем из числа A число B пока у нас А >= B
+    while (COM_NN_D(a, b) != 1) {
+        a = SUB_NN_N(a, b); // Сохраняем результат вычитания в 'a'
+        counter++;
+    }
+
+    // Преобразуем counter в вектор
+    std::vector<Digit> result;
+    while (counter > 0) {
+        result.push_back(counter % 10); // Получаем последнюю цифру
+        counter /= 10; // Удаляем последнюю цифру
+    }
+
+    // Переворачиваем вектор для правильного порядка цифр
+    size_t left = 0;
+    size_t right = result.size() - 1;
+    while (left < right) {
+        std::swap(result[left], result[right]);
+        left++;
+        right--;
+    }
+
+    return result;
 }
 
 N MOD_NN_N(N a, N b) {
