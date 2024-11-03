@@ -34,7 +34,18 @@ Z MUL_ZZ_Z(Z a, Z b) {
 }
 
 Z DIV_ZZ_Z(Z a, Z b) {
-  return Z();
+  // Абсолютные значения делимого и делителя
+  N absA = ABS_Z_N(a);
+  N absB = ABS_Z_N(b);
+
+  // Выполняем деление для абсолютных значений
+  N quotient = DIV_NN_N(absA, absB);
+
+  // Определяем знак результата
+  bool resultSign = a.sign != b.sign;
+
+  // Возвращаем результат в виде структуры Z
+  return Z{quotient, resultSign};
 }
 
 Z MOD_ZZ_Z(Z a, Z b) {
