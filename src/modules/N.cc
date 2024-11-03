@@ -54,5 +54,14 @@ N GCF_NN_N(N a, N b) {
 }
 
 N LCM_NN_N(N a, N b) {
-  return N();
+	// Произведение двух натуральных чисел
+	N product = MUL_NN_N(a, b);
+
+	// НОД данных чисел
+	N gcf = GCF_NN_N(a, b);
+
+	// НОК натуральных чисел находится как произведение данных чисел, деленное на их НОД
+	N lcm = DIV_NN_N(product,gcf);
+  
+  return lcm;
 }
