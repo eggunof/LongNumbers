@@ -14,7 +14,7 @@ Z MUL_ZM_Z(Z a) {
 }
 
 Z TRANS_N_Z(N a) {
-  return Z();
+    return Z({a, true});
 }
 
 N TRANS_Z_N(Z a) {
