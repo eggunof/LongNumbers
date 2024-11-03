@@ -49,8 +49,35 @@ N MOD_NN_N(N a, N b) {
   return N();
 }
 
+//Функция вычисления НОД двух натуральных чисел
+//Над модулем работала Кадникова Анна, гр. 3384
 N GCF_NN_N(N a, N b) {
-  return N();
+  if(!NZER_N_B(a)){
+        return b;
+    }else if(!NZER_N_B(b)){
+        return a;
+  }
+
+  N higher = a;
+  N lower = b;
+
+  if (COM_NN_D(a, b) == 1) { 
+    // если A < B
+    higher = b;
+    lower = a;
+  }
+
+  // Алгоритм Евклида
+    while (NZER_N_B(lower)) {
+        // Вычитается меньшее число из большего, пока одно из чисел не станет нулем
+        N remainder = SUB_NN_N(higher, lower);
+
+        // Переназначается higher и lower для следующей итерации
+        higher = lower;
+        lower = remainder;
+    }
+  // Возвращается НОД
+  return higher;
 }
 
 N LCM_NN_N(N a, N b) {
