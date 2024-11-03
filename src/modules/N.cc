@@ -18,7 +18,7 @@ N ADD_NN_N(const N &a, const N &b) {
 }
 
 //Вычитание из числа натурального А число натуральное число B, при этом A >= B
-N SUB_NN_N(N &a, N &b) {
+N SUB_NN_N(const N &a, const N &b) {
     //Дополняем вектор b нулями
     while (b.size() < a.size()) {
         b.insert(b.begin(), 0);
