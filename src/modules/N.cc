@@ -5,8 +5,11 @@ uint8_t COM_NN_D(N a, N b) {
   return 0;
 }
 
+//Сравнение Натурального числа с нулём
+//Над модулем работала Кадникова Анна, гр. 3384
 bool NZER_N_B(N a) {
-  return false;
+  //Признак нуля: длина числа 1 и в старшем разряде записан 0
+  return ((a.size()==1) && (a[0]==0));
 }
 
 N ADD_1N_N(N a) {
@@ -49,7 +52,7 @@ N MOD_NN_N(N a, N b) {
   return N();
 }
 
-N GCF_NN_N(N a, N b) {
+N GCF_NN_N(N a, N b){
   return N();
 }
 
