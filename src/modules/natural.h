@@ -9,7 +9,7 @@
 typedef uint8_t Digit;
 
 class Natural {
- private:
+ protected:
   std::vector<Digit> digits_;
  public:
   Natural() : digits_(1, 1) {}
