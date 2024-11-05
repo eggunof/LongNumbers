@@ -14,9 +14,9 @@ class Natural {
  public:
   Natural() : digits_(1, 1) {}
   explicit Natural(const std::string &string);
-  explicit Natural(const std::vector<Digit> &digits);
-  Natural(const Natural &other);
-  Natural &operator=(const Natural &other);
+  explicit Natural(const std::vector<Digit> &digits) : digits_(digits) {}
+  Natural(const Natural &other) = default;
+  Natural &operator=(const Natural &other) = default;
 
   static uint8_t Compare(const Natural &first, const Natural &second); // COM_NN_D
   bool operator==(const Natural &rhs) const; // COM_NN_D

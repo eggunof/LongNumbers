@@ -5,18 +5,6 @@ Natural::Natural(const std::string &string) {
 
 }
 
-Natural::Natural(const std::vector<Digit> &digits) {
-
-}
-
-Natural::Natural(const Natural &other) {
-
-}
-
-Natural &Natural::operator=(const Natural &other) {
-  return *this;
-}
-
 uint8_t Natural::Compare(const Natural &first, const Natural &second) {
   return {};
 }
