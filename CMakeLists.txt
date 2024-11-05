@@ -9,4 +9,6 @@ add_executable(LongNumbers src/main.cc
         src/modules/integer.h
         src/modules/integer.cc
         src/modules/rational.h
-        src/modules/rational.cc)
+        src/modules/rational.cc
+        src/modules/polynomial.h
+        src/modules/polynomial.cc)
