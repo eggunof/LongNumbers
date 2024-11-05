@@ -13,7 +13,7 @@ Z MUL_ZM_Z(Z a) {
   return Z();
 }
 
-//Дмитриева Дарья
+//Дмитриева Дарья 3383
 Z TRANS_N_Z(N a) {
     return Z({a, true});
 }
