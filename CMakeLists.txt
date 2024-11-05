@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(LongNumbers src/main.cc
         src/modules/natural.h
         src/modules/natural.cc
-        src/modules/integer.hc
+        src/modules/integer.h
         src/modules/integer.cc)
