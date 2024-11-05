@@ -7,4 +7,6 @@ add_executable(LongNumbers src/main.cc
         src/modules/natural.h
         src/modules/natural.cc
         src/modules/integer.h
-        src/modules/integer.cc)
+        src/modules/integer.cc
+        src/modules/rational.h
+        src/modules/rational.cc)
