@@ -1,0 +1,56 @@
+
+#ifndef LONGNUMBERS_SRC_MODULES_NATURAL_H_
+#define LONGNUMBERS_SRC_MODULES_NATURAL_H_
+
+#include <cstdint>
+#include <vector>
+#include <string>
+
+typedef uint8_t Digit;
+
+class Natural {
+ private:
+  std::vector<Digit> digits_;
+ public:
+  Natural() : digits_(1, 1) {}
+  explicit Natural(const std::string &string);
+  Natural(const Natural &other);
+  Natural &operator=(const Natural &other);
+
+  static uint8_t Compare(const Natural &first, const Natural &second); // COM_NN_D
+  bool operator==(const Natural &rhs) const; // COM_NN_D
+  bool operator!=(const Natural &rhs) const; // COM_NN_D
+  bool operator<(const Natural &rhs) const; // COM_NN_D
+  bool operator>(const Natural &rhs) const; // COM_NN_D
+  bool operator<=(const Natural &rhs) const; // COM_NN_D
+  bool operator>=(const Natural &rhs) const; // COM_NN_D
+
+  [[nodiscard]] bool IsZero() const; // NZER_N_B
+
+  Natural &operator++(); // ADD_1N_N
+  Natural &operator++(int); // ADD_1N_N
+  Natural &operator--(); // SUB_1N_N
+  Natural &operator--(int); // SUB_1N_N
+
+  Natural operator+(const Natural &rhs) const; // ADD_NN_N
+  Natural operator-(const Natural &rhs) const; // SUB_NN_N
+  Natural operator*(Digit d) const; // MUL_ND_N
+  Natural operator*(const Natural &rhs) const; // MUL_NN_N
+  Natural operator/(const Natural &rhs) const; // DIV_NN_N
+  Natural operator%(const Natural &rhs) const; // MOD_NN_N
+
+  Natural &operator+=(const Natural &rhs); // ADD_NN_N
+  Natural &operator-=(const Natural &rhs); // SUB_NN_N;
+  Natural &operator*=(Digit d); // MUL_ND_N
+  Natural &operator*=(const Natural &rhs); // MUL_NN_N
+  Natural &operator/=(const Natural &rhs); // DIV_NN_N
+  Natural &operator%=(const Natural &rhs); // MOD_NN_N
+
+  Natural &SubtractMultiplied(const Natural &rhs, Digit d); // SUB_NDN_N
+  Natural &MultiplyBy10Power(uint32_t k); // MUL_Nk_N
+
+  static Natural GreatestCommonDivisor(const Natural &first, const Natural &second); // GCD_NN_N
+  static Natural LeastCommonMultiple(const Natural &first, const Natural &second); // LCM_NN_N
+};
+
+#endif //LONGNUMBERS_SRC_MODULES_NATURAL_H_
