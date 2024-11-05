@@ -14,6 +14,7 @@ class Natural {
  public:
   Natural() : digits_(1, 1) {}
   explicit Natural(const std::string &string);
+  explicit Natural(const std::vector<Digit> &digits);
   Natural(const Natural &other);
   Natural &operator=(const Natural &other);
 

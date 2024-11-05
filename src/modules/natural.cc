@@ -5,6 +5,10 @@ Natural::Natural(const std::string &string) {
 
 }
 
+Natural::Natural(const std::vector<Digit> &digits) {
+
+}
+
 Natural::Natural(const Natural &other) {
 
 }
