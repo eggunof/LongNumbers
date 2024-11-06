@@ -1,8 +1,21 @@
 
 #include "natural.h"
 
-Natural::Natural(const std::string &string) {
+#include <stdexcept>
 
+Natural::Natural(const std::string &string) {
+  for (char digit : string) {
+    Digit x = digit - '0';
+    if (x >= 10) {
+      throw std::invalid_argument("Invalid input: non-digit character");
+    }
+    if (!digits_.empty() || x != 0) {
+      digits_.push_back(x);
+    }
+  }
+  if (digits_.empty()) {
+    digits_.push_back(0);
+  }
 }
 
 uint8_t Natural::Compare(const Natural &first, const Natural &second) {

@@ -13,6 +13,7 @@ class Natural {
   std::vector<Digit> digits_;
  public:
   Natural() : digits_(1, 0) {}
+  explicit Natural(uint32_t number) : Natural(std::to_string(number)) {}
   explicit Natural(const std::string &string);
   explicit Natural(const std::vector<Digit> &digits) : digits_(digits) {}
   Natural(const Natural &other) = default;
