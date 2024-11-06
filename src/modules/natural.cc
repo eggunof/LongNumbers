@@ -36,8 +36,8 @@ Natural::Natural(const std::string &string) {
   digits_.shrink_to_fit();
 }
 
-Compare Natural::Compare(const Natural &first, const Natural &second) {
-  return Compare::EQUAL;
+Comparison Natural::Compare(const Natural &first, const Natural &second) {
+  return Comparison::EQUAL;
 }
 
 bool Natural::operator==(const Natural &rhs) const {
