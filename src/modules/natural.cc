@@ -122,6 +122,10 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
   return *this;
 }
 
+Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
+  return {};
+}
+
 Natural Natural::GreatestCommonDivisor(const Natural &first, const Natural &second) {
   return {};
 }
