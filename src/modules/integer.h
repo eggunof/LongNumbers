@@ -14,9 +14,10 @@ class Integer : public Natural {
  protected:
   Sign sign_;
  public:
-  Integer() : Natural(), sign_(Sign::POSITIVE) {}
+  Integer() : Natural(), sign_(Sign::ZERO) {}
+  Integer(const std::vector<Digit> &digits, Sign sign);
   explicit Integer(const std::string &string);
-  Integer(const std::vector<Digit> &digits, Sign sign) : Natural(digits), sign_(sign) {}
+  explicit Integer(int32_t number) : Integer(std::to_string(number)) {}
   Integer(const Integer &other) = default;
   Integer &operator=(const Integer &other) = default;
 
