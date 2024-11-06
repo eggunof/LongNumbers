@@ -37,8 +37,6 @@ class Natural {
 
   Natural &operator++(); // ADD_1N_N
   Natural &operator++(int); // ADD_1N_N
-  Natural &operator--(); // SUB_1N_N
-  Natural &operator--(int); // SUB_1N_N
 
   Natural operator+(const Natural &rhs) const; // ADD_NN_N
   Natural operator-(const Natural &rhs) const; // SUB_NN_N

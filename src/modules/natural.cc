@@ -58,14 +58,6 @@ Natural &Natural::operator++(int) {
   return *this;
 }
 
-Natural &Natural::operator--() {
-  return *this;
-}
-
-Natural &Natural::operator--(int) {
-  return *this;
-}
-
 Natural Natural::operator+(const Natural &rhs) const {
   return {};
 }
