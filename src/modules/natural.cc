@@ -3,6 +3,20 @@
 
 #include <stdexcept>
 
+Natural::Natural(const std::vector<Digit> &digits) : digits_(digits) {
+  for (Digit digit : digits) {
+    if (digit >= 10) {
+      throw std::invalid_argument("Invalid input: digit must be less than 10");
+    }
+    if (!digits_.empty() || digit != 0) {
+      digits_.push_back(digit);
+    }
+  }
+  if (digits_.empty()) {
+    digits_.push_back(0);
+  }
+}
+
 Natural::Natural(const std::string &string) {
   for (char digit : string) {
     Digit x = digit - '0';
