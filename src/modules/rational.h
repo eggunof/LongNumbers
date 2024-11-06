@@ -10,8 +10,8 @@ class Rational {
   Integer numerator_;
   Natural denominator_;
  public:
-  Rational() : numerator_(), denominator_() {}
-  Rational(const Integer &numerator, const Natural &denominator) : numerator_(numerator), denominator_(denominator) {}
+  Rational() : numerator_(0), denominator_(1) {}
+  Rational(const Integer &numerator, const Natural &denominator);
   explicit Rational(const std::string &string);
   Rational(const Rational &other) = default;
   Rational &operator=(const Rational &other) = default;
