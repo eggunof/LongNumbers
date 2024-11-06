@@ -3,11 +3,34 @@
 
 #include <stdexcept>
 
+Natural::Natural(const std::vector<Digit> &digits) {
+  if (digits.empty()) {
+    throw std::invalid_argument("Invalid input: vector must not be empty");
+  }
+  digits_.reserve(digits.size());
+  for (Digit digit : digits) {
+    if (digit >= 10) {
+      throw std::invalid_argument("Invalid input: digit must be less than 10");
+    }
+    if (!digits_.empty() || digit != 0) {
+      digits_.push_back(digit);
+    }
+  }
+  if (digits_.empty()) {
+    digits_.push_back(0);
+  }
+  digits_.shrink_to_fit();
+}
+
 Natural::Natural(const std::string &string) {
+  if (string.empty()) {
+    throw std::invalid_argument("Invalid input: string must contain at least one digit");
+  }
+  digits_.reserve(string.length());
   for (char digit : string) {
     Digit x = digit - '0';
     if (x >= 10) {
-      throw std::invalid_argument("Invalid input: non-digit character");
+      throw std::invalid_argument("Invalid input: non-digit character in string");
     }
     if (!digits_.empty() || x != 0) {
       digits_.push_back(x);
@@ -16,10 +39,11 @@ Natural::Natural(const std::string &string) {
   if (digits_.empty()) {
     digits_.push_back(0);
   }
+  digits_.shrink_to_fit();
 }
 
-Compare Natural::Compare(const Natural &first, const Natural &second) {
-  return Compare::EQUAL;
+Comparison Natural::Compare(const Natural &first, const Natural &second) {
+  return Comparison::EQUAL;
 }
 
 bool Natural::operator==(const Natural &rhs) const {
