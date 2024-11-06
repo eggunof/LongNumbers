@@ -8,6 +8,12 @@
 
 typedef uint8_t Digit;
 
+enum class Compare {
+  EQUAL = 0,
+  LESS = 1,
+  GREATER = 2
+};
+
 class Natural {
  protected:
   std::vector<Digit> digits_;
@@ -19,7 +25,7 @@ class Natural {
   Natural(const Natural &other) = default;
   Natural &operator=(const Natural &other) = default;
 
-  static uint8_t Compare(const Natural &first, const Natural &second); // COM_NN_D
+  static Compare Compare(const Natural &first, const Natural &second); // COM_NN_D
   bool operator==(const Natural &rhs) const; // COM_NN_D
   bool operator!=(const Natural &rhs) const; // COM_NN_D
   bool operator<(const Natural &rhs) const; // COM_NN_D

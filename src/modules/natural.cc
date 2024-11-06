@@ -18,8 +18,8 @@ Natural::Natural(const std::string &string) {
   }
 }
 
-uint8_t Natural::Compare(const Natural &first, const Natural &second) {
-  return {};
+Compare Natural::Compare(const Natural &first, const Natural &second) {
+  return Compare::EQUAL;
 }
 
 bool Natural::operator==(const Natural &rhs) const {
