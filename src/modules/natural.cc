@@ -71,7 +71,7 @@ bool Natural::operator>=(const Natural &rhs) const {
 }
 
 bool Natural::IsZero() const {
-  return false;
+  return digits_.size() == 1 && digits_[0] == 0;
 }
 
 Natural &Natural::operator++() {
