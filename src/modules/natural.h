@@ -12,7 +12,7 @@ class Natural {
  protected:
   std::vector<Digit> digits_;
  public:
-  Natural() : digits_(1, 1) {}
+  Natural() : digits_(1, 0) {}
   explicit Natural(const std::string &string);
   explicit Natural(const std::vector<Digit> &digits) : digits_(digits) {}
   Natural(const Natural &other) = default;
