@@ -3,7 +3,8 @@
 
 #include <stdexcept>
 
-Natural::Natural(const std::vector<Digit> &digits) : digits_(digits) {
+Natural::Natural(const std::vector<Digit> &digits) {
+  digits_.reserve(digits.size());
   for (Digit digit : digits) {
     if (digit >= 10) {
       throw std::invalid_argument("Invalid input: digit must be less than 10");
@@ -15,9 +16,11 @@ Natural::Natural(const std::vector<Digit> &digits) : digits_(digits) {
   if (digits_.empty()) {
     digits_.push_back(0);
   }
+  digits_.shrink_to_fit();
 }
 
 Natural::Natural(const std::string &string) {
+  digits_.reserve(string.length());
   for (char digit : string) {
     Digit x = digit - '0';
     if (x >= 10) {
@@ -30,6 +33,7 @@ Natural::Natural(const std::string &string) {
   if (digits_.empty()) {
     digits_.push_back(0);
   }
+  digits_.shrink_to_fit();
 }
 
 Compare Natural::Compare(const Natural &first, const Natural &second) {
