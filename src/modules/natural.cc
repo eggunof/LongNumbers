@@ -1,12 +1,25 @@
 
 #include "natural.h"
 
-Natural::Natural(const std::string &string) {
+#include <stdexcept>
 
+Natural::Natural(const std::string &string) {
+  for (char digit : string) {
+    Digit x = digit - '0';
+    if (x >= 10) {
+      throw std::invalid_argument("Invalid input: non-digit character");
+    }
+    if (!digits_.empty() || x != 0) {
+      digits_.push_back(x);
+    }
+  }
+  if (digits_.empty()) {
+    digits_.push_back(0);
+  }
 }
 
-uint8_t Natural::Compare(const Natural &first, const Natural &second) {
-  return {};
+Compare Natural::Compare(const Natural &first, const Natural &second) {
+  return Compare::EQUAL;
 }
 
 bool Natural::operator==(const Natural &rhs) const {
@@ -42,14 +55,6 @@ Natural &Natural::operator++() {
 }
 
 Natural &Natural::operator++(int) {
-  return *this;
-}
-
-Natural &Natural::operator--() {
-  return *this;
-}
-
-Natural &Natural::operator--(int) {
   return *this;
 }
 
@@ -107,6 +112,10 @@ Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
 
 Natural &Natural::MultiplyBy10Power(uint32_t k) {
   return *this;
+}
+
+Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
+  return {};
 }
 
 Natural Natural::GreatestCommonDivisor(const Natural &first, const Natural &second) {
