@@ -34,6 +34,14 @@ Polynomial &Polynomial::operator-=(const Polynomial &rhs) {
 }
 
 Polynomial &Polynomial::operator*=(const Rational &scalar) {
+  std::map<Natural,Rational,Comparator>temp = this->coefficients_;
+    //Пройдемся по коэффициентам многочлена домножая каждый на рациональное число
+    for(auto it = temp.begin();it!=temp.end();it++)
+        temp[it->first] = temp[it->first].MUL_QQ_Q(scalar);
+
+    Polynomial* MUL = new Polynomial(temp);
+
+    return *MUL;
   return *this;
 }
 
