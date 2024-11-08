@@ -69,3 +69,21 @@ Rational Rational::operator*=(const Rational &rhs) {
 Rational Rational::operator/=(const Rational &rhs) {
   return {};
 }
+
+Rational Rational::SUB_QQ_Q(const Rational &other) 
+{
+    // Находим общий знаменатель
+    Natural Denum = this->denominator_.LCM_NN_N(other.denominator_);
+
+    // Находим числители с учетом дополнительных множителей
+    Integer Num1 = this->numerator_.MUL_ZZ_Z(Integer(Denum.DIV_NN_N(this->denominator_)));
+    Integer Num2 = other.numerator_.MUL_ZZ_Z(Integer(Denum.DIV_NN_N(other.denominator_)));
+    
+    // Вычитаем числитель второй дроби из первой
+    Integer Num = Num1.SUB_ZZ_Z(Num2);
+
+    // Создаем результат
+    Rational result(Num, Denum);
+    return result.RED_Q_Q();
+}
+
