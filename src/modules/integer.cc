@@ -44,8 +44,13 @@ Integer Integer::operator+(const Integer &rhs) const {
   return {};
 }
 
+//Разность целых чисел
+//Над модулем работала Кадникова Анна, гр. 3384
 Integer Integer::operator-(const Integer &rhs) const {
-  return {};
+  //для вычитания можно применить сложение с противоположным знаком
+  Integer new_rhs = -rhs;
+  Integer result = new_rhs + *this;
+  return result;
 }
 
 Integer Integer::operator*(const Integer &rhs) const {
