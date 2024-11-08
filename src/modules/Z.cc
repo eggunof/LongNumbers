@@ -25,8 +25,13 @@ Z ADD_ZZ_Z(Z a, Z b) {
   return Z();
 }
 
+//Вычитание целых чисел
+//над модулем работала Кадникова Анна, гр. 3384
 Z SUB_ZZ_Z(Z a, Z b) {
-  return Z();
+  //для вычитания можно применить сложение с противоположным знаком
+  Z new_b = MUL_ZM_Z(b);
+  Z result = ADD_ZZ_Z(a, new_b);
+  return result;
 }
 
 Z MUL_ZZ_Z(Z a, Z b) {
