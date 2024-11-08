@@ -59,20 +59,7 @@ Rational Rational::operator+=(const Rational &rhs) {
 }
 
 Rational Rational::operator-=(const Rational &rhs) {
-  return {};
-}
-
-Rational Rational::operator*=(const Rational &rhs) {
-  return {};
-}
-
-Rational Rational::operator/=(const Rational &rhs) {
-  return {};
-}
-
-Rational Rational::SUB_QQ_Q(const Rational &other) 
-{
-    // Находим общий знаменатель
+  // Находим общий знаменатель
     Natural Denum = this->denominator_.LCM_NN_N(other.denominator_);
 
     // Находим числители с учетом дополнительных множителей
@@ -84,6 +71,15 @@ Rational Rational::SUB_QQ_Q(const Rational &other)
 
     // Создаем результат
     Rational result(Num, Denum);
-    return result.RED_Q_Q();
+    return result;
 }
+
+Rational Rational::operator*=(const Rational &rhs) {
+  return {};
+}
+
+Rational Rational::operator/=(const Rational &rhs) {
+  return {};
+}
+
 

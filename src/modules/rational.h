@@ -31,8 +31,6 @@ class Rational {
   Rational operator-=(const Rational &rhs); // SUB_QQ_Q
   Rational operator*=(const Rational &rhs); // MUL_QQ_Q
   Rational operator/=(const Rational &rhs); // DIV_QQ_Q
-
-  Rational SUB_QQ_Q(Rational &other);
 };
 
 #endif //LONGNUMBERS_SRC_MODULES_RATIONAL_H_
