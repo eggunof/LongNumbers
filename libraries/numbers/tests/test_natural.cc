@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/natural.h"
+#include "natural.h"
 
 TEST(NaturalTest, CreateEmpty) {
   Natural natural;
