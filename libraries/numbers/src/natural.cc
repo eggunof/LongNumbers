@@ -89,10 +89,10 @@ Natural &Natural::operator+=(const Natural &rhs) {
     }
   }
   // перенос в следующий разряд
-  uint8_t surplus = 0;
+  Digit surplus = 0;
   // изначальное значение разряда текущего числа
   // подходящее значение левого операнда rhs
-  uint8_t old_digit, rhs_digit;
+  Digit old_digit, rhs_digit;
   // Проходим по разрядам чисел справа налево (от младших к старшим)
   for (int i = this->digits_.size() - 1, j = rhs.digits_.size() - 1; i >= 0;
        --i, --j) {
