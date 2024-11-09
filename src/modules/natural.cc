@@ -110,8 +110,34 @@ Natural &Natural::operator+=(const Natural &rhs) {
   return *this;
 }
 
+// Разность натуральных чисел -=
+// Над модулем работала Дмитриева Дарья, гр. 3383
 Natural &Natural::operator-=(const Natural &rhs) {
-  return *this;
+    Natural b = rhs;
+    // Дополняем вычитаемое (b) нулями в начале до количества разрядов уменьшаемого (a)
+    while (b.digits_.size() < this->digits_.size()) {
+        b.digits_.insert(b.digits_.begin(), 0);
+    }
+    // Выполняем вычитание по разрядам (справа налево)
+    for (size_t i = this->digits_.size() - 1; i > 0; i--) {
+        // Проверяем, нужно ли заимствовать из следующего разряда
+        if (this->digits_[i] < b.digits_[i]) {
+            // Заимствуем единицу из следующего разряда
+            this->digits_[i] += 10;
+            // Вычитаем единицу из следующего разряда
+            this->digits_[i - 1]--;
+        }
+        // Вычитаем значение текущего разряда b из значения текущего разряда a.
+        this->digits_[i] -= b.digits_[i];
+    }
+    // Обрабатываем самый левый разряд отдельно
+    this->digits_[0] -= b.digits_[0];
+
+    // Удаляем ведущие нули
+    while (this->digits_.size() > 1 && this->digits_[0] == 0) {
+        this->digits_.erase(this->digits_.begin());
+    }
+    return *this;
 }
 
 Natural &Natural::operator*=(Digit d) {
