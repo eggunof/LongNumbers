@@ -31,7 +31,34 @@ Integer Integer::operator-() const { return {}; }
 
 Integer &Integer::operator-() { return *this; }
 
-Integer Integer::operator+(const Integer &rhs) const { return {}; }
+// Сумма целых чисел
+// над модулем работала Кадникова Анна, гр.3384
+Integer Integer::operator+(const Integer &rhs) const {
+  Natural a_new = ToNatural(*this);
+  Natural b_new = ToNatural(rhs);
+  Natural sum_a_b;
+  Sign sign;
+  // если знаки одинаковые, просто суммируем модули и знак результата — знак
+  // обоих чисел
+  if (this->sign_ == rhs.sign_) {
+    sum_a_b = a_new + b_new;
+    sign = rhs.sign_;
+  }
+  // если знаки разные, то вычитаем из большего меньшее и присваиваем знак
+  // большего модуля
+  else {
+    if (a_new > b_new) {
+      sum_a_b = a_new - b_new;
+      sign = this->sign_;
+    } else {
+      sum_a_b = b_new - a_new;
+      sign = rhs.sign_;
+    }
+  }
+  Integer result = Integer(sum_a_b);
+  result.sign_ = sign;
+  return result;
+}
 
 Integer Integer::operator-(const Integer &rhs) const { return {}; }
 
