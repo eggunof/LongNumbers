@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../include/integer.h"
+#include "integer.h"
 
 TEST(IntegerTest, Sign) {
   Integer integer({1, 2, 3}, Sign::POSITIVE);

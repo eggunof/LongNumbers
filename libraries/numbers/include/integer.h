@@ -1,6 +1,6 @@
 
-#ifndef LONGNUMBERS_SRC_MODULES_INTEGER_H_
-#define LONGNUMBERS_SRC_MODULES_INTEGER_H_
+#ifndef NUMBERS_INTEGER_H_
+#define NUMBERS_INTEGER_H_
 
 #include "natural.h"
 
@@ -40,4 +40,4 @@ class Integer : public Natural {
   Integer &operator%=(const Integer &rhs);  // MOD_ZZ_Z
 };
 
-#endif  // LONGNUMBERS_SRC_MODULES_INTEGER_H_
+#endif  // NUMBERS_INTEGER_H_

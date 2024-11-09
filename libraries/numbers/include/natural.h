@@ -1,6 +1,6 @@
 
-#ifndef LONGNUMBERS_SRC_MODULES_NATURAL_H_
-#define LONGNUMBERS_SRC_MODULES_NATURAL_H_
+#ifndef NUMBERS_NATURAL_H
+#define NUMBERS_NATURAL_H
 
 #include <cstdint>
 #include <string>
@@ -61,4 +61,4 @@ class Natural {
                                      const Natural &second);  // LCM_NN_N
 };
 
-#endif  // LONGNUMBERS_SRC_MODULES_NATURAL_H_
+#endif  // NUMBERS_NATURAL_H
