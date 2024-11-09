@@ -86,7 +86,7 @@ Natural Natural::operator+(const Natural &rhs) const {
   return {};
 }
 
-// Разность натуральных чисел
+// Разность натуральных чисел -
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Natural Natural::operator-(const Natural &rhs) const {
   Natural a = *this;
