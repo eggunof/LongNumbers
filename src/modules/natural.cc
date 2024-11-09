@@ -114,10 +114,10 @@ Natural &Natural::operator+=(const Natural &rhs) {
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Natural &Natural::operator-=(const Natural &rhs) {
     // Выполняем вычитание по разрядам (справа налево)
-    for (size_t i = this->digits_.size() - 1, j = rhs.digits_.size() - 1; i > 0; i--, j--) {
+    for (int i = this->digits_.size() - 1, j = rhs.digits_.size() - 1; i >= 0; i--, j--) {
         // Получаем текущую цифру из правого операнда (rhs)
         // Если индекс j меньше 0, считаем цифру равной 0 (это значит, что не осталось цифр для вычитания)
-        uint8_t digit = (j > 0) ? rhs.digits_[j] : 0;
+        uint8_t digit = (j >= 0) ? rhs.digits_[j] : 0;
         // Проверяем, нужно ли заимствовать из следующего разряда
         if (this->digits_[i] < digit) {
             // Заимствуем единицу из следующего разряда
