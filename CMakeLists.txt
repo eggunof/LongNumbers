@@ -7,6 +7,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 add_subdirectory(libraries)
 
-add_executable(LongNumbers src/main.cc
-        src/modules/natural.h
-        src/modules/natural.cc)
+add_executable(LongNumbers src/main.cc)
+target_link_libraries(LongNumbers numbers)
