@@ -45,20 +45,45 @@ Natural::Natural(const std::string &string) {
 }
 
 Comparison Natural::Compare(const Natural &first, const Natural &second) {
+  // 	Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе.
+  int n1 = first.digits_.size() - 1;
+  int n2 = second.digits_.size() - 1;
+
+  if (n1 > n2) return Comparison::GREATER;
+  if (n1 < n2) return Comparison::LESS;
+
+  // Если длины чисел равны, сравниваем их поразрядно
+  for (int i = 0; i <= n1; i++) {
+    if (first.digits_[i] > second.digits_[i]) return Comparison::GREATER;
+    if (first.digits_[i] < second.digits_[i]) return Comparison::LESS;
+  }
+  
   return Comparison::EQUAL;
 }
 
-bool Natural::operator==(const Natural &rhs) const { return false; }
+bool Natural::operator==(const Natural &rhs) const {
+  return Compare(*this, rhs) == Comparison::EQUAL;
+}
 
-bool Natural::operator!=(const Natural &rhs) const { return false; }
+bool Natural::operator!=(const Natural &rhs) const {
+  return !(*this == rhs);
+}
 
-bool Natural::operator<(const Natural &rhs) const { return false; }
+bool Natural::operator<(const Natural &rhs) const {
+  return Compare(*this, rhs) == Comparison::LESS;
+}
 
-bool Natural::operator>(const Natural &rhs) const { return false; }
+bool Natural::operator>(const Natural &rhs) const {
+  return Compare(*this, rhs) == Comparison::GREATER;
+}
 
-bool Natural::operator<=(const Natural &rhs) const { return false; }
+bool Natural::operator<=(const Natural &rhs) const {
+  return Compare(*this, rhs) != Comparison::GREATER;
+}
 
-bool Natural::operator>=(const Natural &rhs) const { return false; }
+bool Natural::operator>=(const Natural &rhs) const {
+  return Compare(*this, rhs) != Comparison::LESS;
+}
 
 bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
 
