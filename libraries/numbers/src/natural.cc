@@ -80,7 +80,31 @@ Natural Natural::operator%(const Natural &rhs) const { return {}; }
 
 Natural &Natural::operator+=(const Natural &rhs) { return *this; }
 
-Natural &Natural::operator-=(const Natural &rhs) { return *this; }
+// Разность натуральных чисел "-="
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural &Natural::operator-=(const Natural &rhs) {
+  // Выполняем вычитание по разрядам (справа налево)
+  for (int i = digits_.size() - 1, j = rhs.digits_.size() - 1; i >= 0;
+       i--, j--) {
+    // Получаем текущую цифру из правого операнда (rhs)
+    // Если индекс j меньше 0, считаем цифру равной 0 (это значит, что не
+    // осталось цифр для вычитания)
+    uint8_t digit = (j >= 0) ? rhs.digits_[j] : 0;
+    // Проверяем, нужно ли заимствовать из следующего разряда
+    if (this->digits_[i] < digit) {
+      // Заимствуем единицу из следующего разряда
+      this->digits_[i] += 10;
+      this->digits_[i - 1]--;
+    }
+    // Вычитаем текущую цифру (digit) из текущего разряда (this->digits_[i])
+    this->digits_[i] -= digit;
+  }
+  // Удаляем ведущие нули
+  while (this->digits_.size() > 1 && this->digits_[0] == 0) {
+    this->digits_.erase(this->digits_.begin());
+  }
+  return *this;
+}
 
 Natural &Natural::operator*=(Digit d) { return *this; }
 
