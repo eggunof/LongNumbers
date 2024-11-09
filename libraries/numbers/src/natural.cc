@@ -78,7 +78,46 @@ Natural Natural::operator/(const Natural &rhs) const { return {}; }
 
 Natural Natural::operator%(const Natural &rhs) const { return {}; }
 
-Natural &Natural::operator+=(const Natural &rhs) { return *this; }
+// Сложение натуральных чисел "+="
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Natural &Natural::operator+=(const Natural &rhs) {
+  // Если длина правого операнда (rhs) больше, чем длина текущего (this),
+  // добавляем недостающие нули в начало
+  if (rhs.digits_.size() > this->digits_.size()) {
+    for (int i = 0; i <= (rhs.digits_.size() - this->digits_.size()); i++) {
+      this->digits_.insert(this->digits_.begin(), 0);
+    }
+  }
+  // перенос в следующий разряд
+  uint8_t surplus = 0;
+  // изначальное значение разряда текущего числа
+  // подходящее значение левого операнда rhs
+  uint8_t old_digit, rhs_digit;
+  // Проходим по разрядам чисел справа налево (от младших к старшим)
+  for (int i = this->digits_.size() - 1, j = rhs.digits_.size() - 1; i >= 0;
+       --i, --j) {
+    // если индекс j правого операнда rhs меньше нуля, берем 0 (rhs имеет меньше
+    // разрядов, чем this) иначе берем текущий разряд правого операнда
+    if (j >= 0) {
+      rhs_digit = rhs.digits_[j];
+    } else {
+      rhs_digit = 0;
+    }
+    // записываем старое значение разряда текущего числа
+    old_digit = this->digits_[i];
+    // складываем текущие разряды операндов и перенос;
+    // заменяем текущий разряд левого операнда на остаток от деления на 10
+    this->digits_[i] = (old_digit + rhs_digit + surplus) % 10;
+    // обновляем перенос путём деления нацело суммы разрядов операндов и
+    // переноса
+    surplus = (old_digit + rhs_digit + surplus) / 10;
+  }
+  // если избыток не равен 0, дописываем его в начало
+  if (surplus != 0) {
+    this->digits_.insert(this->digits_.begin(), surplus);
+  }
+  return *this;
+}
 
 Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 
