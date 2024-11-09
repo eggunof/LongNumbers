@@ -124,8 +124,7 @@ Natural &Natural::operator-=(const Natural &rhs) {
             this->digits_[i] += 10;
             this->digits_[i - 1]--;
         }
-
-        // Вычитаем текущую цифру
+        // Вычитаем текущую цифру (digit) из текущего разряда (this->digits_[i]) 
         this->digits_[i] -= digit;
     }
     // Удаляем ведущие нули
