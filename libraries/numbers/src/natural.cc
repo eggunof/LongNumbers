@@ -268,8 +268,37 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
   return *this;
 }
 
-Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
-  return {};
+// Вычисление первой цифры деления большего натурального на меньшее, домноженное
+// на 10^k,где k - номер позиции этой цифры
+Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs) {
+  // Позиция первой значащей цифры частного (считая от старшего разряда)
+  uint32_t k;
+  Digit firstDigit = 0;
+  Natural bigNatural;
+  Natural smallNatural;
+  // Левый операнд больше правого
+  if (digits_ > rhs.digits_) {
+    bigNatural = *this;
+    smallNatural = rhs;
+  }
+  // Левый операнд меньше либо равен правому
+  else {
+    bigNatural = rhs;
+    smallNatural = *this;
+  }
+  // Вычисляем номер позиции первой цифры при делении натуральных чисел
+  k = bigNatural.digits_.size() - smallNatural.digits_.size();
+  // Умножаем меньшее натуральное числа на 10^k
+  smallNatural.MultiplyBy10Power(k);
+  // Пока наибольший операнд больше или равен меньшему
+  while (bigNatural >= smallNatural) {
+    // Вычитаем меньшее из большего
+    bigNatural -= smallNatural;
+    // Увеличиваем первую цифру частного
+    firstDigit++;
+  }
+  // Возвращаем первую цифру частного
+  return firstDigit;
 }
 
 Natural Natural::GreatestCommonDivisor(const Natural &first,
