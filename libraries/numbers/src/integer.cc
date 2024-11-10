@@ -47,13 +47,20 @@ Integer Integer::operator+(const Integer &rhs) const {
   // если знаки разные, то вычитаем из большего меньшее и присваиваем знак
   // большего модуля
   else {
-    if (a_new > b_new) {
+    if (a_new == b_new){
+      sign = Sign::ZERO;
       sum_a_b = a_new - b_new;
-      sign = this->sign_;
-    } else {
-      sum_a_b = b_new - a_new;
-      sign = rhs.sign_;
     }
+    else{
+      if (a_new > b_new) {
+        sum_a_b = a_new - b_new;
+        sign = this->sign_;
+      } else {
+        sum_a_b = b_new - a_new;
+        sign = rhs.sign_;
+      }
+    }
+    
   }
   Integer result = Integer(sum_a_b);
   result.sign_ = sign;
@@ -68,7 +75,9 @@ Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator%(const Integer &rhs) const { return {}; }
 
-Integer &Integer::operator+=(const Integer &rhs) { return *this; }
+Integer &Integer::operator+=(const Integer &rhs) { 
+  *this = *this + rhs;
+  return *this; }
 
 Integer &Integer::operator-=(const Integer &rhs) { return *this; }
 
