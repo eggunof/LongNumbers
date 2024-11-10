@@ -35,6 +35,14 @@ Integer Integer::operator+(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator-(const Integer &rhs) const { return {}; }
 
+// Умножение целых чисел "*"
+// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator*(const Integer &rhs) const {
+  Integer result = *this;
+  result *= rhs;
+  return result;
+}
+
 Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator%(const Integer &rhs) const { return {}; }
@@ -43,35 +51,15 @@ Integer &Integer::operator+=(const Integer &rhs) { return *this; }
 
 Integer &Integer::operator-=(const Integer &rhs) { return *this; }
 
-// Умножение целых чисел
+// Умножение целых чисел "*="
 // Над модулем работала Майская Вероника, гр. 3384
 Integer &Integer::operator*=(const Integer &rhs) {
-    // Определяем знаки текущего числа и правого операнда
-    bool is_negative_this = (this->sign_ == Sign::NEGATIVE);
-    bool is_negative_rhs = (rhs.sign_ == Sign::NEGATIVE);
-    // Получаем абсолютные значения двух чисел и преобразуем их в натуральные числа
-    Natural abs_this = ToNatural(this->AbsoluteValue(*this));
-    Natural abs_rhs = ToNatural(rhs.AbsoluteValue(rhs));
-    // Умножение двух натуральных чисел
-    Natural result_n = abs_this * abs_rhs;
-    this->digits_ = result_n.digits_;
-    // Определяем знак результата
-    if (result_n.IsZero()) {
-        this->sign_ = Sign::ZERO;
-    } else if (is_negative_this != is_negative_rhs) {
-        this->sign_ = Sign::NEGATIVE;  // Если исходные знаки разные, результат отрицательный
-    } else {
-        this->sign_ = Sign::POSITIVE;  // Если исходные знаки одинаковые, результат положительный
-    }
+  // Перемножаем натуральные части
+  natural_ *= rhs.natural_;
+  // Определяем знак результата
+  sign_ = (sign_ == rhs.sign_) ? Sign::POSITIVE : Sign::NEGATIVE;
+  if (natural_.IsZero()) sign_ = Sign::ZERO;
   return *this;
-}
-
-// Оператор умножения
-// Над модулем работала Майская Вероника, гр. 3384
-Integer Integer::operator*(const Integer &rhs) const {
-    Integer result = *this;
-    result *= rhs;
-    return result;
 }
 
 Integer &Integer::operator/=(const Integer &rhs) { return *this; }
