@@ -23,7 +23,17 @@ Integer::Integer(const std::string &string)
 
 Integer::Integer(const Natural &natural) {}
 
-Integer::operator Natural() const { return {}; }
+// Преобразование целого неотрицательного в натуральное
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Integer::operator Natural() const {
+  // если число равно 0,
+  // возвращаем Natural, представляющий число 1
+  if (sign_ == Sign::ZERO) {
+    return Natural("1");  // Возвращаем Natural, представляющий число 1
+  }
+  // Иначе возвращаем без изменений
+  return natural_;
+}
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
 
