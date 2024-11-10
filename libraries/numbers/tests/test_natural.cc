@@ -20,16 +20,26 @@ TEST(NaturalTest, Compare) {
   EXPECT_FALSE(first >= second);
 }
 
-TEST(NaturalTest, MulByTenPow1) {
-  Natural natural("5000000000");
-  natural.MultiplyBy10Power(2);
-  std::vector<uint8_t> expected = {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  EXPECT_EQ(natural.digits_, expected);
+TEST(NaturalTest, MultiplyByDigit) {
+  Natural a("9999999");
+  EXPECT_EQ(a *= 9, Natural("89999991"));
+
+  Natural b("5473");
+  EXPECT_EQ(b *= 0, Natural("0"));
+
+  Natural c("123456789");
+  EXPECT_EQ(c *= 1, Natural("123456789"));
+
+  Natural d("123321");
+  EXPECT_EQ(d * 7, Natural("863247"));
 }
 
-TEST(NaturalTest, MulByTenPow2) {
-  Natural natural("5000000000");
-  natural.MultiplyBy10Power(0);
-  std::vector<uint8_t> expected = {5, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  EXPECT_EQ(natural.digits_, expected);
+TEST(NaturalTest, MultiplyBy10Power) {
+  Natural a("5000000000");
+  a.MultiplyBy10Power(2);
+  EXPECT_EQ(a, Natural("500000000000"));
+
+  Natural b("5000000000");
+  b.MultiplyBy10Power(0);
+  EXPECT_EQ(b, Natural("5000000000"));
 }
