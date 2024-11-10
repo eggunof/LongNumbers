@@ -4,15 +4,15 @@
 #include <algorithm>
 
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
-    : Natural(digits), sign_(sign) {
-  if (IsZero()) {
+    : natural_(digits), sign_(sign) {
+  if (natural_.IsZero()) {
     sign_ = Sign::ZERO;
   }
 }
 
 Integer::Integer(const std::string &string)
-    : Natural(string.substr(string.find_first_not_of("+-"))) {
-  if (IsZero()) {
+    : natural_(string.substr(string.find_first_not_of("+-"))) {
+  if (natural_.IsZero()) {
     sign_ = Sign::ZERO;
   } else {
     size_t minus_count = std::count_if(string.begin(), string.end(),
@@ -23,7 +23,7 @@ Integer::Integer(const std::string &string)
 
 Integer::Integer(const Natural &natural) {}
 
-Natural Integer::ToNatural(const Integer &integer) { return {}; }
+Integer::operator Natural() const { return {}; }
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
 
