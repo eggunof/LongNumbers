@@ -25,7 +25,7 @@ Rational::Rational(const std::string &string) {
   }
 }
 
-Integer Rational::ToInteger(const Rational &rational) { return {}; }
+Rational::operator Integer() const { return {}; }
 
 Rational &Rational::Reduce() { return *this; }
 
