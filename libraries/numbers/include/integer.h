@@ -26,6 +26,13 @@ class Integer {
 
   [[nodiscard]] Sign GetSign() const { return sign_; }  // SGN_Z_D
 
+  bool operator==(const Integer &rhs) const;
+  bool operator!=(const Integer &rhs) const;
+  bool operator<(const Integer &rhs) const;
+  bool operator>(const Integer &rhs) const;
+  bool operator<=(const Integer &rhs) const;
+  bool operator>=(const Integer &rhs) const;
+
   Integer operator-() const;  // MUL_ZM_Z
   Integer &operator-();       // MUL_ZM_Z
 

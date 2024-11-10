@@ -27,6 +27,24 @@ Integer::operator Natural() const { return {}; }
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
 
+bool Integer::operator==(const Integer &rhs) const {
+  return natural_ == rhs.natural_ && sign_ == rhs.sign_;
+}
+
+bool Integer::operator!=(const Integer &rhs) const { return !(rhs == *this); }
+
+bool Integer::operator<(const Integer &rhs) const {
+  if (sign_ < rhs.sign_) return true;
+  if (sign_ > rhs.sign_) return false;
+  return natural_ < rhs.natural_;
+}
+
+bool Integer::operator>(const Integer &rhs) const { return rhs < *this; }
+
+bool Integer::operator<=(const Integer &rhs) const { return !(rhs < *this); }
+
+bool Integer::operator>=(const Integer &rhs) const { return !(*this < rhs); }
+
 Integer Integer::operator-() const { return {}; }
 
 Integer &Integer::operator-() { return *this; }
