@@ -208,7 +208,12 @@ Natural Natural::GreatestCommonDivisor(const Natural &first,
   return {};
 }
 
+// НОК натуральных чисел
+// Над модулем работала Майская Вероника, гр. 3384
 Natural Natural::LeastCommonMultiple(const Natural &first,
                                      const Natural &second) {
-  return {};
+  // Вычисляем НОД двух чисел
+  Natural gcd = GreatestCommonDivisor(first, second);
+  Natural lcm = (first * second) / gcd;
+  return lcm;
 }
