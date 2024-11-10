@@ -63,6 +63,27 @@ TEST(IntegerTest, Addition) {
   EXPECT_EQ(g + h, Integer("0"));
 }
 
+TEST(IntegerTest, Subtraction) {
+  Integer a("1234567890");
+  Integer b("98456198645");
+  a -= b;
+  EXPECT_EQ(a, Integer("-97221630755"));
+
+  Integer c("1234567890");
+  Integer d("-98456198645");
+  c -= d;
+  EXPECT_EQ(c, Integer("99690766535"));
+
+  Integer e("1234567890");
+  Integer f("1234567890");
+  e -= f;
+  EXPECT_EQ(e, Integer("0"));
+
+  Integer g("0");
+  Integer h("456");
+  EXPECT_EQ(g - h, Integer("-456"));
+}
+
 TEST(IntegerTest, Multiplication) {
   Integer a("123");
   Integer b("456");
