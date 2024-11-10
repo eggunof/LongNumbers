@@ -12,5 +12,5 @@ TEST(NaturalTest, ADD_NN_N) {
   Natutal a(10099);
   Natural b(599999);
   a += b;
-  EXPECT_EQ(a, 610098);
+  EXPECT_EQ(a, Natural(610098));
 }
