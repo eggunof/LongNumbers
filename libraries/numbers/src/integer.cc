@@ -4,15 +4,15 @@
 #include <algorithm>
 
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
-    : natural_(digits), sign_(sign) {
-  if (natural_.IsZero()) {
+    : Natural(digits), sign_(sign) {
+  if (IsZero()) {
     sign_ = Sign::ZERO;
   }
 }
 
 Integer::Integer(const std::string &string)
-    : natural_(string.substr(string.find_first_not_of("+-"))) {
-  if (natural_.IsZero()) {
+    : Natural(string.substr(string.find_first_not_of("+-"))) {
+  if (IsZero()) {
     sign_ = Sign::ZERO;
   } else {
     size_t minus_count = std::count_if(string.begin(), string.end(),
@@ -23,27 +23,9 @@ Integer::Integer(const std::string &string)
 
 Integer::Integer(const Natural &natural) {}
 
-Integer::operator Natural() const { return {}; }
+Natural Integer::ToNatural(const Integer &integer) { return {}; }
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
-
-bool Integer::operator==(const Integer &rhs) const {
-  return natural_ == rhs.natural_ && sign_ == rhs.sign_;
-}
-
-bool Integer::operator!=(const Integer &rhs) const { return !(rhs == *this); }
-
-bool Integer::operator<(const Integer &rhs) const {
-  if (sign_ < rhs.sign_) return true;
-  if (sign_ > rhs.sign_) return false;
-  return natural_ < rhs.natural_;
-}
-
-bool Integer::operator>(const Integer &rhs) const { return rhs < *this; }
-
-bool Integer::operator<=(const Integer &rhs) const { return !(rhs < *this); }
-
-bool Integer::operator>=(const Integer &rhs) const { return !(*this < rhs); }
 
 Integer Integer::operator-() const { return {}; }
 
