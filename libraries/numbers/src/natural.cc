@@ -70,7 +70,11 @@ Natural Natural::operator+(const Natural &rhs) const { return {}; }
 
 Natural Natural::operator-(const Natural &rhs) const { return {}; }
 
-Natural Natural::operator*(Digit d) const { return {}; }
+Natural Natural::operator*(Digit d) const{
+    Natural ptr = Natural(*this); //делается копия текущего натурального числа
+    ptr *= d; // происходит умножение на цифру
+    return ptr;
+}
 
 Natural Natural::operator*(const Natural &rhs) const { return {}; }
 
@@ -82,7 +86,20 @@ Natural &Natural::operator+=(const Natural &rhs) { return *this; }
 
 Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 
-Natural &Natural::operator*=(Digit d) { return *this; }
+Natural& Natural::operator*=(Digit d) { //умножение натурального на цифру в 10ой системе
+    Digit s = 0; //избыток
+    Digit ptr; // для хранения цифры из изначального числа
+    for (int i = digits_.size()-1; i >=0; i--){
+        ptr = digits_[i];
+        digits_[i] = (ptr * d + s) % 10; //(умножаем текущую цифру + избыток от предыдущего действия)
+        // и находим остаток от 10 - это наша новая цифра, изменили изначальный массив
+        s = (ptr * d + s) / 10; // считаем избыток через деления нацело
+    }
+    if (s>0) { // если после всех вычислений избыток не равен 0, нужно дописать избыток(цифру) в начало
+        digits_.insert(digits_.begin(), s);
+    }
+    return *this;
+}
 
 Natural &Natural::operator*=(const Natural &rhs) { return *this; }
 
