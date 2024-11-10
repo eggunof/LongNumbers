@@ -270,6 +270,7 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
 
 // Вычисление первой цифры деления большего натурального на меньшее, домноженное
 // на 10^k,где k - номер позиции этой цифры
+// Над модулем работала Варфоломеева Арина, гр. 3383
 Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs) {
   // Позиция первой значащей цифры частного (считая от старшего разряда)
   uint32_t k;
@@ -277,7 +278,7 @@ Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs) {
   Natural bigNatural;
   Natural smallNatural;
   // Левый операнд больше правого
-  if (digits_ > rhs.digits_) {
+  if (*this > rhs) {
     bigNatural = *this;
     smallNatural = rhs;
   }
