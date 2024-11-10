@@ -28,6 +28,27 @@ TEST(IntegerTest, Sign) {
   EXPECT_EQ(negative_zero_integer.GetSign(), Sign::ZERO);
 }
 
+TEST(IntegerTest, Addition) {
+  Integer a("4846512846");
+  Integer b("98456198645");
+  a += b;
+  EXPECT_EQ(a, Integer("103302711491"));
+
+  Integer c("4846512846");
+  Integer d("-98456198645");
+  c += d;
+  EXPECT_EQ(c, Integer("-93609685799"));
+
+  Integer e("-4846512846");
+  Integer f("-98456198645");
+  e += f;
+  EXPECT_EQ(e, Integer("-103302711491"));
+
+  Integer g("1234567890");
+  Integer h("-1234567890");
+  EXPECT_EQ(g + h, Integer("0"));
+}
+
 TEST(IntegerTest, Multiplication) {
   Integer a("123");
   Integer b("456");
