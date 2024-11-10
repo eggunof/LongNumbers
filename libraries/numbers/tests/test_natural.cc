@@ -20,12 +20,20 @@ TEST(NaturalTest, Compare) {
   EXPECT_FALSE(first >= second);
 }
 
-
 TEST(NaturalTest, Addition) {
-  Natural a("10099");
+  Natural a("1046");
   Natural b("599999");
   a += b;
-  EXPECT_EQ(a, Natural("610098"));
+  EXPECT_EQ(a, Natural("601045"));
+
+  Natural c("6541186631");
+  Natural d("51866");
+  c += d;
+  EXPECT_EQ(c, Natural("6541238497"));
+
+  Natural e("123456789");
+  Natural f("999999999");
+  EXPECT_EQ(e + f, Natural("1123456788"));
 }
 
 TEST(NaturalTest, MultipleByDigit) {
