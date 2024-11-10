@@ -18,7 +18,7 @@ class Polynomial {
   std::map<Natural, Rational, Comparator> coefficients_;
 
  public:
-  Polynomial() : coefficients_({{Natural("0"), Rational("0")}}) {}
+  Polynomial() : coefficients_() {}
   explicit Polynomial(
       const std::map<Natural, Rational, Comparator> &coefficients)
       : coefficients_(coefficients) {}
