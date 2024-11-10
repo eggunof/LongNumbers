@@ -29,14 +29,13 @@ Integer Rational::ToInteger(const Rational &rational) { return {}; }
 
 Rational &Rational::Reduce() { return *this; }
 
-// Проверка сокращенного дробного на целое
-// Над модулем работал Матвеев Никита гр. 3383
+// Проверка сокращённого дробного на целое
+// Над модулем работал Матвеев Никита, гр. 3383
 bool Rational::IsInteger() {
-    if (Natural::Compare(denominator_, Natural("1")) == Comparison::EQUAL) {//сокращенное дробное является целым,
-                                                                            // если знаменатель равен 1
-        return true;
-    }
-    return false;
+  // Сокращаем
+  Reduce();
+  // Сокращённое дробное является целым, если знаменатель равен 1
+  return denominator_ == Natural("1");
 }
 
 Rational Rational::operator+(const Rational &rhs) const { return {}; }
