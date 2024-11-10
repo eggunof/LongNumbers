@@ -82,13 +82,19 @@ Integer Integer::operator%(const Integer &rhs) const { return {}; }
 
 Integer &Integer::operator+=(const Integer &rhs) {
   if (sign_ == rhs.sign_) {
+    // Если знаки одинаковые — складываем натуральные части
     natural_ += rhs.natural_;
   } else if (natural_ > rhs.natural_) {
+    // Если знаки разные и текущее число больше, вычитаем из натуральной части
+    // левого операнда
     natural_ -= rhs.natural_;
   } else if (natural_ < rhs.natural_) {
+    // Если знаки разные и текущее число меньше, вычитаем из натуральной части
+    // правого операнда и меняем знак
     natural_ = rhs.natural_ - natural_;
     sign_ = rhs.sign_;
   } else {
+    // Если знаки разные и натуральные части равны, результатом будет ноль
     natural_ = Natural(0);
     sign_ = Sign::ZERO;
   }
