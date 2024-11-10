@@ -50,7 +50,9 @@ Integer Integer::operator%(const Integer &rhs) const { return {}; }
 
 Integer &Integer::operator+=(const Integer &rhs) { return *this; }
 
-Integer &Integer::operator-=(const Integer &rhs) { return *this; }
+Integer &Integer::operator-=(const Integer &rhs) { 
+    *this -= rhs;
+    return *this; }
 
 Integer &Integer::operator*=(const Integer &rhs) { return *this; }
 
