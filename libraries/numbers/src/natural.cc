@@ -110,7 +110,7 @@ Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 // Умножение натуральных чисел на цифру "*="
 // Над модулем работал Матвеев Никита, гр. 3383
 Natural &Natural::operator*=(Digit d) {
-  if (d==0){
+  if (d == 0) {
     digits_.clear();
     digits_.push_back(0);
     return *this;
@@ -142,14 +142,11 @@ Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
   return *this;
 }
 
-// MUL_Nk_N - умножение натурального числа на 10 в k-ой степени
-// Над модулем работала Кривошеина Дарья, группа 3383
+// Умножение натуральных чисел на 10 в k-ой степени
+// Над модулем работала Кривошеина Дарья, гр. 3383
 Natural &Natural::MultiplyBy10Power(uint32_t k) {
-  // умножение числа на 10^k - то же самое, что дописывание в конец числа k
-  // нулей
-  for (size_t i = 0; i < k; i++) {
-    this->digits_.push_back(0);
-  }
+  // Умножение числа на 10^k - то же, что и дописывание в конец k нулей
+  digits_.insert(digits_.end(), k, 0);
   return *this;
 }
 
