@@ -42,4 +42,10 @@ TEST(NaturalTest, MultiplyBy10Power) {
   Natural b("5000000000");
   b.MultiplyBy10Power(0);
   EXPECT_EQ(b, Natural("5000000000"));
+
+  Natural c("0");
+  c.MultiplyBy10Power(3);
+  EXPECT_EQ(c, Natural("0"));
 }
+
+

@@ -142,11 +142,18 @@ Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
   return *this;
 }
 
-// Умножение натуральных чисел на 10 в k-ой степени
-// Над модулем работала Кривошеина Дарья, гр. 3383
+// MUL_Nk_N - умножение натурального числа на 10 в k-ой степени
+// Над модулем работала Кривошеина Дарья, группа 3383
 Natural &Natural::MultiplyBy10Power(uint32_t k) {
-  // Умножение числа на 10^k - то же, что и дописывание в конец k нулей
-  digits_.insert(digits_.end(), k, 0);
+  // если текущее число равно 0, оно не должно измениться
+  if (this->IsZero()) {
+    return *this;
+  }
+  // умножение числа на 10^k - то же самое, что дописывание в конец числа k
+  // нулей
+  for (size_t i = 0; i < k; i++) {
+    this->digits_.push_back(0);
+  }
   return *this;
 }
 
