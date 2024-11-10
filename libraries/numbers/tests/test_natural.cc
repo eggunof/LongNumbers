@@ -47,5 +47,3 @@ TEST(NaturalTest, MultiplyBy10Power) {
   c.MultiplyBy10Power(3);
   EXPECT_EQ(c, Natural("0"));
 }
-
-
