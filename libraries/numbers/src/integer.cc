@@ -53,7 +53,13 @@ Integer Integer::operator+(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator-(const Integer &rhs) const { return {}; }
 
-Integer Integer::operator*(const Integer &rhs) const { return {}; }
+// Умножение целых чисел "*"
+// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator*(const Integer &rhs) const {
+  Integer result = *this;
+  result *= rhs;
+  return result;
+}
 
 Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
@@ -63,7 +69,16 @@ Integer &Integer::operator+=(const Integer &rhs) { return *this; }
 
 Integer &Integer::operator-=(const Integer &rhs) { return *this; }
 
-Integer &Integer::operator*=(const Integer &rhs) { return *this; }
+// Умножение целых чисел "*="
+// Над модулем работала Майская Вероника, гр. 3384
+Integer &Integer::operator*=(const Integer &rhs) {
+  // Перемножаем натуральные части
+  natural_ *= rhs.natural_;
+  // Определяем знак результата
+  sign_ = (sign_ == rhs.sign_) ? Sign::POSITIVE : Sign::NEGATIVE;
+  if (natural_.IsZero()) sign_ = Sign::ZERO;
+  return *this;
+}
 
 Integer &Integer::operator/=(const Integer &rhs) { return *this; }
 
