@@ -70,7 +70,9 @@ bool Natural::operator<(const Natural &rhs) const {
   return Compare(*this, rhs) == Comparison::LESS;
 }
 
-bool Natural::operator>(const Natural &rhs) const { return rhs < *this; }
+bool Natural::operator>(const Natural &rhs) const {
+  return Compare(*this, rhs) == Comparison::GREATER;
+}
 
 bool Natural::operator<=(const Natural &rhs) const { return !(*this > rhs); }
 
