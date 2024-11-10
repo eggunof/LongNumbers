@@ -31,3 +31,11 @@ TEST(IntegerTest, Multiplication) {
   Integer h("456");
   EXPECT_EQ(g * h, Integer("0"));
 }
+
+TEST(IntegerTest, IntegerToNatural) {
+  Integer a("0");
+  EXPECT_EQ(Natural(a), Natural("1"));
+
+  Integer b("50000000099999999");
+  EXPECT_EQ(Natural(b), Natural("50000000099999999"));
+}
