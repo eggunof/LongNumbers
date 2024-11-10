@@ -13,6 +13,7 @@ class Integer {
 
  public:
   Integer() : natural_(), sign_(Sign::ZERO) {}
+  Integer(const Natural &natural, Sign sign) : natural_(natural), sign_(sign) {}
   Integer(const std::vector<Digit> &digits, Sign sign);
   explicit Integer(const std::string &string);
   explicit Integer(int32_t number) : Integer(std::to_string(number)) {}
@@ -24,6 +25,13 @@ class Integer {
   static Integer AbsoluteValue(const Integer &integer);  // ABS_Z_Z
 
   [[nodiscard]] Sign GetSign() const { return sign_; }  // SGN_Z_D
+
+  bool operator==(const Integer &rhs) const;
+  bool operator!=(const Integer &rhs) const;
+  bool operator<(const Integer &rhs) const;
+  bool operator>(const Integer &rhs) const;
+  bool operator<=(const Integer &rhs) const;
+  bool operator>=(const Integer &rhs) const;
 
   Integer operator-() const;  // MUL_ZM_Z
   Integer &operator-();       // MUL_ZM_Z
