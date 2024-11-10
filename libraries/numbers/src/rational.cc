@@ -29,9 +29,14 @@ Integer Rational::ToInteger(const Rational &rational) { return {}; }
 
 Rational &Rational::Reduce() { return *this; }
 
+// Проверка сокращенного дробного на целое
+// Над модулем работал Матвеев Никита гр. 3383
 bool Rational::IsInteger() {
-  Reduce();
-  return false;
+    if (Natural::Compare(denominator_, Natural("1")) == Comparison::EQUAL) {//сокращенное дробное является целым,
+                                                                            // если знаменатель равен 1
+        return true;
+    }
+    return false;
 }
 
 Rational Rational::operator+(const Rational &rhs) const { return {}; }
