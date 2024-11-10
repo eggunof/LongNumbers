@@ -36,6 +36,31 @@ TEST(NaturalTest, Addition) {
   EXPECT_EQ(e + f, Natural("1123456788"));
 }
 
+TEST(NaturalTest, Subtraction) {
+  Natural a("23456789");
+  Natural b("345678");
+  a -= b;
+  EXPECT_EQ(a, Natural("23111111"));
+
+  Natural c("9999999999");
+  Natural d("1234567890");
+  c -= d;
+  EXPECT_EQ(c, Natural("8765432109"));
+
+  Natural e("123456789");
+  Natural f("0");
+  e -= f;
+  EXPECT_EQ(e, Natural("123456789"));
+
+  Natural g("0");
+  Natural h("1");
+  EXPECT_THROW(g - h, std::invalid_argument);
+
+  Natural i("9999999999");
+  Natural j("9999999999");
+  EXPECT_EQ(i - j, Natural("0"));
+}
+
 TEST(NaturalTest, MultiplyByDigit) {
   Natural a("9999999");
   a *= 9;
