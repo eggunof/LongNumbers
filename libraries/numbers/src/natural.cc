@@ -110,6 +110,11 @@ Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 // Умножение натуральных чисел на цифру "*="
 // Над модулем работал Матвеев Никита, гр. 3383
 Natural &Natural::operator*=(Digit d) {
+  if (d==0){
+    digits_.clear();
+    digits_.push_back(0);
+    return *this;
+  }
   // избыток
   Digit surplus = 0;
   for (Digit &digit : std::ranges::reverse_view(digits_)) {
