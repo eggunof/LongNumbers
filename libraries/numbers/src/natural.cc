@@ -87,10 +87,12 @@ Natural Natural::operator+(const Natural &rhs) const { return {}; }
 
 Natural Natural::operator-(const Natural &rhs) const { return {}; }
 
-Natural Natural::operator*(Digit d) const{
-    Natural ptr = *this; //делается копия текущего натурального числа
-    ptr *= d; // происходит умножение на цифру
-    return ptr;
+// Умножение натуральных чисел на цифру "*"
+// Над модулем работал Матвеев Никита гр. 3383
+Natural Natural::operator*(Digit d) const {
+    Natural result = Natural(*this);//делается копия текущего натурального числа
+    result *= d;                    // происходит умножение на цифру
+    return result;
 }
 
 Natural Natural::operator*(const Natural &rhs) const { return {}; }
@@ -103,17 +105,19 @@ Natural &Natural::operator+=(const Natural &rhs) { return *this; }
 
 Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 
-Natural& Natural::operator*=(Digit d) { //умножение натурального на цифру в 10ой системе
-    Digit s = 0; //избыток
-    Digit ptr; // для хранения цифры из изначального числа
-    for (int i = digits_.size()-1; i >=0; i--){
-        ptr = digits_[i];
-        digits_[i] = (ptr * d + s) % 10; //(умножаем текущую цифру + избыток от предыдущего действия)
-        // и находим остаток от 10 - это наша новая цифра, изменили изначальный массив
-        s = (ptr * d + s) / 10; // считаем избыток через деления нацело
+// Умножение натуральных чисел на цифру "*="
+// Над модулем работал Матвеев Никита гр. 3383
+Natural &Natural::operator*=(Digit d) {//умножение натурального на цифру в 10ой системе
+    Digit surplus = 0;                 //избыток
+    Digit ptr;                         // для хранения цифры из изначального числа
+    for (auto it = digits_.rbegin(); it != digits_.rend(); ++it) {
+        ptr = *it;
+        Digit product = ptr * d + surplus; //(умножаем текущую цифру + избыток от предыдущего действия)
+        *it = product % 10;                // и находим остаток от 10 - это наша новая цифра, изменили изначальный массив
+        surplus = (ptr * d + surplus) / 10;// считаем избыток через деления нацело
     }
-    if (s>0) { // если после всех вычислений избыток не равен 0, нужно дописать избыток(цифру) в начало
-        digits_.insert(digits_.begin(), s);
+    if (surplus > 0) {// если после всех вычислений избыток не равен 0, нужно дописать избыток(цифру) в начало
+        digits_.insert(digits_.begin(), surplus);
     }
     return *this;
 }
