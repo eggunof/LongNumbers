@@ -20,7 +20,7 @@ TEST(NaturalTest, Compare) {
   EXPECT_FALSE(first >= second);
 }
 
-TEST(NaturalTest, MultipleByDigit) {
+TEST(NaturalTest, MultiplyByDigit) {
   Natural a("9999999");
   EXPECT_EQ(a *= 9, Natural("89999991"));
 
@@ -32,4 +32,14 @@ TEST(NaturalTest, MultipleByDigit) {
 
   Natural d("123321");
   EXPECT_EQ(d * 7, Natural("863247"));
+}
+
+TEST(NaturalTest, MultiplyBy10Power) {
+  Natural a("5000000000");
+  a.MultiplyBy10Power(2);
+  EXPECT_EQ(a, Natural("500000000000"));
+
+  Natural b("5000000000");
+  b.MultiplyBy10Power(0);
+  EXPECT_EQ(b, Natural("5000000000"));
 }
