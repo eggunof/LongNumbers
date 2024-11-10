@@ -47,7 +47,10 @@ Rational Rational::operator+(const Rational &rhs) const {
     Integer new_numerator_right = MUL_ZZ_Z(this->numerator_, Integer(scale_right));
     // Складываем числители
     Integer result_numerator = ADD_ZZ_Z(new_numerator_left, new_numerator_right);
-    return Rational(result_numerator, common_denominator);
+    Rational result(result_numerator, common_denominator);
+    // Сокращаем дробь
+    result.Reduce();
+    return result;
 }
 
 Rational Rational::operator-(const Rational &rhs) const { return {}; }
