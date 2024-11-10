@@ -203,7 +203,7 @@ Natural &Natural::operator*=(const Natural &rhs) {
     // Умножаем на цифру
     tmp *= rhs.digits_[i];
     // Сдвигаем на порядок
-    tmp.MultiplyBy10Power(rhs.digits_.size() - i - 1);
+    tmp.MultiplyBy10Power(rhs_size - i - 1);
     // Добавляем к результату
     result += tmp;
   }
