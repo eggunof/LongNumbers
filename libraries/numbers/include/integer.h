@@ -6,12 +6,13 @@
 
 enum class Sign { NEGATIVE = -1, ZERO = 0, POSITIVE = 1 };
 
-class Integer : public Natural {
+class Integer {
  protected:
+  Natural natural_;
   Sign sign_;
 
  public:
-  Integer() : Natural(), sign_(Sign::ZERO) {}
+  Integer() : natural_(), sign_(Sign::ZERO) {}
   Integer(const std::vector<Digit> &digits, Sign sign);
   explicit Integer(const std::string &string);
   explicit Integer(int32_t number) : Integer(std::to_string(number)) {}
@@ -19,7 +20,7 @@ class Integer : public Natural {
   Integer &operator=(const Integer &other) = default;
 
   explicit Integer(const Natural &natural);              // TRANS_N_Z
-  static Natural ToNatural(const Integer &integer);      // TRANS_Z_N
+  explicit operator Natural() const;                     // TRANS_Z_N
   static Integer AbsoluteValue(const Integer &integer);  // ABS_Z_Z
 
   [[nodiscard]] Sign GetSign() const { return sign_; }  // SGN_Z_D
