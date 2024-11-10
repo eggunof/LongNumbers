@@ -20,18 +20,16 @@ TEST(NaturalTest, Compare) {
   EXPECT_FALSE(first >= second);
 }
 
-TEST(NaturalTest, MultyByD) {
-    Natural natural1("9999999");
-    Natural natural2("5473");
-    Natural natural3("123456789");
-    Natural res1("89999991");
-    Natural res2("0");
-    Natural res3("123456789");
-    EXPECT_EQ(natural1*=9, res1);
-    EXPECT_EQ(natural2*=0, res2);
-    EXPECT_EQ(natural3*=1, res3);
-    Natural natural4("123321");
-    Natural res4("863247");
-    Natural a = natural4 * 7;
-    EXPECT_EQ(a, res4);
+TEST(NaturalTest, MultipleByDigit) {
+  Natural a("9999999");
+  EXPECT_EQ(a *= 9, Natural("89999991"));
+
+  Natural b("5473");
+  EXPECT_EQ(b *= 0, Natural("0"));
+
+  Natural c("123456789");
+  EXPECT_EQ(c *= 1, Natural("123456789"));
+
+  Natural d("123321");
+  EXPECT_EQ(d * 7, Natural("863247"));
 }
