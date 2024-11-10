@@ -53,12 +53,12 @@ TEST(IntegerTest, Subtraction) {
   Integer a("1234567890");
   Integer b("98456198645");
   a -= b;
-  EXPECT_EQ(a, Integer("-86110520745"));
+  EXPECT_EQ(a, Integer("-97221630755"));
 
   Integer c("1234567890");
   Integer d("-98456198645");
   c -= d;
-  EXPECT_EQ(c, Integer("100010916895"));
+  EXPECT_EQ(c, Integer("99690766535"));
 
   Integer e("1234567890");
   Integer f("1234567890");
