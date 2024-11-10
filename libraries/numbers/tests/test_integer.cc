@@ -28,6 +28,20 @@ TEST(IntegerTest, Sign) {
   EXPECT_EQ(negative_zero_integer.GetSign(), Sign::ZERO);
 }
 
+TEST(IntegerTest, Negation) {
+  Integer a("4846512846");
+  -a;
+  EXPECT_EQ(a, Integer("-4846512846"));
+
+  Integer b("-4846512846");
+  -b;
+  EXPECT_EQ(b, Integer("4846512846"));
+
+  Integer c("0");
+  -c;
+  EXPECT_EQ(c, Integer("0"));
+}
+
 TEST(IntegerTest, Addition) {
   Integer a("4846512846");
   Integer b("98456198645");
