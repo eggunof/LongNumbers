@@ -71,46 +71,7 @@ Natural &Natural::operator++(int) { return *this; }
 Natural Natural::operator+(const Natural &rhs) const {
   // Создаем копию текущего объекта для хранения результата
   Natural result = *this;
-  // Если длина правого операнда (rhs) больше, чем длина текущего,
-  // добавляем недостающие нули в начало
-  if (rhs.digits_.size() > result.digits_.size()) {
-    result.digits_.insert(result.digits_.begin(),
-                          rhs.digits_.size() - result.digits_.size(), 0);
-  }
-  // Перенос в следующий разряд
-  Digit surplus = 0;
-  // Изначальное значение разряда левого операнда,
-  // значение разряда правого операнда
-  Digit old_digit, rhs_digit;
-  // Реверсные итераторы для операндов (справо налево)
-  auto lhs_it = result.digits_.rbegin();
-  auto rhs_it = rhs.digits_.rbegin();
-  // Обрабатываем разряды, где оба числа имеют значение
-  while (rhs_it != rhs.digits_.rend()) {
-    old_digit = *lhs_it;
-    rhs_digit = *rhs_it;
-    // Складываем текущие разряды операндов и перенос;
-    // Заменяем текущий разряд левого операнда на остаток от деления на 10
-    *lhs_it = (old_digit + rhs_digit + surplus) % 10;
-    // Обновляем перенос путём деления нацело суммы разрядов операндов и
-    // переноса
-    surplus = (old_digit + rhs_digit + surplus) / 10;
-    ++lhs_it;
-    ++rhs_it;
-  }
-  // Обрабатываем оставшиеся разряды текущего числа, если есть перенос
-  while (lhs_it != result.digits_.rend() && surplus != 0) {
-    old_digit = *lhs_it;
-    // Обновляем текущий разряд с учётом переноса
-    *lhs_it = (old_digit + surplus) % 10;
-    // Обновляем перенос
-    surplus = (old_digit + surplus) / 10;
-    ++lhs_it;
-  }
-  // Если избыток не равен 0, дописываем его в начало
-  if (surplus != 0) {
-    result.digits_.insert(result.digits_.begin(), surplus);
-  }
+  result += rhs;
   return result;
 }
 
