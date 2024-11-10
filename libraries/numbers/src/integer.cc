@@ -2,17 +2,18 @@
 #include "integer.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
-    : Natural(digits), sign_(sign) {
-  if (IsZero()) {
+    : natural_(digits), sign_(sign) {
+  if (natural_.IsZero()) {
     sign_ = Sign::ZERO;
   }
 }
 
 Integer::Integer(const std::string &string)
-    : Natural(string.substr(string.find_first_not_of("+-"))) {
-  if (IsZero()) {
+    : natural_(string.substr(string.find_first_not_of("+-"))) {
+  if (natural_.IsZero()) {
     sign_ = Sign::ZERO;
   } else {
     size_t minus_count = std::count_if(string.begin(), string.end(),
@@ -23,9 +24,35 @@ Integer::Integer(const std::string &string)
 
 Integer::Integer(const Natural &natural) {}
 
-Natural Integer::ToNatural(const Integer &integer) { return {}; }
+// Преобразование целого неотрицательного в натуральное
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Integer::operator Natural() const {
+  if (sign_ == Sign::NEGATIVE) {
+    throw std::invalid_argument(
+        "Invalid input: Converting a negative integer to natural");
+  }
+  return natural_;
+}
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
+
+bool Integer::operator==(const Integer &rhs) const {
+  return natural_ == rhs.natural_ && sign_ == rhs.sign_;
+}
+
+bool Integer::operator!=(const Integer &rhs) const { return !(rhs == *this); }
+
+bool Integer::operator<(const Integer &rhs) const {
+  if (sign_ < rhs.sign_) return true;
+  if (sign_ > rhs.sign_) return false;
+  return natural_ < rhs.natural_;
+}
+
+bool Integer::operator>(const Integer &rhs) const { return rhs < *this; }
+
+bool Integer::operator<=(const Integer &rhs) const { return !(rhs < *this); }
+
+bool Integer::operator>=(const Integer &rhs) const { return !(*this < rhs); }
 
 // Умножение целых чисел на -1
 // Над модулем работал Матвеев Никита, гр. 3383
@@ -48,21 +75,61 @@ Integer &Integer::operator-() {
   return *this;
 }
 
-Integer Integer::operator+(const Integer &rhs) const { return {}; }
+// Сложение целых чисел "+"
+// над модулем работала Кадникова Анна, гр.3384
+Integer Integer::operator+(const Integer &rhs) const {
+  Integer result = *this;
+  result += rhs;
+  return result;
+}
 
 Integer Integer::operator-(const Integer &rhs) const { return {}; }
 
-Integer Integer::operator*(const Integer &rhs) const { return {}; }
+// Умножение целых чисел "*"
+// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator*(const Integer &rhs) const {
+  Integer result = *this;
+  result *= rhs;
+  return result;
+}
 
 Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator%(const Integer &rhs) const { return {}; }
 
-Integer &Integer::operator+=(const Integer &rhs) { return *this; }
+Integer &Integer::operator+=(const Integer &rhs) {
+  if (sign_ == rhs.sign_) {
+    // Если знаки одинаковые — складываем натуральные части
+    natural_ += rhs.natural_;
+  } else if (natural_ > rhs.natural_) {
+    // Если знаки разные и текущее число больше, вычитаем из натуральной части
+    // левого операнда
+    natural_ -= rhs.natural_;
+  } else if (natural_ < rhs.natural_) {
+    // Если знаки разные и текущее число меньше, вычитаем из натуральной части
+    // правого операнда и меняем знак
+    natural_ = rhs.natural_ - natural_;
+    sign_ = rhs.sign_;
+  } else {
+    // Если знаки разные и натуральные части равны, результатом будет ноль
+    natural_ = Natural(0);
+    sign_ = Sign::ZERO;
+  }
+  return *this;
+}
 
 Integer &Integer::operator-=(const Integer &rhs) { return *this; }
 
-Integer &Integer::operator*=(const Integer &rhs) { return *this; }
+// Умножение целых чисел "*="
+// Над модулем работала Майская Вероника, гр. 3384
+Integer &Integer::operator*=(const Integer &rhs) {
+  // Перемножаем натуральные части
+  natural_ *= rhs.natural_;
+  // Определяем знак результата
+  sign_ = (sign_ == rhs.sign_) ? Sign::POSITIVE : Sign::NEGATIVE;
+  if (natural_.IsZero()) sign_ = Sign::ZERO;
+  return *this;
+}
 
 Integer &Integer::operator/=(const Integer &rhs) { return *this; }
 
