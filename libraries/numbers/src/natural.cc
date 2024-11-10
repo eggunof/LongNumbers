@@ -87,7 +87,7 @@ Natural &Natural::operator++(int) { return *this; }
 // Сложение натуральных чисел "+"
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Natural Natural::operator+(const Natural &rhs) const {
-  // Складываем копию текущего объекта
+  // Создаём копию текущего объекта для хранения результата
   Natural result = *this;
   result += rhs;
   return result;
@@ -98,20 +98,13 @@ Natural Natural::operator-(const Natural &rhs) const { return {}; }
 // Умножение натуральных чисел на цифру "*"
 // Над модулем работал Матвеев Никита, гр. 3383
 Natural Natural::operator*(Digit d) const {
-  // Умножаем копию текущего объекта
+  // умножаем копию текущего числа на цифру
   Natural result = *this;
   result *= d;
   return result;
 }
 
-// Умножение натуральных чисел "*"
-// Над модулем работал Егунов Даниил, гр. 3383
-Natural Natural::operator*(const Natural &rhs) const {
-  // Умножаем копию текущего объекта
-  Natural result = *this;
-  result *= rhs;
-  return result;
-}
+Natural Natural::operator*(const Natural &rhs) const { return {}; }
 
 Natural Natural::operator/(const Natural &rhs) const { return {}; }
 
@@ -184,32 +177,7 @@ Natural &Natural::operator*=(Digit d) {
   return *this;
 }
 
-// Умножение натуральных чисел "*="
-// Над модулем работал Егунов Даниил, гр. 3383
-Natural &Natural::operator*=(const Natural &rhs) {
-  // При умножении на ноль произведение равно нулю
-  if (IsZero() || rhs.IsZero()) {
-    *this = Natural(0);
-    return *this;
-  }
-
-  Natural result;
-  size_t rhs_size = rhs.digits_.size();
-  for (size_t i = 0; i < rhs_size; ++i) {
-    // Пропускаем умножение на 0
-    if (rhs.digits_[i] == 0) continue;
-
-    Natural tmp = *this;
-    // Умножаем на цифру
-    tmp *= rhs.digits_[i];
-    // Сдвигаем на порядок
-    tmp.MultiplyBy10Power(rhs.digits_.size() - i - 1);
-    // Добавляем к результату
-    result += tmp;
-  }
-  *this = result;
-  return *this;
-}
+Natural &Natural::operator*=(const Natural &rhs) { return *this; }
 
 Natural &Natural::operator/=(const Natural &rhs) { return *this; }
 
