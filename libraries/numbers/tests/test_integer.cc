@@ -3,6 +3,17 @@
 
 #include "integer.h"
 
+TEST(IntegerTest, IntegerToNatural) {
+  Integer a("8641561246");
+  EXPECT_EQ(Natural(a), Natural("8641561246"));
+
+  Integer b("0");
+  EXPECT_EQ(Natural(b), Natural("0"));
+
+  Integer c("-8641561246");
+  EXPECT_THROW(static_cast<Natural>(c), std::invalid_argument);
+}
+
 TEST(IntegerTest, Sign) {
   Integer integer({1, 2, 3}, Sign::POSITIVE);
   EXPECT_EQ(integer.GetSign(), Sign::POSITIVE);

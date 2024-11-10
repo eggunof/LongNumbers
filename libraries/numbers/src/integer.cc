@@ -2,6 +2,7 @@
 #include "integer.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
     : natural_(digits), sign_(sign) {
@@ -23,7 +24,15 @@ Integer::Integer(const std::string &string)
 
 Integer::Integer(const Natural &natural) {}
 
-Integer::operator Natural() const { return {}; }
+// Преобразование целого неотрицательного в натуральное
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Integer::operator Natural() const {
+  if (sign_ == Sign::NEGATIVE) {
+    throw std::invalid_argument(
+        "Invalid input: Converting a negative integer to natural");
+  }
+  return natural_;
+}
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
 
