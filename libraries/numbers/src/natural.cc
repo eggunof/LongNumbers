@@ -71,7 +71,7 @@ Natural Natural::operator+(const Natural &rhs) const { return {}; }
 Natural Natural::operator-(const Natural &rhs) const { return {}; }
 
 Natural Natural::operator*(Digit d) const{
-    Natural ptr = Natural(*this); //делается копия текущего натурального числа
+    Natural ptr = *this; //делается копия текущего натурального числа
     ptr *= d; // происходит умножение на цифру
     return ptr;
 }
