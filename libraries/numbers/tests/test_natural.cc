@@ -114,7 +114,15 @@ TEST(NaturalTest, MultiplyBy10Power) {
 }
 
 TEST(NaturalTest, GetLeadingDigitAfterDivision) {
-  Natural a("88");
-  Natural b("2");
-  EXPECT_EQ(a.GetLeadingDigitAfterDivision(b), Digit(4));
+  Natural a("488000000000000");
+  Natural b("2000000000000");
+  EXPECT_EQ(a.GetLeadingDigitAfterDivision(b), Digit(2));
+
+  Natural c("123456791234567");
+  Natural d("12345");
+  EXPECT_EQ(c.GetLeadingDigitAfterDivision(d), Digit(1));
+
+  Natural e("500000000000");
+  Natural f("10000000000000");
+  EXPECT_EQ(e.GetLeadingDigitAfterDivision(f), Digit(5));
 }
