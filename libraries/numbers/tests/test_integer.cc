@@ -49,21 +49,25 @@ TEST(IntegerTest, Addition) {
   EXPECT_EQ(g + h, Integer("0"));
 }
 
-TEST(IntegerTest, Subtraction){
-  Integer a1({1, 2, 3}, Sign::POSITIVE);
-  Integer b1({1, 2, 3}, Sign::NEGATIVE);
-  Integer c1({2,4,6}, Sign::POSITIVE);
-  EXPECT_EQ(a1 - b1, c1);
+TEST(IntegerTest, Subtraction) {
+  Integer a("1234567890");
+  Integer b("98456198645");
+  a -= b;
+  EXPECT_EQ(a, Integer("-86110520745"));
 
-  Integer a2({1, 2, 3}, Sign::POSITIVE);
-  Integer b2({1, 2, 3}, Sign::POSITIVE);
-  Integer c2({0}, Sign::ZERO);
-  EXPECT_EQ(a2 - b2, c2);
+  Integer c("1234567890");
+  Integer d("-98456198645");
+  c -= d;
+  EXPECT_EQ(c, Integer("100010916895"));
 
-  Integer a3({1, 2, 3}, Sign::POSITIVE);
-  Integer b3({2, 4, 6}, Sign::POSITIVE);
-  Integer c3({1,2,3}, Sign::NEGATIVE);
-  EXPECT_EQ(a3 - b3, c3);
+  Integer e("1234567890");
+  Integer f("1234567890");
+  e -= f;
+  EXPECT_EQ(e, Integer("0"));
+
+  Integer g("0");
+  Integer h("456");
+  EXPECT_EQ(g - h, Integer("-456"));
 }
 
 TEST(IntegerTest, Multiplication) {

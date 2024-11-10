@@ -59,19 +59,18 @@ Integer Integer::operator-() const { return {}; }
 Integer &Integer::operator-() { return *this; }
 
 // Сложение целых чисел "+"
-// над модулем работала Кадникова Анна, гр.3384
+// Над модулем работала Кадникова Анна, гр. 3384
 Integer Integer::operator+(const Integer &rhs) const {
   Integer result = *this;
   result += rhs;
   return result;
 }
 
-// Разность целых чисел
+// Вычитание целых чисел "-"
 // Над модулем работала Кадникова Анна, гр. 3384
 Integer Integer::operator-(const Integer &rhs) const {
-  // для вычитания можно применить сложение с противоположным знаком
-  Integer new_rhs = -rhs;
-  Integer result = new_rhs + *this;
+  Integer result = *this;
+  result -= rhs;
   return result;
 }
 
@@ -87,6 +86,8 @@ Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator%(const Integer &rhs) const { return {}; }
 
+// Сложение целых чисел "+="
+// Над модулем работала Кадникова Анна, гр. 3384
 Integer &Integer::operator+=(const Integer &rhs) {
   if (sign_ == rhs.sign_) {
     // Если знаки одинаковые — складываем натуральные части
@@ -108,9 +109,13 @@ Integer &Integer::operator+=(const Integer &rhs) {
   return *this;
 }
 
-Integer &Integer::operator-=(const Integer &rhs) { 
-    *this -= rhs;
-    return *this; }
+// Вычитание целых чисел "-="
+// Над модулем работала Кадникова Анна, гр. 3384
+Integer &Integer::operator-=(const Integer &rhs) {
+  // Применяем сложение с противоположным знаком
+  *this += -rhs;
+  return *this;
+}
 
 // Умножение целых чисел "*="
 // Над модулем работала Майская Вероника, гр. 3384
