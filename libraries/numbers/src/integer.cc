@@ -27,17 +27,18 @@ Natural Integer::ToNatural(const Integer &integer) { return {}; }
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
 
-Integer Integer::operator-() const{
-    Integer a = *this; // берется копия изначального элемента
-    return -a; // копия умножается на -1 и возвращается
+// Умножение целых чисел на -1 "-()"
+// Над модулем работал Матвеев Никита гр. 3383
+Integer Integer::operator-() const {
+    Integer result = *this;// берется копия изначального элемента
+    return -result;        // копия умножается на -1 и возвращается
 }
 
 Integer &Integer::operator-() {
-    if (sign_==Sign::NEGATIVE){ // если знак был -, то становится +
+    if (sign_ == Sign::NEGATIVE) {// если знак был -, то становится +
         sign_ = Sign::POSITIVE;
-    }
-    else if (sign==Sign::POSITIVE){ // если знак был +, то становится -
-        sign_ = Sign::NEGATIVE; 
+    } else if (sign_ == Sign::POSITIVE) {
+        sign_ = Sign::NEGATIVE;// если знак был +, то становится -
     }
     return *this;
 }
