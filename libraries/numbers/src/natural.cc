@@ -1,6 +1,7 @@
 
 #include "natural.h"
 
+#include <ranges>
 #include <stdexcept>
 
 Natural::Natural(const std::vector<Digit> &digits) {
@@ -88,11 +89,12 @@ Natural Natural::operator+(const Natural &rhs) const { return {}; }
 Natural Natural::operator-(const Natural &rhs) const { return {}; }
 
 // Умножение натуральных чисел на цифру "*"
-// Над модулем работал Матвеев Никита гр. 3383
+// Над модулем работал Матвеев Никита, гр. 3383
 Natural Natural::operator*(Digit d) const {
-    Natural result = Natural(*this);//делается копия текущего натурального числа
-    result *= d;                    // происходит умножение на цифру
-    return result;
+  // умножаем копию текущего числа на цифру
+  Natural result = *this;
+  result *= d;
+  return result;
 }
 
 Natural Natural::operator*(const Natural &rhs) const { return {}; }
@@ -106,20 +108,23 @@ Natural &Natural::operator+=(const Natural &rhs) { return *this; }
 Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 
 // Умножение натуральных чисел на цифру "*="
-// Над модулем работал Матвеев Никита гр. 3383
-Natural &Natural::operator*=(Digit d) {//умножение натурального на цифру в 10ой системе
-    Digit surplus = 0;                 //избыток
-    Digit ptr;                         // для хранения цифры из изначального числа
-    for (auto it = digits_.rbegin(); it != digits_.rend(); ++it) {
-        ptr = *it;
-        Digit product = ptr * d + surplus; //(умножаем текущую цифру + избыток от предыдущего действия)
-        *it = product % 10;                // и находим остаток от 10 - это наша новая цифра, изменили изначальный массив
-        surplus = (ptr * d + surplus) / 10;// считаем избыток через деления нацело
-    }
-    if (surplus > 0) {// если после всех вычислений избыток не равен 0, нужно дописать избыток(цифру) в начало
-        digits_.insert(digits_.begin(), surplus);
-    }
-    return *this;
+// Над модулем работал Матвеев Никита, гр. 3383
+Natural &Natural::operator*=(Digit d) {
+  // избыток
+  Digit surplus = 0;
+  for (Digit &digit : std::ranges::reverse_view(digits_)) {
+    // умножаем текущую цифру + избыток от предыдущего действия
+    Digit product = digit * d + surplus;
+    // и находим остаток от 10 - это наша новая цифра
+    digit = product % 10;
+    // считаем избыток через деления нацело
+    surplus = product / 10;
+  }
+  // если после всех вычислений избыток не равен 0, то нужно дописать его
+  if (surplus > 0) {
+    digits_.insert(digits_.begin(), surplus);
+  }
+  return *this;
 }
 
 Natural &Natural::operator*=(const Natural &rhs) { return *this; }
