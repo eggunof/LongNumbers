@@ -27,9 +27,20 @@ Natural Integer::ToNatural(const Integer &integer) { return {}; }
 
 Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
 
-Integer Integer::operator-() const { return {}; }
+Integer Integer::operator-() const{
+    Integer a = *this; // берется копия изначального элемента
+    return -a; // копия умножается на -1 и возвращается
+}
 
-Integer &Integer::operator-() { return *this; }
+Integer &Integer::operator-() {
+    if (sign_==Sign::NEGATIVE){ // если знак был -, то становится +
+        sign_ = Sign::POSITIVE;
+    }
+    else{
+        sign_ = Sign::NEGATIVE; // если знак был +, то становится -
+    }
+    return *this;
+}
 
 Integer Integer::operator+(const Integer &rhs) const { return {}; }
 
