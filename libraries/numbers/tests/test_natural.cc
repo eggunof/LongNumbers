@@ -63,3 +63,17 @@ TEST(NaturalTest, MultiplyBy10Power) {
   c.MultiplyBy10Power(3);
   EXPECT_EQ(c, Natural("0"));
 }
+
+TEST(NaturalTest, LeastCommonMultiple) {
+  Natural a("4294967297");
+  Natural b("5000000000");
+  EXPECT_EQ(Natural::LeastCommonMultiple(a, b), Natural("21474836485000000000"));
+
+  Natural c("4294967300");
+  Natural d("8589934590");
+  EXPECT_EQ(Natural::LeastCommonMultiple(c, d), Natural("3689348817318890500"));
+
+  Natural e("4500000000");
+  Natural f("7000000000");
+  EXPECT_EQ(Natural::LeastCommonMultiple(e, f), Natural("63000000000"));
+}
