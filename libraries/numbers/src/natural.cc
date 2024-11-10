@@ -111,7 +111,16 @@ Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
   return *this;
 }
 
-Natural &Natural::MultiplyBy10Power(uint32_t k) { return *this; }
+// MUL_Nk_N - умножение натурального числа на 10 в k-ой степени
+// Над модулем работала Кривошеина Дарья, группа 3383
+Natural &Natural::MultiplyBy10Power(uint32_t k) {
+  // умножение числа на 10^k - то же самое, что дописывание в конец числа k
+  // нулей
+  for (size_t i = 0; i < k; i++) {
+    this->digits_.push_back(0);
+  }
+  return *this;
+}
 
 Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
   return {};

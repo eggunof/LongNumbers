@@ -19,3 +19,17 @@ TEST(NaturalTest, Compare) {
   EXPECT_TRUE(first <= second);
   EXPECT_FALSE(first >= second);
 }
+
+TEST(NaturalTest, MulByTenPow1) {
+  Natural natural("5000000000");
+  natural.MultiplyBy10Power(2);
+  std::vector<uint8_t> expected = {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(natural.digits_, expected);
+}
+
+TEST(NaturalTest, MulByTenPow2) {
+  Natural natural("5000000000");
+  natural.MultiplyBy10Power(0);
+  std::vector<uint8_t> expected = {5, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(natural.digits_, expected);
+}
