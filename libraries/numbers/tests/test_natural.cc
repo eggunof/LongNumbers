@@ -112,3 +112,9 @@ TEST(NaturalTest, MultiplyBy10Power) {
   c.MultiplyBy10Power(3);
   EXPECT_EQ(c, Natural("0"));
 }
+
+TEST(NaturalTest, GetLeadingDigitAfterDivision) {
+  Natural a("88");
+  Natural b("2");
+  EXPECT_EQ(a.GetLeadingDigitAfterDivision(b), Digit(4));
+}
