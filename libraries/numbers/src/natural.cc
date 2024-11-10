@@ -93,7 +93,14 @@ Natural Natural::operator+(const Natural &rhs) const {
   return result;
 }
 
-Natural Natural::operator-(const Natural &rhs) const { return {}; }
+// Вычитание натуральных чисел "-"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural Natural::operator-(const Natural &rhs) const {
+  // Вычитаем копию текущего объекта
+  Natural result = *this;
+  result -= rhs;
+  return result;
+}
 
 // Умножение натуральных чисел на цифру "*"
 // Над модулем работал Матвеев Никита, гр. 3383
@@ -157,24 +164,33 @@ Natural &Natural::operator+=(const Natural &rhs) {
   return *this;
 }
 
-// Разность натуральных чисел "-="
+// Вычитание натуральных чисел "-="
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Natural &Natural::operator-=(const Natural &rhs) {
-  // Выполняем вычитание по разрядам (справа налево)
-  for (int i = digits_.size() - 1, j = rhs.digits_.size() - 1; i >= 0;
-       i--, j--) {
+  if (*this < rhs) {
+    throw std::invalid_argument(
+        "Invalid input: Subtracting a larger number from a smaller one");
+  }
+  auto lhs_it = digits_.rbegin();
+  auto rhs_it = rhs.digits_.rbegin();
+  Digit borrow = 0;
+  while (rhs_it != rhs.digits_.rend() || borrow) {
     // Получаем текущую цифру из правого операнда (rhs)
-    // Если индекс j меньше 0, считаем цифру равной 0 (это значит, что не
-    // осталось цифр для вычитания)
-    uint8_t digit = (j >= 0) ? rhs.digits_[j] : 0;
-    // Проверяем, нужно ли заимствовать из следующего разряда
-    if (this->digits_[i] < digit) {
-      // Заимствуем единицу из следующего разряда
-      this->digits_[i] += 10;
-      this->digits_[i - 1]--;
+    Digit rhs_digit = (rhs_it != rhs.digits_.rend()) ? *rhs_it : 0;
+    // Вычитаем текущую цифру rhs_digit из текущего разряда digits_[i]
+    int32_t diff = *lhs_it - rhs_digit - borrow;
+    if (diff < 0) {
+      // Если результат меньше нуля, заимствуем
+      *lhs_it = diff + 10;
+      borrow = 1;
+    } else {
+      // Если результат больше или равен нулю, просто присваиваем
+      *lhs_it = diff;
+      borrow = 0;
     }
-    // Вычитаем текущую цифру (digit) из текущего разряда (this->digits_[i])
-    this->digits_[i] -= digit;
+    // Перемещаем итераторы
+    if (rhs_it != rhs.digits_.rend()) ++rhs_it;
+    ++lhs_it;
   }
   // Удаляем ведущие нули
   while (this->digits_.size() > 1 && this->digits_[0] == 0) {
@@ -187,8 +203,7 @@ Natural &Natural::operator-=(const Natural &rhs) {
 // Над модулем работал Матвеев Никита, гр. 3383
 Natural &Natural::operator*=(Digit d) {
   if (d == 0) {
-    digits_.clear();
-    digits_.push_back(0);
+    digits_ = {0};
     return *this;
   }
   // избыток
@@ -213,7 +228,7 @@ Natural &Natural::operator*=(Digit d) {
 Natural &Natural::operator*=(const Natural &rhs) {
   // При умножении на ноль произведение равно нулю
   if (IsZero() || rhs.IsZero()) {
-    *this = Natural(0);
+    digits_ = {0};
     return *this;
   }
 
