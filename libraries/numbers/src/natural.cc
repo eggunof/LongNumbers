@@ -1,6 +1,7 @@
 
 #include "natural.h"
 
+#include <ranges>
 #include <stdexcept>
 
 Natural::Natural(const std::vector<Digit> &digits) {
@@ -94,7 +95,14 @@ Natural Natural::operator+(const Natural &rhs) const {
 
 Natural Natural::operator-(const Natural &rhs) const { return {}; }
 
-Natural Natural::operator*(Digit d) const { return {}; }
+// Умножение натуральных чисел на цифру "*"
+// Над модулем работал Матвеев Никита, гр. 3383
+Natural Natural::operator*(Digit d) const {
+  // умножаем копию текущего числа на цифру
+  Natural result = *this;
+  result *= d;
+  return result;
+}
 
 Natural Natural::operator*(const Natural &rhs) const { return {}; }
 
@@ -149,7 +157,30 @@ Natural &Natural::operator+=(const Natural &rhs) {
 
 Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 
-Natural &Natural::operator*=(Digit d) { return *this; }
+// Умножение натуральных чисел на цифру "*="
+// Над модулем работал Матвеев Никита, гр. 3383
+Natural &Natural::operator*=(Digit d) {
+  if (d==0){
+    digits_.clear();
+    digits_.push_back(0);
+    return *this;
+  }
+  // избыток
+  Digit surplus = 0;
+  for (Digit &digit : std::ranges::reverse_view(digits_)) {
+    // умножаем текущую цифру + избыток от предыдущего действия
+    Digit product = digit * d + surplus;
+    // и находим остаток от 10 - это наша новая цифра
+    digit = product % 10;
+    // считаем избыток через деления нацело
+    surplus = product / 10;
+  }
+  // если после всех вычислений избыток не равен 0, то нужно дописать его
+  if (surplus > 0) {
+    digits_.insert(digits_.begin(), surplus);
+  }
+  return *this;
+}
 
 Natural &Natural::operator*=(const Natural &rhs) { return *this; }
 
