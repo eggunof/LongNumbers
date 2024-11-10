@@ -36,8 +36,8 @@ Integer &Integer::operator-() {
     if (sign_==Sign::NEGATIVE){ // если знак был -, то становится +
         sign_ = Sign::POSITIVE;
     }
-    else{
-        sign_ = Sign::NEGATIVE; // если знак был +, то становится -
+    else if (sign==Sign::POSITIVE){ // если знак был +, то становится -
+        sign_ = Sign::NEGATIVE; 
     }
     return *this;
 }
