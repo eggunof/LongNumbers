@@ -54,9 +54,26 @@ bool Integer::operator<=(const Integer &rhs) const { return !(rhs < *this); }
 
 bool Integer::operator>=(const Integer &rhs) const { return !(*this < rhs); }
 
-Integer Integer::operator-() const { return {}; }
+// Умножение целых чисел на -1
+// Над модулем работал Матвеев Никита, гр. 3383
+Integer Integer::operator-() const {
+  // Копия умножается на -1 и возвращается
+  Integer result = *this;
+  return -result;
+}
 
-Integer &Integer::operator-() { return *this; }
+// Умножение целых чисел на -1
+// Над модулем работал Матвеев Никита, гр. 3383
+Integer &Integer::operator-() {
+  if (sign_ == Sign::NEGATIVE) {
+    // Если знак был "-", то становится "+"
+    sign_ = Sign::POSITIVE;
+  } else if (sign_ == Sign::POSITIVE) {
+    // Если знак был "+", то становится "-"
+    sign_ = Sign::NEGATIVE;
+  }
+  return *this;
+}
 
 // Сложение целых чисел "+"
 // над модулем работала Кадникова Анна, гр.3384
