@@ -19,3 +19,17 @@ TEST(NaturalTest, Compare) {
   EXPECT_TRUE(first <= second);
   EXPECT_FALSE(first >= second);
 }
+
+TEST(NaturalTest, MultipleByDigit) {
+  Natural a("9999999");
+  EXPECT_EQ(a *= 9, Natural("89999991"));
+
+  Natural b("5473");
+  EXPECT_EQ(b *= 0, Natural("0"));
+
+  Natural c("123456789");
+  EXPECT_EQ(c *= 1, Natural("123456789"));
+
+  Natural d("123321");
+  EXPECT_EQ(d * 7, Natural("863247"));
+}
