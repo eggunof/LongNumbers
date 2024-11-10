@@ -66,8 +66,8 @@ TEST(NaturalTest, MultiplyBy10Power) {
 
 TEST(NaturalTest, LeastCommonMultiple) {
   Natural a("4294967297");
-  Natural b("5000000000");
-  EXPECT_EQ(Natural::LeastCommonMultiple(a, b), Natural("21474836485000000000"));
+  Natural b("1001021496");
+  EXPECT_EQ(Natural::LeastCommonMultiple(a, b), Natural("6707261449163832"));
 
   Natural c("4294967300");
   Natural d("8589934590");
