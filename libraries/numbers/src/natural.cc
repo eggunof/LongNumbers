@@ -84,7 +84,14 @@ Natural &Natural::operator++() { return *this; }
 
 Natural &Natural::operator++(int) { return *this; }
 
-Natural Natural::operator+(const Natural &rhs) const { return {}; }
+// Сложение натуральных чисел "+"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Natural Natural::operator+(const Natural &rhs) const {
+  // Создаём копию текущего объекта для хранения результата
+  Natural result = *this;
+  result += rhs;
+  return result;
+}
 
 Natural Natural::operator-(const Natural &rhs) const { return {}; }
 
@@ -103,7 +110,45 @@ Natural Natural::operator/(const Natural &rhs) const { return {}; }
 
 Natural Natural::operator%(const Natural &rhs) const { return {}; }
 
-Natural &Natural::operator+=(const Natural &rhs) { return *this; }
+// Сложение натуральных чисел "+="
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Natural &Natural::operator+=(const Natural &rhs) {
+  // Если длина правый операнд длиннее левого,
+  // добавляем недостающие нули в начало
+  if (rhs.digits_.size() > digits_.size()) {
+    digits_.insert(digits_.begin(), rhs.digits_.size() - digits_.size(), 0);
+  }
+  // Перенос в следующий разряд
+  Digit surplus = 0;
+  // Реверсные итераторы для операндов (справа налево)
+  auto lhs_it = digits_.rbegin();
+  auto rhs_it = rhs.digits_.rbegin();
+  // Обрабатываем разряды, где оба числа имеют значение
+  while (rhs_it != rhs.digits_.rend()) {
+    // Складываем текущие разряды операндов и перенос
+    Digit sum = *lhs_it + *rhs_it + surplus;
+    // Заменяем текущий разряд левого операнда на остаток от деления на 10
+    *lhs_it = sum % 10;
+    // Обновляем перенос путём деления нацело суммы
+    surplus = sum / 10;
+    ++lhs_it;
+    ++rhs_it;
+  }
+  // Обрабатываем оставшиеся разряды текущего числа, если есть перенос
+  while (lhs_it != digits_.rend() && surplus != 0) {
+    Digit sum = *lhs_it + surplus;
+    // Обновляем текущий разряд с учётом переноса
+    *lhs_it = sum % 10;
+    // Обновляем перенос
+    surplus = sum / 10;
+    ++lhs_it;
+  }
+  // Если избыток не равен 0, дописываем его в начало
+  if (surplus != 0) {
+    digits_.insert(digits_.begin(), surplus);
+  }
+  return *this;
+}
 
 Natural &Natural::operator-=(const Natural &rhs) { return *this; }
 
