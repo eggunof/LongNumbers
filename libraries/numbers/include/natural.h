@@ -52,8 +52,7 @@ class Natural {
 
   Natural &SubtractMultiplied(const Natural &rhs, Digit d);  // SUB_NDN_N
   Natural &MultiplyBy10Power(uint32_t k);                    // MUL_Nk_N
-  Digit GetLeadingDigitAfterDivision(const Natural &rhs,
-                                     uint32_t k);  // DIV_NN_Dk
+  Digit GetLeadingDigitAfterDivision(const Natural &rhs);  // DIV_NN_Dk
 
   static Natural GreatestCommonDivisor(const Natural &first,
                                        const Natural &second);  // GCD_NN_N
