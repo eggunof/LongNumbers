@@ -255,9 +255,10 @@ Natural &Natural::operator%=(const Natural &rhs) { return *this; }
 // Вычитание из натурального другого натурального, умноженного на цифру, для случая с неотрицательным результатом
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
-  // Умножаем вычитаемое число на заданную цифру
-  rhs *= d;
-  if (*this < rhs) {
+  Natural subt = rhs;
+  // Находим вычитаемое
+  subt *= d;
+  if (*this < subt) {
     throw std::invalid_argument(
         "Invalid input: Subtracting a larger number from a smaller one");
   }
