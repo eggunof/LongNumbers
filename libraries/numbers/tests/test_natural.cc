@@ -130,6 +130,37 @@ TEST(NaturalTest, Division) {
   EXPECT_THROW(k / l, std::invalid_argument);
 }
 
+TEST(NaturalTest, DivisionRemainder) {
+  Natural a("30");
+  Natural b("3");
+  a %= b;
+  EXPECT_EQ(a, Natural("0"));
+
+  Natural c("4643121486");
+  Natural d("5645631");
+  c %= d;
+  EXPECT_EQ(c, Natural("2412804"));
+
+  Natural e("0");
+  Natural f("123");
+  e %= f;
+  EXPECT_EQ(e, Natural("0"));
+
+  Natural g("9999999999999999999999999");
+  Natural h("1111111111111111888888");
+  g %= h;
+  EXPECT_EQ(g, Natural("1111111111104111896887"));
+
+  Natural i("111");
+  Natural j("18");
+  i %= j;
+  EXPECT_EQ(i, Natural("3"));
+
+  Natural k("123");
+  Natural l("0");
+  EXPECT_THROW(k % l, std::invalid_argument);
+}
+
 TEST(NaturalTest, SubtractionMultiplied) {
   Natural a("3896417841");
   Natural b("21564894");
