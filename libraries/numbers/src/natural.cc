@@ -118,7 +118,14 @@ Natural Natural::operator*(const Natural &rhs) const {
   return result;
 }
 
-Natural Natural::operator/(const Natural &rhs) const { return {}; }
+// Целое от деления натуральных чисел "/"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural Natural::operator/(const Natural &rhs) const {
+  // Вычисляем частное от деления копии
+  Natural result = *this;
+  result /= rhs;
+  return result;
+}
 
 Natural Natural::operator%(const Natural &rhs) const { return {}; }
 

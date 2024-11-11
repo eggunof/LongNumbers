@@ -195,5 +195,3 @@ TEST(NaturalTest, GetLeadingQuotientDigit) {
   Natural r("0");
   EXPECT_THROW(auto s = p.GetLeadingQuotientDigit(r), std::invalid_argument);
 }
-
-
