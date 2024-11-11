@@ -3,6 +3,13 @@
 
 #include "integer.h"
 
+TEST(IntegerTest, NaturalToInteger) {
+  Natural a("12345678901234567890");
+  EXPECT_EQ(Integer(a), Integer("12345678901234567890");
+
+  Natural c("98877665255252626266266262525")
+  EXPECT_EQ(Integer(c), Integer("98877665255252626266266262525");
+}
 TEST(IntegerTest, IntegerToNatural) {
   Integer a("8641561246");
   EXPECT_EQ(Natural(a), Natural("8641561246"));
