@@ -290,8 +290,14 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
 // Над модулем работала Варфоломеева Арина, гр. 3383
 std::pair<Digit, uint32_t> Natural::GetLeadingQuotientDigit(
     const Natural &rhs) const {
+  if (rhs.IsZero()) {
+    throw std::invalid_argument(
+        "Invalid input: Division by zero is not allowed");
+  }
   // Вычисляем номер позиции первой цифры при делении
   uint32_t k = digits_.size() - rhs.digits_.size();
+  // Если первая цифра делимого меньше первой цифры делителя, уменьшаем k на 1
+  if (digits_.front() < rhs.digits_.front()) --k;
   Digit first_digit = 0;
   // Копируем текущее число
   Natural divisible = *this;

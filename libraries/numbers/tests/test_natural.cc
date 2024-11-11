@@ -140,13 +140,17 @@ TEST(NaturalTest, GetLeadingQuotientDigit) {
   auto c = std::make_pair<Digit, uint32_t>(Digit(2), 0);
   EXPECT_EQ(a.GetLeadingQuotientDigit(b), c);
 
-  Natural d("92");
+  Natural d("23");
   Natural e("3");
-  auto f = std::make_pair<Digit, uint32_t>(Digit(3), 1);
+  auto f = std::make_pair<Digit, uint32_t>(Digit(7), 0);
   EXPECT_EQ(d.GetLeadingQuotientDigit(e), f);
 
-  Natural g("123456789");
-  Natural h("56000000");
-  auto i = std::make_pair<Digit, uint32_t>(Digit(0), 1);
+  Natural g("62");
+  Natural h("3");
+  auto i = std::make_pair<Digit, uint32_t>(Digit(2), 1);
   EXPECT_EQ(g.GetLeadingQuotientDigit(h), i);
+
+  Natural j("1");
+  Natural k("0");
+  EXPECT_THROW(auto l = j.GetLeadingQuotientDigit(k), std::invalid_argument);
 }
