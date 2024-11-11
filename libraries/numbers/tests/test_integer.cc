@@ -14,6 +14,17 @@ TEST(IntegerTest, IntegerToNatural) {
   EXPECT_THROW(static_cast<Natural>(c), std::invalid_argument);
 }
 
+TEST(IntegerTest, AbsoluteValue) {
+  Integer a("8641561246");
+  EXPECT_EQ(Integer::AbsoluteValue(a), Integer("8641561246"));
+
+  Integer b("0");
+  EXPECT_EQ(Integer::AbsoluteValue(b), Integer("0"));
+
+  Integer c("-8641561246");
+  EXPECT_EQ(Integer::AbsoluteValue(c), Integer("8641561246"));
+}
+
 TEST(IntegerTest, Sign) {
   Integer integer({1, 2, 3}, Sign::POSITIVE);
   EXPECT_EQ(integer.GetSign(), Sign::POSITIVE);

@@ -34,7 +34,14 @@ Integer::operator Natural() const {
   return natural_;
 }
 
-Integer Integer::AbsoluteValue(const Integer &integer) { return {}; }
+// Абсолютная величина числа
+// Над модулем работал Егунов Даниил, гр. 3383
+Integer Integer::AbsoluteValue(const Integer &integer) {
+  // Если число равно нулю, возвращаем его
+  if (integer.natural_.IsZero()) return integer;
+  // Иначе устанавливаем положительный знак
+  return {integer.natural_, Sign::POSITIVE};
+}
 
 bool Integer::operator==(const Integer &rhs) const {
   return natural_ == rhs.natural_ && sign_ == rhs.sign_;
