@@ -99,6 +99,27 @@ TEST(NaturalTest, Multiply) {
   EXPECT_EQ(g * h, Natural("1522919881092131220"));
 }
 
+TEST(NaturalTest, SubtractionMultiplied) {
+  Natural a("3896417841");
+  Natural b("21564894");
+  a.SubtractMultiplied(b, 4);
+  EXPECT_EQ(a, Natural("3810158265"));
+
+  Natural c("498616189649");
+  Natural d("15689432899");
+  c.SubtractMultiplied(d, 3);
+  EXPECT_EQ(c, Natural("451547890952"));
+
+  Natural e("1234567890");
+  Natural f("1234567890");
+  e.SubtractMultiplied(f, 1);
+  EXPECT_EQ(e, Natural("0"));
+
+  Natural g("0");
+  Natural h("1");
+  EXPECT_THROW(g.SubtractMultiplied(h, 1), std::invalid_argument);
+}
+
 TEST(NaturalTest, MultiplyBy10Power) {
   Natural a("5000000000");
   a.MultiplyBy10Power(2);
