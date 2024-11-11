@@ -108,7 +108,13 @@ Integer Integer::operator*(const Integer &rhs) const {
 
 Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
-Integer Integer::operator%(const Integer &rhs) const { return {}; }
+// Остаток от деления целого на целое(делитель отличен от нуля) %()
+// Над модулем работал Матвеев Никита гр. 3383
+Integer Integer::operator%(const Integer &rhs) const{
+    Integer product = *this;
+    product %= rhs;
+    return product;
+}
 
 // Сложение целых чисел "+="
 // Над модулем работала Кадникова Анна, гр. 3384
@@ -154,4 +160,24 @@ Integer &Integer::operator*=(const Integer &rhs) {
 
 Integer &Integer::operator/=(const Integer &rhs) { return *this; }
 
-Integer &Integer::operator%=(const Integer &rhs) { return *this; }
+// Остаток от деления целого на целое(делитель отличен от нуля) %()
+// Над модулем работал Матвеев Никита гр. 3383
+Integer& Integer::operator%=(const Integer &rhs) {// остаток от деления целого на целое z-10
+    Integer product = *this;
+    Integer quotient = product/rhs;    // вычисляется частное
+    if (quotient == Integer("0")){// если делимое меньше делителя, то частное равно 0, значит отсаток наше делимое
+        return *this;
+    }
+    Integer full = rhs*quotient; // максимальная часть которая вмещается без остатка
+    Integer result;
+    if (product.sign_ == Sign::POSITIVE) {// если изначальное делимое положительное, то и максимальная часть положительная и меньше а
+        *this = product - full;          //просто находим разность
+    } else {                              //изначальное делимое отрицательное
+        Integer sub = product - full;     // находим разность - получаем отрицательное число
+        if (quotient.sign_ == Sign::NEGATIVE) {// если частное отрицательное
+            quotient = -quotient;         //умножается частное на  -1
+        }
+        *this = quotient+sub;//складывается частное и разница, которая отрицательная
+    }
+    return *this;
+}

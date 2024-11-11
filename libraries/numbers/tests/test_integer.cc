@@ -109,3 +109,30 @@ TEST(IntegerTest, Multiplication) {
   Integer h("456");
   EXPECT_EQ(g * h, Integer("0"));
 }
+
+TEST(IntegerTest, ModTests){
+    Integer integer1("25");
+    Integer rhs1("7");
+    Integer res1("4");
+    EXPECT_EQ(integer1 % rhs1, res1);
+    Integer integer2("-25");
+    Integer rhs2("7");
+    Integer res2("3");
+    EXPECT_EQ(integer2 %rhs2, res2);
+    Integer integer3("45");
+    Integer rhs3("-9");
+    Integer res3("0");
+    EXPECT_EQ(integer3 %= rhs3, res3);
+    Integer integer4("17");
+    Integer rhs4("34");
+    Integer res4("17");
+    EXPECT_EQ(integer4 % rhs4, res4);
+    Integer integer5("-17");
+    Integer rhs5("7");
+    Integer res5("4");
+    EXPECT_EQ(integer5 % rhs5, res5);
+    Integer integer6("123456789");
+    Integer rhs6("234");
+    Integer res6("27");
+    EXPECT_EQ(integer6 % rhs6, res6);
+}
