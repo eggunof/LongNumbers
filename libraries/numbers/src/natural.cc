@@ -268,6 +268,14 @@ Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
 
 // Умножение натурального числа на 10 в k-ой степени
 // Над модулем работала Кривошеина Дарья, гр. 3383
+Natural Natural::MultiplyBy10Power(uint32_t k) const {
+  Natural result = *this;
+  result.MultiplyBy10Power(k);
+  return result;
+}
+
+// Умножение натурального числа на 10 в k-ой степени
+// Над модулем работала Кривошеина Дарья, гр. 3383
 Natural &Natural::MultiplyBy10Power(uint32_t k) {
   // если текущее число равно 0, оно не должно измениться
   if (this->IsZero()) {
@@ -278,8 +286,26 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
   return *this;
 }
 
-Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
-  return {};
+// Вычисление первой цифры деления на натуральное, домноженное на 10^k
+// Над модулем работала Варфоломеева Арина, гр. 3383
+std::pair<Digit, uint32_t> Natural::GetLeadingQuotientDigit(
+    const Natural &rhs) const {
+  // Вычисляем номер позиции первой цифры при делении
+  uint32_t k = digits_.size() - rhs.digits_.size();
+  Digit first_digit = 0;
+  // Копируем текущее число
+  Natural divisible = *this;
+  // Умножаем правый операнд на 10^k
+  Natural divider = rhs.MultiplyBy10Power(k);
+  // Пока наибольший операнд больше или равен меньшему
+  while (divisible >= divider) {
+    // Вычитаем меньшее из большего
+    divisible -= divider;
+    // Увеличиваем первую цифру частного
+    ++first_digit;
+  }
+  // Возвращаем первую цифру частного и её позицию
+  return {first_digit, k};
 }
 
 Natural Natural::GreatestCommonDivisor(const Natural &first,

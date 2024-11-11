@@ -133,3 +133,20 @@ TEST(NaturalTest, MultiplyBy10Power) {
   c.MultiplyBy10Power(3);
   EXPECT_EQ(c, Natural("0"));
 }
+
+TEST(NaturalTest, GetLeadingQuotientDigit) {
+  Natural a("7");
+  Natural b("3");
+  auto c = std::make_pair<Digit, uint32_t>(Digit(2), 0);
+  EXPECT_EQ(a.GetLeadingQuotientDigit(b), c);
+
+  Natural d("92");
+  Natural e("3");
+  auto f = std::make_pair<Digit, uint32_t>(Digit(3), 1);
+  EXPECT_EQ(d.GetLeadingQuotientDigit(e), f);
+
+  Natural g("123456789");
+  Natural h("56000000");
+  auto i = std::make_pair<Digit, uint32_t>(Digit(0), 1);
+  EXPECT_EQ(g.GetLeadingQuotientDigit(h), i);
+}
