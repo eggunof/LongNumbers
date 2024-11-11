@@ -135,22 +135,32 @@ TEST(NaturalTest, MultiplyBy10Power) {
 }
 
 TEST(NaturalTest, GetLeadingQuotientDigit) {
-  Natural a("7");
+  Natural a("2");
   Natural b("3");
-  auto c = std::make_pair<Digit, uint32_t>(Digit(2), 0);
+  auto c = std::make_pair<Digit, uint32_t>(Digit(0), 0);
   EXPECT_EQ(a.GetLeadingQuotientDigit(b), c);
 
-  Natural d("23");
+  Natural d("7");
   Natural e("3");
-  auto f = std::make_pair<Digit, uint32_t>(Digit(7), 0);
+  auto f = std::make_pair<Digit, uint32_t>(Digit(2), 0);
   EXPECT_EQ(d.GetLeadingQuotientDigit(e), f);
 
-  Natural g("62");
+  Natural g("23");
   Natural h("3");
-  auto i = std::make_pair<Digit, uint32_t>(Digit(2), 1);
+  auto i = std::make_pair<Digit, uint32_t>(Digit(7), 0);
   EXPECT_EQ(g.GetLeadingQuotientDigit(h), i);
 
-  Natural j("1");
-  Natural k("0");
-  EXPECT_THROW(auto l = j.GetLeadingQuotientDigit(k), std::invalid_argument);
+  Natural j("84");
+  Natural k("3");
+  auto l = std::make_pair<Digit, uint32_t>(Digit(2), 1);
+  EXPECT_EQ(j.GetLeadingQuotientDigit(k), l);
+
+  Natural m("2");
+  Natural n("18");
+  auto o = std::make_pair<Digit, uint32_t>(Digit(0), 0);
+  EXPECT_EQ(m.GetLeadingQuotientDigit(n), o);
+
+  Natural p("1");
+  Natural r("0");
+  EXPECT_THROW(auto s = p.GetLeadingQuotientDigit(r), std::invalid_argument);
 }
