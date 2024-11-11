@@ -226,3 +226,29 @@ TEST(NaturalTest, GetLeadingQuotientDigit) {
   Natural r("0");
   EXPECT_THROW(auto s = p.GetLeadingQuotientDigit(r), std::invalid_argument);
 }
+
+TEST(NaturalTest, GreatestCommonDivisor) {
+  Natural a("17");
+  Natural b("19");
+  EXPECT_EQ(Natural::GreatestCommonDivisor(a, b), Natural("1"));
+
+  Natural c("15");
+  Natural d("1");
+  EXPECT_EQ(Natural::GreatestCommonDivisor(c, d), Natural("1"));
+
+  Natural e("100");
+  Natural f("100");
+  EXPECT_EQ(Natural::GreatestCommonDivisor(e, f), Natural("100"));
+
+  Natural g("22222222222222");
+  Natural h("444444444444");
+  EXPECT_EQ(Natural::GreatestCommonDivisor(g, h), Natural("22"));
+
+  Natural i("100000000000");
+  Natural j("500000000");
+  EXPECT_EQ(Natural::GreatestCommonDivisor(i, j), Natural("500000000"));
+
+  Natural k("123");
+  Natural l("0");
+  EXPECT_EQ(Natural::GreatestCommonDivisor(k, l), Natural(123));
+}

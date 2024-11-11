@@ -368,9 +368,21 @@ std::pair<Digit, uint32_t> Natural::GetLeadingQuotientDigit(
   return {first_digit, k};
 }
 
-Natural Natural::GreatestCommonDivisor(const Natural &first,
-                                       const Natural &second) {
-  return {};
+// Наибольший общий делитель натуральных чисел
+// Над модулем работала Кадникова Анна, гр. 3384
+Natural Natural::GreatestCommonDivisor(Natural first, Natural second) {
+  // Применим алгоритм Евклида
+  // Пока одно из чисел не станет равным нулю, продолжаем делить
+  while (!second.IsZero()) {
+    // Находим остаток от деления первого на второе
+    Natural remainder = first % second;
+    // Первое становится вторым
+    first = second;
+    // Второе становится остатком
+    second = remainder;
+  }
+  // Возвращается НОД
+  return first;
 }
 
 Natural Natural::LeastCommonMultiple(const Natural &first,
