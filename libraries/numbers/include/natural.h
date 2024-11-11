@@ -51,12 +51,15 @@ class Natural {
   Natural &operator%=(const Natural &rhs);  // MOD_NN_N
 
   Natural &SubtractMultiplied(const Natural &rhs, Digit d);  // SUB_NDN_N
-  Natural &MultiplyBy10Power(uint32_t k);                    // MUL_Nk_N
-  Digit GetLeadingDigitAfterDivision(const Natural &rhs,
-                                     uint32_t k);  // DIV_NN_Dk
 
-  static Natural GreatestCommonDivisor(const Natural &first,
-                                       const Natural &second);  // GCD_NN_N
+  [[nodiscard]] Natural MultiplyBy10Power(uint32_t k) const;  // MUL_Nk_N
+  Natural &MultiplyBy10Power(uint32_t k);                     // MUL_Nk_N
+
+  [[nodiscard]] std::pair<Digit, uint32_t> GetLeadingQuotientDigit(
+      const Natural &rhs) const;  // DIV_NN_Dk
+
+  static Natural GreatestCommonDivisor(Natural first,
+                                       Natural second);  // GCD_NN_N
   static Natural LeastCommonMultiple(const Natural &first,
                                      const Natural &second);  // LCM_NN_N
 };
