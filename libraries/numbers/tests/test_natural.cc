@@ -99,6 +99,37 @@ TEST(NaturalTest, Multiply) {
   EXPECT_EQ(g * h, Natural("1522919881092131220"));
 }
 
+TEST(NaturalTest, Division) {
+  Natural a("30");
+  Natural b("3");
+  a /= b;
+  EXPECT_EQ(a, Natural("10"));
+
+  Natural c("4643121486");
+  Natural d("5645631");
+  c /= d;
+  EXPECT_EQ(c, Natural("822"));
+
+  Natural e("0");
+  Natural f("123");
+  e /= f;
+  EXPECT_EQ(e, Natural("0"));
+
+  Natural g("9999999999999999999999999");
+  Natural h("1111111111111111888888");
+  g /= h;
+  EXPECT_EQ(g, Natural("8999"));
+
+  Natural i("108");
+  Natural j("18");
+  i /= j;
+  EXPECT_EQ(i, Natural("6"));
+
+  Natural k("123");
+  Natural l("0");
+  EXPECT_THROW(k / l, std::invalid_argument);
+}
+
 TEST(NaturalTest, SubtractionMultiplied) {
   Natural a("3896417841");
   Natural b("21564894");
