@@ -112,3 +112,18 @@ TEST(NaturalTest, MultiplyBy10Power) {
   c.MultiplyBy10Power(3);
   EXPECT_EQ(c, Natural("0"));
 }
+
+TEST(NaturalTest, GreatestCommonDivisor){
+  Natural a("5000000000")
+  Natural b("1");
+  EXPECT_EQ(a.GreatestCommonDivisor(a,b), Natural("1"));
+
+  Natural a("1111111111111")
+  Natural b("100000000000");
+  EXPECT_EQ(a.GreatestCommonDivisor(a,b), Natural("1"));
+
+  Natural a("22222222222222")
+  Natural b("444444444444");
+  EXPECT_EQ(a.GreatestCommonDivisor(a,b), Natural("22"));
+
+}
