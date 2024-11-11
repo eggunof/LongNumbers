@@ -61,12 +61,12 @@ Integer Integer::operator*(const Integer &rhs) const {
   return result;
 }
 
-// Частное от деления целого на целое (делитель отличен от нуля) "/"
+// Частное от деления целых чисел "/"
 // Над модулем работала Майская Вероника, гр. 3384
 Integer Integer::operator/(const Integer &rhs) const {
-    Integer result = *this;
-    result /= rhs;
-    return result;
+  Integer result = *this;
+  result /= rhs;
+  return result;
 }
 
 Integer Integer::operator%(const Integer &rhs) const { return {}; }
@@ -86,23 +86,15 @@ Integer &Integer::operator*=(const Integer &rhs) {
   return *this;
 }
 
-// Частное от деления целого на целое (делитель отличен от нуля) "/="
+// Частное от деления целых чисел "/="
 // Над модулем работала Майская Вероника, гр. 3384
 Integer &Integer::operator/=(const Integer &rhs) {
-    // Проверка на деление на ноль
-    if (rhs.sign_ == Sign::ZERO) {
-        throw std::invalid_argument("Division by zero");
-    }
-    // Определяем знак результата
-    Sign result_sign = (this->sign_ == rhs.sign_) ? Sign::POSITIVE : Sign::NEGATIVE;
-    // Вычисляем модули делимого и делителя
-    Integer abs_dividend = AbsoluteValue(*this);
-    Integer abs_divisor = AbsoluteValue(rhs);
-    // Выполняем деление для натуральных чисел, используя натуральную часть Integer
-    this->natural_ = abs_dividend.natural_ / abs_divisor.natural_;
-    // Устанавливаем знак результата
-    this->sign_ = (this->natural_ == Natural(0)) ? Sign::ZERO : result_sign;
-    return *this;
+  // Делим натуральные части
+  natural_ /= rhs.natural_;
+  // Определяем знак результата
+  sign_ = (sign_ == rhs.sign_) ? Sign::POSITIVE : Sign::NEGATIVE;
+  if (natural_.IsZero()) sign_ = Sign::ZERO;
+  return *this;
 }
 
 Integer &Integer::operator%=(const Integer &rhs) { return *this; }
