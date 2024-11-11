@@ -260,9 +260,13 @@ TEST(NaturalTest, LeastCommonMultiple) {
 
   Natural c("4294967300");
   Natural d("8589934590");
-  EXPECT_EQ(Natural::LeastCommonMultiple(c, d), Natural("3689348817318890500"));
+  EXPECT_EQ(Natural::LeastCommonMultiple(c, d), Natural("3689348817318890700"));
 
   Natural e("4500000000");
   Natural f("7000000000");
   EXPECT_EQ(Natural::LeastCommonMultiple(e, f), Natural("63000000000"));
+
+  Natural g("100");
+  Natural h("100");
+  EXPECT_EQ(Natural::LeastCommonMultiple(g, h), Natural("100"));
 }
