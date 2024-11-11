@@ -252,3 +252,21 @@ TEST(NaturalTest, GreatestCommonDivisor) {
   Natural l("0");
   EXPECT_EQ(Natural::GreatestCommonDivisor(k, l), Natural(123));
 }
+
+TEST(NaturalTest, LeastCommonMultiple) {
+  Natural a("4294967297");
+  Natural b("1001021496");
+  EXPECT_EQ(Natural::LeastCommonMultiple(a, b), Natural("6707261449163832"));
+
+  Natural c("4294967300");
+  Natural d("8589934590");
+  EXPECT_EQ(Natural::LeastCommonMultiple(c, d), Natural("3689348817318890700"));
+
+  Natural e("4500000000");
+  Natural f("7000000000");
+  EXPECT_EQ(Natural::LeastCommonMultiple(e, f), Natural("63000000000"));
+
+  Natural g("100");
+  Natural h("100");
+  EXPECT_EQ(Natural::LeastCommonMultiple(g, h), Natural("100"));
+}
