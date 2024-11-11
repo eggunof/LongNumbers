@@ -127,7 +127,14 @@ Natural Natural::operator/(const Natural &rhs) const {
   return result;
 }
 
-Natural Natural::operator%(const Natural &rhs) const { return {}; }
+// Остаток от деления натуральных чисел "%"
+// Над модулем работал Егунов Даниил, гр. 3383
+Natural Natural::operator%(const Natural &rhs) const {
+  // Вычисляем остаток от деления копии
+  Natural result = *this;
+  result %= rhs;
+  return result;
+}
 
 // Сложение натуральных чисел "+="
 // Над модулем работала Варфоломеева Арина, гр. 3383
@@ -264,16 +271,24 @@ Natural &Natural::operator/=(const Natural &rhs) {
     // Получаем цифру частного и её позицию
     std::pair<Digit, uint32_t> division_result = GetLeadingQuotientDigit(rhs);
     // Вычитаем из делимого цифру, умноженную на делитель, умноженный на 10^k
-    SubtractMultiplied(rhs.MultiplyBy10Power(division_result.second),division_result.first);
+    SubtractMultiplied(rhs.MultiplyBy10Power(division_result.second),
+                       division_result.first);
     // Добавляем к частному полученную цифру, умноженную на 10^k
-    quotient += Natural(division_result.first).MultiplyBy10Power(division_result.second);
+    quotient += Natural(division_result.first)
+                    .MultiplyBy10Power(division_result.second);
   }
   // Записываем частное в текущее число
   *this = quotient;
   return *this;
 }
 
-Natural &Natural::operator%=(const Natural &rhs) { return *this; }
+// Остаток от деления натуральных чисел "%="
+// Над модулем работал Егунов Даниил, гр. 3383
+Natural &Natural::operator%=(const Natural &rhs) {
+  Natural quotient = *this / rhs;
+  *this -= rhs * quotient;
+  return *this;
+}
 
 // Вычитание из натурального умноженного на цифру натурального
 // Над модулем работала Солдунова Екатерина, гр. 3383
