@@ -49,7 +49,13 @@ Integer Integer::operator-() const { return {}; }
 
 Integer &Integer::operator-() { return *this; }
 
-Integer Integer::operator+(const Integer &rhs) const { return {}; }
+// Сложение целых чисел
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Integer Integer::operator+(const Integer &rhs) const { 
+    Integer result = *this;
+    result += rhs;
+    return result; 
+}
 
 Integer Integer::operator-(const Integer &rhs) const { return {}; }
 
@@ -65,7 +71,24 @@ Integer Integer::operator/(const Integer &rhs) const { return {}; }
 
 Integer Integer::operator%(const Integer &rhs) const { return {}; }
 
-Integer &Integer::operator+=(const Integer &rhs) { return *this; }
+// Сложение целых чисел
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Integer &Integer::operator+=(const Integer &rhs) { 
+    // Для прибавления к положительному отрицательного, вычитаем модуль отрицательного из положительного
+    if ((sign_ == Sign::POSITIVE) && (rhs.sign_ == Sign::NEGATIVE)) *this -= AbsoluteValue(rhs);
+    // Для прибавления к отрицательному положительного
+    if ((sign_ == Sign::NEGATIVE) && (rhs.sign_ == Sign::POSITIVE)){
+        if (nature_ < rhs.nature_){
+            nature_ = rhs.nature_ - nature_;
+            sign_ = Sign::POSITIVE;
+        }
+        else nature_ -= rhs.nature;
+    }
+    // Если знаки совпадают, складываем натуральные части
+    if (sign_ == rhs.sign_) natural_ += rhs.natural;
+    if (natural_.IsZero()) sign_ = Sign::ZERO;
+    return *this; 
+}
 
 Integer &Integer::operator-=(const Integer &rhs) { return *this; }
 
