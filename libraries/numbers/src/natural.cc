@@ -82,22 +82,22 @@ bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Natural &Natural::operator++() {
   // Прибавляем единицу к последней цифре числа
-	int n = digits_.size()-1;
-	digits_[n] += 1;
-	int i = n;
+  int n = digits_.size()-1;
+  digits_[n] += 1;
+  int i = n;
   // Если единица прибавляется к 9, то обнуляем разряд и добавляем 1 в следующий
-	while ((digits_[i] == 10) && (i > 0)){ 
-		digits_[i] = 0;
-		i -= 1;
-		digits_[i] += 1;
-	}
-	if ((i == 0) && (digits_[0] == 10)){
-		digits_[0] = 0;
-		auto iter = digits_.cbegin();
+  while ((digits_[i] == 10) && (i > 0)){ 
+    digits_[i] = 0;
+    i -= 1;
+    digits_[i] += 1;
+  }
+  if ((i == 0) && (digits_[0] == 10)){
+    digits_[0] = 0;
+    auto iter = digits_.cbegin();
     // Если при прибавлении единицы увеличилось число разрядов, вставляем в начало числа единицу
-		digits_.emplace(iter, 1); 
-		n += 1;
-	}
+    digits_.emplace(iter, 1); 
+    n += 1;
+  }
   return *this;
 }
 
@@ -105,7 +105,22 @@ Natural &Natural::operator++() {
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Natural &Natural::operator++(int) {
   Natural result = *this;
-  int++;
+  int n = digits_.size()-1;
+  digits_[n] += 1;
+  int i = n;
+  // Если единица прибавляется к 9, то обнуляем разряд и добавляем 1 в следующий
+  while ((digits_[i] == 10) && (i > 0)){ 
+    digits_[i] = 0;
+    i -= 1;
+    digits_[i] += 1;
+  }
+  if ((i == 0) && (digits_[0] == 10)){
+    digits_[0] = 0;
+    auto iter = digits_.cbegin();
+    // Если при прибавлении единицы увеличилось число разрядов, вставляем в начало числа единицу
+    digits_.emplace(iter, 1); 
+    n += 1;
+  }
   return result;
 }
 
