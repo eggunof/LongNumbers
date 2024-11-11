@@ -268,6 +268,14 @@ Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
 
 // Умножение натурального числа на 10 в k-ой степени
 // Над модулем работала Кривошеина Дарья, гр. 3383
+Natural Natural::MultiplyBy10Power(uint32_t k) const {
+  Natural result = *this;
+  result.MultiplyBy10Power(k);
+  return result;
+}
+
+// Умножение натурального числа на 10 в k-ой степени
+// Над модулем работала Кривошеина Дарья, гр. 3383
 Natural &Natural::MultiplyBy10Power(uint32_t k) {
   // если текущее число равно 0, оно не должно измениться
   if (this->IsZero()) {
@@ -278,38 +286,26 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
   return *this;
 }
 
-// Вычисление первой цифры деления большего натурального на меньшее, домноженное
-// на 10^k,где k - номер позиции этой цифры
+// Вычисление первой цифры деления на натуральное, домноженное на 10^k
 // Над модулем работала Варфоломеева Арина, гр. 3383
-Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs) {
-  // Позиция первой значащей цифры частного (считая от старшего разряда)
-  uint32_t k;
-  Digit firstDigit = 0;
-  Natural bigNatural;
-  Natural smallNatural;
-  // Левый операнд больше правого
-  if (*this > rhs) {
-    bigNatural = *this;
-    smallNatural = rhs;
-  }
-  // Левый операнд меньше либо равен правому
-  else {
-    bigNatural = rhs;
-    smallNatural = *this;
-  }
-  // Вычисляем номер позиции первой цифры при делении натуральных чисел
-  k = bigNatural.digits_.size() - smallNatural.digits_.size();
-  // Умножаем меньшее натуральное числа на 10^k
-  smallNatural.MultiplyBy10Power(k);
+std::pair<Digit, uint32_t> Natural::GetLeadingQuotientDigit(
+    const Natural &rhs) const {
+  // Вычисляем номер позиции первой цифры при делении
+  uint32_t k = digits_.size() - rhs.digits_.size();
+  Digit first_digit = 0;
+  // Копируем текущее число
+  Natural divisible = *this;
+  // Умножаем правый операнд на 10^k
+  Natural divider = rhs.MultiplyBy10Power(k);
   // Пока наибольший операнд больше или равен меньшему
-  while (bigNatural >= smallNatural) {
+  while (divisible >= divider) {
     // Вычитаем меньшее из большего
-    bigNatural -= smallNatural;
+    divisible -= divider;
     // Увеличиваем первую цифру частного
-    firstDigit++;
+    ++first_digit;
   }
-  // Возвращаем первую цифру частного
-  return firstDigit;
+  // Возвращаем первую цифру частного и её позицию
+  return {first_digit, k};
 }
 
 Natural Natural::GreatestCommonDivisor(const Natural &first,

@@ -134,16 +134,19 @@ TEST(NaturalTest, MultiplyBy10Power) {
   EXPECT_EQ(c, Natural("0"));
 }
 
-TEST(NaturalTest, GetLeadingDigitAfterDivision) {
-  Natural a("488000000000000");
-  Natural b("2000000000000");
-  EXPECT_EQ(a.GetLeadingDigitAfterDivision(b), Digit(2));
+TEST(NaturalTest, GetLeadingQuotientDigit) {
+  Natural a("7");
+  Natural b("3");
+  auto c = std::make_pair<Digit, uint32_t>(Digit(2), 0);
+  EXPECT_EQ(a.GetLeadingQuotientDigit(b), c);
 
-  Natural c("123456791234567");
-  Natural d("12345");
-  EXPECT_EQ(c.GetLeadingDigitAfterDivision(d), Digit(1));
+  Natural d("92");
+  Natural e("3");
+  auto f = std::make_pair<Digit, uint32_t>(Digit(3), 1);
+  EXPECT_EQ(d.GetLeadingQuotientDigit(e), f);
 
-  Natural e("500000000000");
-  Natural f("10000000000000");
-  EXPECT_EQ(e.GetLeadingDigitAfterDivision(f), Digit(5));
+  Natural g("123456789");
+  Natural h("56000000");
+  auto i = std::make_pair<Digit, uint32_t>(Digit(0), 1);
+  EXPECT_EQ(g.GetLeadingQuotientDigit(h), i);
 }
