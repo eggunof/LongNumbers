@@ -25,6 +25,14 @@ Rational::Rational(const std::string &string) {
   }
 }
 
+bool Rational::operator==(const Rational &rhs) const {
+    return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
+}
+
+bool Rational::operator!=(const Rational &rhs) const {
+    return numerator_ != rhs.numerator_ || denominator_ != rhs.denominator_;
+}
+
 Rational::operator Integer() const { return {}; }
 
 Rational &Rational::Reduce() { return *this; }
