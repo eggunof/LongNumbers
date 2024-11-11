@@ -70,9 +70,7 @@ bool Natural::operator<(const Natural &rhs) const {
   return Compare(*this, rhs) == Comparison::LESS;
 }
 
-bool Natural::operator>(const Natural &rhs) const {
-  return Compare(*this, rhs) == Comparison::GREATER;
-}
+bool Natural::operator>(const Natural &rhs) const { return rhs < *this; }
 
 bool Natural::operator<=(const Natural &rhs) const { return !(*this > rhs); }
 
@@ -370,33 +368,21 @@ std::pair<Digit, uint32_t> Natural::GetLeadingQuotientDigit(
   return {first_digit, k};
 }
 
-Natural Natural::GreatestCommonDivisor(const Natural &first,
-                                       const Natural &second) {
-  if(!first.IsZero()){
-        return second;
-    }else if(!second.IsZero()){
-        return first;
+// Наибольший общий делитель натуральных чисел
+// Над модулем работала Кадникова Анна, гр. 3384
+Natural Natural::GreatestCommonDivisor(Natural first, Natural second) {
+  // Применим алгоритм Евклида
+  // Пока одно из чисел не станет равным нулю, продолжаем делить
+  while (!second.IsZero()) {
+    // Находим остаток от деления первого на второе
+    Natural remainder = first % second;
+    // Первое становится вторым
+    first = second;
+    // Второе становится остатком
+    second = remainder;
   }
-
-  Natural higher = first;
-  Natural lower = second;
-
-  if (first <  second) { 
-    higher = second;
-    lower = first;
-  }
-
-  // Алгоритм Евклида
-    while (!lower.IsZero()) {
-        // Вычитается меньшее число из большего, пока одно из чисел не станет нулем
-        Natural remainder = higher-=lower;
-
-        // Переназначается higher и lower для следующей итерации
-        higher = lower;
-        lower = remainder;
-    }
   // Возвращается НОД
-  return higher;
+  return first;
 }
 
 Natural Natural::LeastCommonMultiple(const Natural &first,
