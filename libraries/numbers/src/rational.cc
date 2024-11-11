@@ -34,16 +34,22 @@ bool Rational::operator!=(const Rational &rhs) const {
 }
 
 bool Rational::operator<(const Rational &rhs) const {
+    if (denominator_ == rhs.denominator_ && numerator_ == rhs.numerator_) {
+        return false;
+    }
     if (denominator_ == rhs.denominator_) {
         return numerator_ < rhs.numerator_;
     }
+    if (numerator_ == rhs.numerator_) {
+        return denominator_ > rhs.denominator_;
+    }
     // Находим НОК для знаменателей
     Natural lcm_denominator = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
-
+    
     // Приводим обе дроби к общему знаменателю
     Integer left_numerator = numerator_ * Integer(lcm_denominator / denominator_);
     Integer right_numerator = rhs.numerator_ * Integer(lcm_denominator / rhs.denominator_);
-
+    
     // Сравниваем числители
     return left_numerator < right_numerator;
 }
