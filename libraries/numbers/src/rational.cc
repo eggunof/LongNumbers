@@ -57,20 +57,20 @@ Rational Rational::operator*=(const Rational &rhs) { return {}; }
 // Деление дробей (делитель отличен от нуля) "/="
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Rational Rational::operator/=(const Rational &rhs) {
-  Rational result;
   // Определяем знак, сравнив знаки числителей
-  // Если они равны, то дробь положительна, иначе отрицательная
-  if (numerator_.GetSign() == rhs.numerator_.GetSign()) {
-    numerator_.sign_ = Sign::POSITIVE;
-  } else if (numerator_.GetSign() == Sign::ZERO) {
+  // Если числитель левого операнда равен 0, дробь равна 0;
+  // Если знаки числителей операндов равны, то дробь положительна, иначе отрицательная
+  if (numerator_.GetSign() == Sign::ZERO) {
     numerator_.sign_ = Sign::ZERO;
+  } else if (numerator_.GetSign() == rhs.numerator_.GetSign()) {
+    numerator_.sign_ = Sign::POSITIVE;
   } else {
     numerator_.sign_ = Sign::NEGATIVE;
   }
   // Перемножаем числитель левого операнда и знаменатель правого
-  numerator_.natural_ = numerator_.natural_ * rhs.denominator_;
+  numerator_.natural_ *= rhs.denominator_;
   // Перемножаем числитель правого операнда и знаменатель левого
-  denominator_ = denominator_ * rhs.numerator_.natural_;
+  denominator_ *= rhs.numerator_.natural_;
   // Сокращаем получившуюся дробь
   Reduce();
   return *this;
