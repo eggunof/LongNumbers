@@ -27,7 +27,17 @@ Rational::Rational(const std::string &string) {
 
 Rational::operator Integer() const { return {}; }
 
-Rational &Rational::Reduce() { return *this; }
+// Сокращение дроби
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Rational &Rational::Reduce() {
+    Natural GCD = Natural::GreatestCommonDivisor(Natural(numerator_), denominator_);
+    if (GCD == Natural("1")) {
+        return *this;
+    }
+    numerator_ /= Integer(GCD);
+    denominator_ /= GCD;
+    return *this;
+}
 
 bool Rational::IsInteger() {
   Reduce();
