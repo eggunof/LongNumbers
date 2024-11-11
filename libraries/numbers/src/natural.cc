@@ -276,7 +276,31 @@ Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
 
 Natural Natural::GreatestCommonDivisor(const Natural &first,
                                        const Natural &second) {
-  return {};
+  if(!first.IsZero()){
+        return second;
+    }else if(!second.IsZero()){
+        return first;
+  }
+
+  Natural higher = first;
+  Natural lower = second;
+
+  if (first <  second) { 
+    higher = second;
+    lower = first;
+  }
+
+  // Алгоритм Евклида
+    while (!lower.IsZero()) {
+        // Вычитается меньшее число из большего, пока одно из чисел не станет нулем
+        Natural remainder = higher-=lower;
+
+        // Переназначается higher и lower для следующей итерации
+        higher = lower;
+        lower = remainder;
+    }
+  // Возвращается НОД
+  return higher;
 }
 
 Natural Natural::LeastCommonMultiple(const Natural &first,
