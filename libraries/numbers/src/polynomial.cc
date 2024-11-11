@@ -36,7 +36,26 @@ Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
   return {};
 }
 
-Polynomial Polynomial::Derivative(const Polynomial &polynomial) { return {}; }
+// DER_P_P - производная многочлена
+// Над модулем работала Кривошеина Дарья, группа 3383
+Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
+  Polynomial derivative;  // объект производной многочлена
+  // цикл идет по степеням слагаемых переданного многочлена и их коэффициентам
+  for (const auto &[degree, coefficient] : polynomial.coefficients_) {
+    // если степень слагаемого до взятия производной равна 0, оно не
+    // добавляется, так как обнулится
+    if (degree == Natural(0)) {
+      break;
+    }
+    // коэффициент равен произведению старого коэффициента на степень слагаемого
+    // для умножения надо перевести натуральную степень в целое, а затем в
+    // рациональное число
+    Rational new_coefficient = Rational(Integer(degree)) * coefficient;
+    // степень понижается на единицу
+    derivative.coefficients_[degree - Natural(1)] = new_coefficient;
+  }
+  return derivative;
+}
 
 Polynomial Polynomial::NormalizeRoots(const Polynomial &polynomial) {
   return {};
