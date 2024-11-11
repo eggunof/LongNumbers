@@ -40,7 +40,13 @@ Rational Rational::operator-(const Rational &rhs) const { return {}; }
 
 Rational Rational::operator*(const Rational &rhs) const { return {}; }
 
-Rational Rational::operator/(const Rational &rhs) const { return {}; }
+// Деление дробей (делитель отличен от нуля) "/"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Rational Rational::operator/(const Rational &rhs) const {
+  Rational result = *this;
+  result /= rhs;
+  return result;
+}
 
 Rational Rational::operator+=(const Rational &rhs) { return {}; }
 
@@ -48,4 +54,24 @@ Rational Rational::operator-=(const Rational &rhs) { return {}; }
 
 Rational Rational::operator*=(const Rational &rhs) { return {}; }
 
-Rational Rational::operator/=(const Rational &rhs) { return {}; }
+// Деление дробей (делитель отличен от нуля) "/="
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Rational Rational::operator/=(const Rational &rhs) {
+  Rational result;
+  // Определяем знак, сравнив знаки числителей
+  // Если они равны, то дробь положительна, иначе отрицательная
+  if (numerator_.sigh_ == rhs.numerator_.sigh_) {
+    numerator_.sigh_ = Sigh::POSITIVE;
+  } else if (numerator_.sigh_ == Sigh::ZERO) {
+    numerator_.sigh_ = Sigh::ZERO;
+  } else {
+    numerator_.sigh_ = Sigh::NEGATIVE;
+  }
+  // Перемножаем числитель левого операнда и знаменатель правого
+  numerator_.natural_ = numerator_.natural_ * rhs.denominator_;
+  // Перемножаем числитель правого операнда и знаменатель левого
+  denominator_ = denominator_ * rhs.numerator_.natural_;
+  // Сокращаем получившуюся дробь
+  // Reduce();
+  return *this;
+}
