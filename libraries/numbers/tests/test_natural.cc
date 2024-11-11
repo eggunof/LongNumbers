@@ -99,7 +99,7 @@ TEST(NaturalTest, Multiply) {
   EXPECT_EQ(g * h, Natural("1522919881092131220"));
 }
 
-TEST(NaturalTest, Division) {
+TEST(NaturalTest, DivisionQuotient) {
   Natural a("30");
   Natural b("3");
   a /= b;

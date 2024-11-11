@@ -270,7 +270,7 @@ Natural &Natural::operator/=(const Natural &rhs) {
   while (*this >= rhs) {
     // Получаем цифру частного и её позицию
     std::pair<Digit, uint32_t> division_result = GetLeadingQuotientDigit(rhs);
-    // Вычитаем из делимого цифру, умноженную на делитель, умноженный на 10^k
+    // Вычитаем из делимого цифру, умноженную на произведение делителя и 10^k
     SubtractMultiplied(rhs.MultiplyBy10Power(division_result.second),
                        division_result.first);
     // Добавляем к частному полученную цифру, умноженную на 10^k
