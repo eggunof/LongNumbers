@@ -120,9 +120,23 @@ Natural Natural::operator*(const Natural &rhs) const {
   return result;
 }
 
-Natural Natural::operator/(const Natural &rhs) const { return {}; }
+// Целое от деления натуральных чисел "/"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural Natural::operator/(const Natural &rhs) const {
+  // Вычисляем частное от деления копии
+  Natural result = *this;
+  result /= rhs;
+  return result;
+}
 
-Natural Natural::operator%(const Natural &rhs) const { return {}; }
+// Остаток от деления натуральных чисел "%"
+// Над модулем работал Егунов Даниил, гр. 3383
+Natural Natural::operator%(const Natural &rhs) const {
+  // Вычисляем остаток от деления копии
+  Natural result = *this;
+  result %= rhs;
+  return result;
+}
 
 // Сложение натуральных чисел "+="
 // Над модулем работала Варфоломеева Арина, гр. 3383
@@ -250,12 +264,54 @@ Natural &Natural::operator*=(const Natural &rhs) {
   return *this;
 }
 
-Natural &Natural::operator/=(const Natural &rhs) { return *this; }
-
-Natural &Natural::operator%=(const Natural &rhs) { return *this; }
-
-Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
+// Целое от деления натуральных чисел "/="
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural &Natural::operator/=(const Natural &rhs) {
+  auto quotient = Natural(0);
+  // Пока в делимом есть хотя бы один делитель
+  while (*this >= rhs) {
+    // Получаем цифру частного и её позицию
+    std::pair<Digit, uint32_t> division_result = GetLeadingQuotientDigit(rhs);
+    // Вычитаем из делимого цифру, умноженную на делитель, умноженный на 10^k
+    SubtractMultiplied(rhs.MultiplyBy10Power(division_result.second),
+                       division_result.first);
+    // Добавляем к частному полученную цифру, умноженную на 10^k
+    quotient += Natural(division_result.first)
+                    .MultiplyBy10Power(division_result.second);
+  }
+  // Записываем частное в текущее число
+  *this = quotient;
   return *this;
+}
+
+// Остаток от деления натуральных чисел "%="
+// Над модулем работал Егунов Даниил, гр. 3383
+Natural &Natural::operator%=(const Natural &rhs) {
+  Natural quotient = *this / rhs;
+  *this -= rhs * quotient;
+  return *this;
+}
+
+// Вычитание из натурального умноженного на цифру натурального
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Natural &Natural::SubtractMultiplied(const Natural &rhs, Digit d) {
+  // Считаем вычитаемое
+  Natural subtrahend = rhs * d;
+  if (*this < subtrahend) {
+    throw std::invalid_argument(
+        "Invalid input: Subtracting a larger number from a smaller one");
+  }
+  // Если получившееся число не больше уменьшаемого, производим вычитание
+  *this -= subtrahend;
+  return *this;
+}
+
+// Умножение натурального числа на 10 в k-ой степени
+// Над модулем работала Кривошеина Дарья, гр. 3383
+Natural Natural::MultiplyBy10Power(uint32_t k) const {
+  Natural result = *this;
+  result.MultiplyBy10Power(k);
+  return result;
 }
 
 // Умножение натурального числа на 10 в k-ой степени
@@ -270,8 +326,48 @@ Natural &Natural::MultiplyBy10Power(uint32_t k) {
   return *this;
 }
 
-Digit Natural::GetLeadingDigitAfterDivision(const Natural &rhs, uint32_t k) {
-  return {};
+// Вычисление первой цифры деления на натуральное, домноженное на 10^k
+// Над модулем работала Варфоломеева Арина, гр. 3383
+std::pair<Digit, uint32_t> Natural::GetLeadingQuotientDigit(
+    const Natural &rhs) const {
+  // Проверяем, не является ли делитель нулём
+  if (rhs.IsZero()) {
+    throw std::invalid_argument(
+        "Invalid input: Division by zero is not allowed");
+  }
+  // Если делим меньшее на большее, возвращаем {0, 0}
+  if (*this < rhs) {
+    return {0, 0};
+  }
+  // Вычисляем номер позиции первой цифры при делении
+  uint32_t k = digits_.size() - rhs.digits_.size();
+  // Проверяем, нужно ли уменьшить k на 1
+  if (k > 0) {
+    for (size_t i = 0; i < digits_.size(); ++i) {
+      Digit rhs_digit = i < rhs.digits_.size() ? rhs.digits_[i] : 0;
+      // Если цифра делимого больше цифры делителя, то не нужно
+      if (digits_[i] > rhs_digit) break;
+      // Если цифра делимого меньше цифры делителя, то уменьшаем
+      if (digits_[i] < rhs_digit) {
+        --k;
+        break;
+      }
+    }
+  }
+  Digit first_digit = 0;
+  // Копируем текущее число
+  Natural divisible = *this;
+  // Умножаем правый операнд на 10^k
+  Natural divider = rhs.MultiplyBy10Power(k);
+  // Пока наибольший операнд больше или равен меньшему
+  while (divisible >= divider) {
+    // Вычитаем меньшее из большего
+    divisible -= divider;
+    // Увеличиваем первую цифру частного
+    ++first_digit;
+  }
+  // Возвращаем первую цифру частного и её позицию
+  return {first_digit, k};
 }
 
 Natural Natural::GreatestCommonDivisor(const Natural &first,
