@@ -16,7 +16,14 @@ class Rational {
   explicit Rational(const std::string &string);
   Rational(const Rational &other) = default;
   Rational &operator=(const Rational &other) = default;
-
+	
+  Integer GetNumerator() const{
+    return numerator_;
+  }
+  Natural GetDenominator() const{
+    return denominator_;
+  }
+  
   explicit Rational(const Integer &integer)
       : numerator_(integer), denominator_(Natural()) {}  // TRANS_Z_Q
   explicit operator Integer() const;                     // TRANS_Q_Z
