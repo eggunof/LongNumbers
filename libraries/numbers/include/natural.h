@@ -58,8 +58,8 @@ class Natural {
   [[nodiscard]] std::pair<Digit, uint32_t> GetLeadingQuotientDigit(
       const Natural &rhs) const;  // DIV_NN_Dk
 
-  static Natural GreatestCommonDivisor(Natural first,
-                                       Natural second);  // GCD_NN_N
+  static Natural GreatestCommonDivisor(const Natural &first,
+                                       const Natural &second);  // GCD_NN_N
   static Natural LeastCommonMultiple(const Natural &first,
                                      const Natural &second);  // LCM_NN_N
 };

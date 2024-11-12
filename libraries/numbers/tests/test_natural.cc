@@ -71,7 +71,7 @@ TEST(NaturalTest, Subtraction) {
   EXPECT_EQ(i - j, Natural("0"));
 }
 
-TEST(NaturalTest, MultiplyByDigit) {
+TEST(NaturalTest, MultiplicationByDigit) {
   Natural a("9999999");
   a *= 9;
   EXPECT_EQ(a, Natural("89999991"));
@@ -88,7 +88,7 @@ TEST(NaturalTest, MultiplyByDigit) {
   EXPECT_EQ(d * 7, Natural("863247"));
 }
 
-TEST(NaturalTest, Multiply) {
+TEST(NaturalTest, Multiplication) {
   Natural a("123456789");
   Natural b("987654321");
   a *= b;
@@ -204,6 +204,9 @@ TEST(NaturalTest, MultiplyBy10Power) {
   Natural c("0");
   c.MultiplyBy10Power(3);
   EXPECT_EQ(c, Natural("0"));
+
+  const Natural d("123");
+  EXPECT_EQ(d.MultiplyBy10Power(5), Natural("12300000"));
 }
 
 TEST(NaturalTest, GetLeadingQuotientDigit) {
