@@ -28,23 +28,24 @@ Rational::Rational(const std::string &string) {
 Rational::operator Integer() const { return {}; }
 
 bool Rational::operator==(const Rational &rhs) const {
-    return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
+  return numerator_ * static_cast<Integer>(rhs.denominator_) ==
+         rhs.numerator_ * static_cast<Integer>(denominator_);
 }
 
-bool Rational::operator!=(const Rational &rhs) const {
-    return numerator_ != rhs.numerator_ || denominator_ != rhs.denominator_;
-}
+bool Rational::operator!=(const Rational &rhs) const { return !(*this == rhs); }
 
 // Сокращение дроби
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Rational &Rational::Reduce() {
-    Natural GCD = Natural::GreatestCommonDivisor(numerator_.natural_, denominator_);
-    if (GCD == Natural("1")) {
-        return *this;
-    }
-    numerator_.natural_ /= GCD;
-    denominator_ /= GCD;
-    return *this;
+  // Находим НОД числителя и знаменателя
+  Natural gcd = Natural::GreatestCommonDivisor(
+      static_cast<Natural>(Integer::AbsoluteValue(numerator_)), denominator_);
+  // Если НОД равен единице, дробь уже сокращена
+  if (gcd == Natural("1")) return *this;
+  // Сокращаем дробь
+  numerator_ /= Integer(gcd);
+  denominator_ /= gcd;
+  return *this;
 }
 
 bool Rational::IsInteger() {

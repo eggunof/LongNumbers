@@ -20,4 +20,3 @@ TEST(RationalTest, Reduce) {
   d.Reduce();
   EXPECT_EQ(d, Rational("-42171780866875/29842803049"));
 }
-
