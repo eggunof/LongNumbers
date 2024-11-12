@@ -1,6 +1,23 @@
 
 #include "polynomial.h"
 
+bool Polynomial::operator==(const Polynomial &rhs) const {
+    if (coefficients_.size() != rhs.coefficients_.size()) {
+        return false;
+    }
+    for (const auto &[degree, coefficient]: coefficients_) {
+        auto it = rhs.coefficients_.find(degree);
+        if (it == rhs.coefficients_.end() || it->second != coefficient) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Polynomial::operator!=(const Polynomial &rhs) const {
+    return !(*this == rhs);
+}
+
 Polynomial Polynomial::operator+(const Polynomial &rhs) const { return {}; }
 
 Polynomial Polynomial::operator-(const Polynomial &rhs) const { return {}; }
