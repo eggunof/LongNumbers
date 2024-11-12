@@ -100,7 +100,13 @@ Rational Rational::operator*(const Rational &rhs) const {
   return result;
 }
 
-Rational Rational::operator/(const Rational &rhs) const { return {}; }
+// Деление дробей "/"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Rational Rational::operator/(const Rational &rhs) const {
+  Rational result = *this;
+  result /= rhs;
+  return result;
+}
 
 Rational &Rational::operator-() {
   // Меняем знак числителя
@@ -145,4 +151,16 @@ Rational Rational::operator*=(const Rational &rhs) {
   return *this;
 }
 
-Rational Rational::operator/=(const Rational &rhs) { return {}; }
+// Деление дробей "/="
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Rational Rational::operator/=(const Rational &rhs) {
+  if (rhs.numerator_ == Integer("0")) {
+    throw std::invalid_argument(
+        "Invalid input: Division by zero is not allowed");
+  }
+  numerator_ *= Integer(rhs.denominator_, rhs.numerator_.GetSign());
+  denominator_ *= static_cast<Natural>(Integer::AbsoluteValue(rhs.numerator_));
+  // Сокращаем получившуюся дробь
+  Reduce();
+  return *this;
+}
