@@ -88,7 +88,7 @@ Rational Rational::operator+(const Rational &rhs) const {
 Rational Rational::operator-(const Rational &rhs) const {
   // Вычитаем копию текущего объекта
   Rational result = *this;
-  result += rhs;
+  result -= rhs;
   return result;
 }
 
