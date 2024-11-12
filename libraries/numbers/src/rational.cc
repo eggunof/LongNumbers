@@ -25,7 +25,19 @@ Rational::Rational(const std::string &string) {
   }
 }
 
-Rational::operator Integer() const { return {}; }
+// Преобразование дробного в целое
+// Над модулем работал Егунов Даниил, гр. 3383
+Rational::operator Integer() const {
+  Integer denominator = static_cast<Integer>(denominator_);
+  // Если не делится нацело, выбрасываем исключение
+  if (numerator_ % denominator != Integer("0")) {
+    throw std::invalid_argument(
+        "Invalid input: Rational cannot be converted to an Integer without a "
+        "remainder");
+  }
+  // Если делится нацело, возвращаем целое частное
+  return numerator_ / denominator;
+}
 
 bool Rational::operator==(const Rational &rhs) const {
   return numerator_ * static_cast<Integer>(rhs.denominator_) ==
