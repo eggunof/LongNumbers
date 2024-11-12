@@ -3,6 +3,17 @@
 
 #include "rational.h"
 
+TEST(RationalTest, IntegerToRational) {
+  Integer a("46532186");
+  EXPECT_EQ(static_cast<Rational>(a), Rational("46532186"));
+
+  Integer b("0");
+  EXPECT_EQ(static_cast<Rational>(b), Rational("0"));
+
+  Integer c("-65431864");
+  EXPECT_EQ(static_cast<Rational>(c), Rational("-65431864"));
+}
+
 TEST(RationalTest, Reduce) {
   Rational a("25/5");
   a.Reduce();
