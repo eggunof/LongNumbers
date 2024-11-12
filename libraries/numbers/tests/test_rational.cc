@@ -20,3 +20,20 @@ TEST(RationalTest, Reduce) {
   d.Reduce();
   EXPECT_EQ(d, Rational("-42171780866875/29842803049"));
 }
+
+TEST(RationalTest, IsInteger) {
+  Rational a("1/3");
+  EXPECT_FALSE(a.IsInteger());
+
+  Rational b("-5322/1");
+  EXPECT_TRUE(b.IsInteger());
+
+  Rational c("10/2");
+  EXPECT_TRUE(c.IsInteger());
+
+  Rational d("17/34");
+  EXPECT_FALSE(d.IsInteger());
+
+  Rational e("0");
+  EXPECT_TRUE(e.IsInteger());
+}
