@@ -32,6 +32,9 @@ class Polynomial {
     return coefficients_.begin()->second;
   }  // LED_P_N
 
+  bool operator==(const Polynomial &rhs) const;
+  bool operator!=(const Polynomial &rhs) const;
+
   Polynomial operator+(const Polynomial &rhs) const;   // ADD_PP_P
   Polynomial operator-(const Polynomial &rhs) const;   // SUB_PP_P
   Polynomial operator*(const Rational &scalar) const;  // MUL_PQ_P
