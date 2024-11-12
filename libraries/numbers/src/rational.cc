@@ -27,6 +27,14 @@ Rational::Rational(const std::string &string) {
 
 Rational::operator Integer() const { return {}; }
 
+bool Rational::operator==(const Rational &rhs) const {
+    return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
+}
+
+bool Rational::operator!=(const Rational &rhs) const {
+    return numerator_ != rhs.numerator_ || denominator_ != rhs.denominator_;
+}
+
 // Сокращение дроби
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Rational &Rational::Reduce() {
