@@ -56,7 +56,8 @@ bool Integer::operator!=(const Integer &rhs) const { return !(rhs == *this); }
 bool Integer::operator<(const Integer &rhs) const {
   if (sign_ < rhs.sign_) return true;
   if (sign_ > rhs.sign_) return false;
-  return natural_ < rhs.natural_;
+  return sign_ == Sign::POSITIVE ? natural_ < rhs.natural_
+                                 : natural_ > rhs.natural_;
 }
 
 bool Integer::operator>(const Integer &rhs) const { return rhs < *this; }
@@ -165,10 +166,25 @@ Integer &Integer::operator*=(const Integer &rhs) {
 // Частное от деления целых чисел "/="
 // Над модулем работала Майская Вероника, гр. 3384
 Integer &Integer::operator/=(const Integer &rhs) {
-  // Делим натуральные части
-  natural_ /= rhs.natural_;
-  // Определяем знак результата
-  sign_ = (sign_ == rhs.sign_) ? Sign::POSITIVE : Sign::NEGATIVE;
+  if (sign_ != Sign::NEGATIVE) {
+    // Если делимое положительное, делим натуральные части
+    natural_ /= rhs.natural_;
+    // Устанавливаем знак делителя частному
+    sign_ = rhs.sign_;
+  } else {
+    // Иначе делим натуральные части и устанавливаем частному знак
+    // противоположный знаку делителя
+    auto quotient = Integer(natural_ / rhs.natural_, rhs.sign_);
+    -quotient;
+    // Если произведение делителя и частного не равно (больше) делимого
+    if (*this != rhs * quotient) {
+      // Увеличиваем частное на 1
+      ++quotient.natural_;
+    }
+    // Записываем частное в текущее число
+    *this = quotient;
+  }
+  // Если частное оказалось нулём, устанавливаем соответсвующий знак
   if (natural_.IsZero()) sign_ = Sign::ZERO;
   return *this;
 }

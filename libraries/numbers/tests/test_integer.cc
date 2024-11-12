@@ -125,21 +125,37 @@ TEST(IntegerTest, Multiplication) {
 }
 
 TEST(IntegerTest, Division) {
-  Integer a("4631224864312");
-  Integer b("564984132164");
+  Integer a("78");
+  Integer b("33");
   a /= b;
-  EXPECT_EQ(a, Integer("8"));
+  EXPECT_EQ(a, Integer("2"));
 
-  Integer c("-22483564312");
-  Integer d("45641");
+  Integer c("-78");
+  Integer d("33");
   c /= d;
-  EXPECT_EQ(c, Integer("-492617"));
+  EXPECT_EQ(c, Integer("-3"));
 
-  Integer e("0");
-  Integer f("45641");
-  EXPECT_EQ(e / f, Integer("0"));
+  Integer e("-78");
+  Integer f("-33");
+  e /= f;
+  EXPECT_EQ(e, Integer("3"));
 
-  Integer g("1");
-  Integer h("0");
-  EXPECT_THROW(g / h, std::invalid_argument);
+  Integer g("10");
+  Integer h("33");
+  g /= h;
+  EXPECT_EQ(g, Integer("0"));
+
+  Integer i("-10");
+  Integer j("33");
+  i /= j;
+  EXPECT_EQ(i, Integer("-1"));
+
+  Integer k("-10");
+  Integer l("-33");
+  k /= l;
+  EXPECT_EQ(k, Integer("1"));
+
+  Integer m("123");
+  Integer n("0");
+  EXPECT_THROW(m / n, std::invalid_argument);
 }
