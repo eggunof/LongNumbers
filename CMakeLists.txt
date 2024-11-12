@@ -8,3 +8,4 @@ enable_testing()
 add_subdirectory(libraries)
 
 add_executable(LongNumbers src/main.cc)
+target_link_libraries(LongNumbers numbers)
