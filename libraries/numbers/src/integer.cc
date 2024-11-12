@@ -6,9 +6,7 @@
 
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
     : natural_(digits), sign_(sign) {
-  if (natural_.IsZero()) {
-    sign_ = Sign::ZERO;
-  }
+  if (natural_.IsZero()) sign_ = Sign::ZERO;
 }
 
 Integer::Integer(const std::string &string)
@@ -68,14 +66,6 @@ bool Integer::operator>=(const Integer &rhs) const { return !(*this < rhs); }
 
 // Умножение целых чисел на -1
 // Над модулем работал Матвеев Никита, гр. 3383
-Integer Integer::operator-() const {
-  // Копия умножается на -1 и возвращается
-  Integer result = *this;
-  return -result;
-}
-
-// Умножение целых чисел на -1
-// Над модулем работал Матвеев Никита, гр. 3383
 Integer &Integer::operator-() {
   if (sign_ == Sign::NEGATIVE) {
     // Если знак был "-", то становится "+"
@@ -85,46 +75,6 @@ Integer &Integer::operator-() {
     sign_ = Sign::NEGATIVE;
   }
   return *this;
-}
-
-// Сложение целых чисел "+"
-// Над модулем работала Кадникова Анна, гр. 3384
-Integer Integer::operator+(const Integer &rhs) const {
-  Integer result = *this;
-  result += rhs;
-  return result;
-}
-
-// Вычитание целых чисел "-"
-// Над модулем работала Кадникова Анна, гр. 3384
-Integer Integer::operator-(const Integer &rhs) const {
-  Integer result = *this;
-  result -= rhs;
-  return result;
-}
-
-// Умножение целых чисел "*"
-// Над модулем работала Майская Вероника, гр. 3384
-Integer Integer::operator*(const Integer &rhs) const {
-  Integer result = *this;
-  result *= rhs;
-  return result;
-}
-
-// Частное от деления целых чисел "/"
-// Над модулем работала Майская Вероника, гр. 3384
-Integer Integer::operator/(const Integer &rhs) const {
-  Integer result = *this;
-  result /= rhs;
-  return result;
-}
-
-// Остаток от деления целых чисел "%"
-// Над модулем работал Матвеев Никита, гр. 3383
-Integer Integer::operator%(const Integer &rhs) const {
-  Integer result = *this;
-  result %= rhs;
-  return result;
 }
 
 // Сложение целых чисел "+="
@@ -203,4 +153,52 @@ Integer &Integer::operator%=(const Integer &rhs) {
   // Вычитаем из делимого неполное частное, умноженное на делитель
   *this -= rhs * quotient;
   return *this;
+}
+
+// Умножение целых чисел на -1
+// Над модулем работал Матвеев Никита, гр. 3383
+Integer Integer::operator-() const {
+  // Копия умножается на -1 и возвращается
+  Integer result = *this;
+  return -result;
+}
+
+// Сложение целых чисел "+"
+// Над модулем работала Кадникова Анна, гр. 3384
+Integer Integer::operator+(const Integer &rhs) const {
+  Integer result = *this;
+  result += rhs;
+  return result;
+}
+
+// Вычитание целых чисел "-"
+// Над модулем работала Кадникова Анна, гр. 3384
+Integer Integer::operator-(const Integer &rhs) const {
+  Integer result = *this;
+  result -= rhs;
+  return result;
+}
+
+// Умножение целых чисел "*"
+// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator*(const Integer &rhs) const {
+  Integer result = *this;
+  result *= rhs;
+  return result;
+}
+
+// Частное от деления целых чисел "/"
+// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator/(const Integer &rhs) const {
+  Integer result = *this;
+  result /= rhs;
+  return result;
+}
+
+// Остаток от деления целых чисел "%"
+// Над модулем работал Матвеев Никита, гр. 3383
+Integer Integer::operator%(const Integer &rhs) const {
+  Integer result = *this;
+  result %= rhs;
+  return result;
 }

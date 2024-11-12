@@ -22,7 +22,7 @@ TEST(IntegerTest, IntegerToNatural) {
   EXPECT_EQ(Natural(b), Natural("0"));
 
   Integer c("-8641561246");
-  EXPECT_THROW(static_cast<Natural>(c), std::invalid_argument);
+  EXPECT_THROW(auto d = Natural(c), std::invalid_argument);
 }
 
 TEST(IntegerTest, AbsoluteValue) {
@@ -37,17 +37,14 @@ TEST(IntegerTest, AbsoluteValue) {
 }
 
 TEST(IntegerTest, Sign) {
-  Integer integer({1, 2, 3}, Sign::POSITIVE);
-  EXPECT_EQ(integer.GetSign(), Sign::POSITIVE);
+  Integer a("123");
+  EXPECT_EQ(a.GetSign(), Sign::POSITIVE);
 
-  Integer negative_integer({1, 2, 3}, Sign::NEGATIVE);
-  EXPECT_EQ(negative_integer.GetSign(), Sign::NEGATIVE);
+  Integer b("0");
+  EXPECT_EQ(b.GetSign(), Sign::ZERO);
 
-  Integer zero_integer({0, 0, 0}, Sign::ZERO);
-  EXPECT_EQ(zero_integer.GetSign(), Sign::ZERO);
-
-  Integer negative_zero_integer({0, 0}, Sign::NEGATIVE);
-  EXPECT_EQ(negative_zero_integer.GetSign(), Sign::ZERO);
+  Integer c("-4846512846");
+  EXPECT_EQ(c.GetSign(), Sign::NEGATIVE);
 }
 
 TEST(IntegerTest, Negation) {
@@ -124,7 +121,7 @@ TEST(IntegerTest, Multiplication) {
   EXPECT_EQ(g * h, Integer("0"));
 }
 
-TEST(IntegerTest, Division) {
+TEST(IntegerTest, DivisionQuotient) {
   Integer a("78");
   Integer b("33");
   a /= b;
