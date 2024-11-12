@@ -22,7 +22,11 @@ Integer::Integer(const std::string &string)
   }
 }
 
-Integer::Integer(const Natural &natural) {}
+// Преобразование натурального числа в целое
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Integer::Integer(const Natural &natural)
+    : natural_(natural),
+      sign_(natural_.IsZero() ? Sign::ZERO : Sign::POSITIVE) {}
 
 // Преобразование целого неотрицательного в натуральное
 // Над модулем работала Варфоломеева Арина, гр. 3383
@@ -52,7 +56,8 @@ bool Integer::operator!=(const Integer &rhs) const { return !(rhs == *this); }
 bool Integer::operator<(const Integer &rhs) const {
   if (sign_ < rhs.sign_) return true;
   if (sign_ > rhs.sign_) return false;
-  return natural_ < rhs.natural_;
+  return sign_ == Sign::POSITIVE ? natural_ < rhs.natural_
+                                 : natural_ > rhs.natural_;
 }
 
 bool Integer::operator>(const Integer &rhs) const { return rhs < *this; }
@@ -106,7 +111,13 @@ Integer Integer::operator*(const Integer &rhs) const {
   return result;
 }
 
-Integer Integer::operator/(const Integer &rhs) const { return {}; }
+// Частное от деления целых чисел "/"
+// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator/(const Integer &rhs) const {
+  Integer result = *this;
+  result /= rhs;
+  return result;
+}
 
 // Остаток от деления целого на целое(делитель отличен от нуля) %()
 // Над модулем работал Матвеев Никита гр. 3383
@@ -158,7 +169,31 @@ Integer &Integer::operator*=(const Integer &rhs) {
   return *this;
 }
 
-Integer &Integer::operator/=(const Integer &rhs) { return *this; }
+// Частное от деления целых чисел "/="
+// Над модулем работала Майская Вероника, гр. 3384
+Integer &Integer::operator/=(const Integer &rhs) {
+  if (sign_ != Sign::NEGATIVE) {
+    // Если делимое положительное, делим натуральные части
+    natural_ /= rhs.natural_;
+    // Устанавливаем знак делителя частному
+    sign_ = rhs.sign_;
+  } else {
+    // Иначе делим натуральные части и устанавливаем частному знак
+    // противоположный знаку делителя
+    auto quotient = Integer(natural_ / rhs.natural_, rhs.sign_);
+    -quotient;
+    // Если произведение делителя и частного не равно (больше) делимого
+    if (*this != rhs * quotient) {
+      // Увеличиваем частное на 1
+      ++quotient.natural_;
+    }
+    // Записываем частное в текущее число
+    *this = quotient;
+  }
+  // Если частное оказалось нулём, устанавливаем соответсвующий знак
+  if (natural_.IsZero()) sign_ = Sign::ZERO;
+  return *this;
+}
 
 // Остаток от деления целого на целое(делитель отличен от нуля) %()
 // Над модулем работал Матвеев Никита гр. 3383
