@@ -18,8 +18,11 @@ class Rational {
   Rational &operator=(const Rational &other) = default;
 
   explicit Rational(const Integer &integer)
-      : numerator_(integer), denominator_(Natural()) {}  // TRANS_Z_Q
-  static Integer ToInteger(const Rational &rational);    // TRANS_Q_Z
+      : numerator_(integer), denominator_(Natural("1")) {}  // TRANS_Z_Q
+  explicit operator Integer() const;                        // TRANS_Q_Z
+
+  bool operator==(const Rational &rhs) const;
+  bool operator!=(const Rational &rhs) const;
 
   Rational &Reduce();  // RED_Q_Q
   bool IsInteger();    // INT_Q_B
