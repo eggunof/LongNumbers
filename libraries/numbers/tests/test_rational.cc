@@ -61,18 +61,17 @@ TEST(RationalTest, IsInteger) {
 }
 
 TEST(RationalTest, AddDenominators) {
-  Rational r1(Integer(1), Natural(3));
-  Rational r2(Integer(1), Natural(6));
-  Rational expected_r1_r2(Integer(1), Natural(2));
-  EXPECT_EQ(r1 + r2, expected_r1_r2);
+  Rational a("1/3");
+  Rational b("1/6");
+  a += b;
+  EXPECT_EQ(a, Rational("1/2"));
 
-  Rational r3(Integer(1), Natural(4));
-  Rational r4(Integer(1), Natural(4));
-  Rational expected_r3_r4(Integer(1), Natural(2));
-  EXPECT_EQ(r3 + r4, expected_r3_r4);
+  Rational c("-3/4");
+  Rational d("1/10");
+  c += d;
+  EXPECT_EQ(c, Rational("-13/20"));
 
-  Rational r5(Integer(0), Natural(1));
-  Rational r6(Integer(3), Natural(5));
-  Rational expected_r5_r6(Integer(3), Natural(5));
-  EXPECT_EQ(r5 + r6, expected_r5_r6);
+  Rational e("-4563486/64231864");
+  Rational f("15646431/16542313");
+  EXPECT_EQ(e + f, Rational("464754407147133/531271799430716"));
 }

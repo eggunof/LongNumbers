@@ -72,20 +72,10 @@ bool Rational::IsInteger() {
 // Сложение дробей "+"
 // Над модулем работала Майская Вероника, гр. 3384
 Rational Rational::operator+(const Rational &rhs) const {
-    // Находим НОК знаменателей
-    Natural common_denominator = LCM_NN_N(this->denominator_, rhs.denominator_);
-    // Определяем множители для каждого числителя
-    Natural scale_left = common_denominator / this->denominator_;
-    Natural scale_right = common_denominator / rhs.denominator_;
-    // Приводим числители к общему знаменателю
-    Integer new_numerator_left = MUL_ZZ_Z(this->numerator_, Integer(scale_left));
-    Integer new_numerator_right = MUL_ZZ_Z(this->numerator_, Integer(scale_right));
-    // Складываем числители
-    Integer result_numerator = ADD_ZZ_Z(new_numerator_left, new_numerator_right);
-    Rational result(result_numerator, common_denominator);
-    // Сокращаем дробь
-    result.Reduce();
-    return result;
+  // Складываем копию текущего объекта
+  Rational result = *this;
+  result += rhs;
+  return result;
 }
 
 Rational Rational::operator-(const Rational &rhs) const { return {}; }
@@ -97,8 +87,20 @@ Rational Rational::operator/(const Rational &rhs) const { return {}; }
 // Сложение дробей "+="
 // Над модулем работала Майская Вероника, гр. 3384
 Rational Rational::operator+=(const Rational &rhs) {
-    *this = *this + rhs;
-    return *this;
+  // Находим НОК знаменателей
+  Natural lcm = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
+  // Определяем множители для каждого числителя
+  Natural lhs_multiplier = lcm / denominator_;
+  Natural rhs_multiplier = lcm / rhs.denominator_;
+  // Умножаем числитель левого операнда
+  numerator_ *= static_cast<Integer>(lhs_multiplier);
+  // Прибавляем умноженный числитель правого операнда
+  numerator_ += rhs.numerator_ * static_cast<Integer>(rhs_multiplier);
+  // Обновляем знаменатель
+  denominator_ = lcm;
+  // Сокращаем дробь
+  Reduce();
+  return *this;
 }
 
 Rational Rational::operator-=(const Rational &rhs) { return {}; }
