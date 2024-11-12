@@ -38,11 +38,11 @@ bool Rational::operator!=(const Rational &rhs) const {
 // Сокращение дроби
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Rational &Rational::Reduce() {
-    Natural GCD = Natural::GreatestCommonDivisor(Natural(numerator_), denominator_);
+    Natural GCD = Natural::GreatestCommonDivisor(numerator_.natural_, denominator_);
     if (GCD == Natural("1")) {
         return *this;
     }
-    numerator_ /= Integer(GCD);
+    numerator_.natural_ /= GCD;
     denominator_ /= GCD;
     return *this;
 }
