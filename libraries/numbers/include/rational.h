@@ -21,6 +21,9 @@ class Rational {
       : numerator_(integer), denominator_(Natural()) {}  // TRANS_Z_Q
   explicit operator Integer() const;                     // TRANS_Q_Z
 
+  bool operator==(const Rational &rhs) const;
+  bool operator!=(const Rational &rhs) const;
+
   Rational &Reduce();  // RED_Q_Q
   bool IsInteger();    // INT_Q_B
 
