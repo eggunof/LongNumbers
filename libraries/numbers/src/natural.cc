@@ -78,50 +78,40 @@ bool Natural::operator>=(const Natural &rhs) const { return !(*this < rhs); }
 
 bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
 
-// Добавление единицы к натуральному числу
+// Инкремент натурального числа "++n"
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Natural &Natural::operator++() {
-  // Прибавляем единицу к последней цифре числа
-  int n = digits_.size()-1;
-  digits_[n] += 1;
-  int i = n;
-  // Если единица прибавляется к 9, то обнуляем разряд и добавляем 1 в следующий
-  while ((digits_[i] == 10) && (i > 0)){ 
-    digits_[i] = 0;
-    i -= 1;
-    digits_[i] += 1;
+  // Изначально добавляем 1
+  Digit surplus = 1;
+  // Проходим по разрядам числа справа налево
+  for (Digit &digit : std::ranges::reverse_view(digits_)) {
+    // Если при сложении получается меньше 10
+    if (digit + surplus < 10) {
+      // Складываем с переносом
+      digit += surplus;
+      // Обнуляем перенос и выходим из цикла
+      surplus = 0;
+      break;
+    }
+    // Если при сложении получается 10
+    digit = 0;
   }
-  if ((i == 0) && (digits_[0] == 10)){
-    digits_[0] = 0;
-    auto iter = digits_.cbegin();
-    // Если при прибавлении единицы увеличилось число разрядов, вставляем в начало числа единицу
-    digits_.emplace(iter, 1); 
-    n += 1;
+  // Если остался перенос, добавляем новый разряд в начало
+  if (surplus != 0) {
+    digits_.insert(digits_.begin(), 1);
   }
   return *this;
 }
 
-// Добавление единицы к натуральному числу
+// Инкремент натурального числа "n++"
 // Над модулем работала Солдунова Екатерина, гр. 3383
-Natural &Natural::operator++(int) {
-  Natural result = *this;
-  int n = digits_.size()-1;
-  digits_[n] += 1;
-  int i = n;
-  // Если единица прибавляется к 9, то обнуляем разряд и добавляем 1 в следующий
-  while ((digits_[i] == 10) && (i > 0)){ 
-    digits_[i] = 0;
-    i -= 1;
-    digits_[i] += 1;
-  }
-  if ((i == 0) && (digits_[0] == 10)){
-    digits_[0] = 0;
-    auto iter = digits_.cbegin();
-    // Если при прибавлении единицы увеличилось число разрядов, вставляем в начало числа единицу
-    digits_.emplace(iter, 1); 
-    n += 1;
-  }
-  return result;
+Natural Natural::operator++(int) {
+  // Сохраняем текущее состояние числа для возвращения
+  Natural old_value = *this;
+  // Инкремент текущего объекта
+  ++(*this);
+  // Возвращаем значение до инкремента
+  return old_value;
 }
 
 // Сложение натуральных чисел "+"
