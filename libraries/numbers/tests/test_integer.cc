@@ -160,29 +160,28 @@ TEST(IntegerTest, Division) {
   EXPECT_THROW(m / n, std::invalid_argument);
 }
 
-TEST(IntegerTest, ModTests){
-    Integer integer1("25");
-    Integer rhs1("7");
-    Integer res1("4");
-    EXPECT_EQ(integer1 % rhs1, res1);
-    Integer integer2("-25");
-    Integer rhs2("7");
-    Integer res2("3");
-    EXPECT_EQ(integer2 %rhs2, res2);
-    Integer integer3("45");
-    Integer rhs3("-9");
-    Integer res3("0");
-    EXPECT_EQ(integer3 %= rhs3, res3);
-    Integer integer4("17");
-    Integer rhs4("34");
-    Integer res4("17");
-    EXPECT_EQ(integer4 % rhs4, res4);
-    Integer integer5("-17");
-    Integer rhs5("7");
-    Integer res5("4");
-    EXPECT_EQ(integer5 % rhs5, res5);
-    Integer integer6("123456789");
-    Integer rhs6("234");
-    Integer res6("27");
-    EXPECT_EQ(integer6 % rhs6, res6);
+TEST(IntegerTest, DivisionRemainder) {
+  Integer a("78");
+  Integer b("33");
+  a %= b;
+  EXPECT_EQ(a, Integer("12"));
+
+  Integer c("-78");
+  Integer d("33");
+  c %= d;
+  EXPECT_EQ(c, Integer("21"));
+
+  Integer e("10");
+  Integer f("33");
+  e %= f;
+  EXPECT_EQ(e, Integer("10"));
+
+  Integer g("-10");
+  Integer h("33");
+  g %= h;
+  EXPECT_EQ(g, Integer("23"));
+
+  Integer i("123");
+  Integer j("0");
+  EXPECT_THROW(i % j, std::invalid_argument);
 }
