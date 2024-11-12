@@ -60,7 +60,7 @@ TEST(RationalTest, IsInteger) {
   EXPECT_TRUE(e.IsInteger());
 }
 
-TEST(RationalTest, AddDenominators) {
+TEST(RationalTest, Addition) {
   Rational a("1/3");
   Rational b("1/6");
   a += b;
@@ -74,6 +74,23 @@ TEST(RationalTest, AddDenominators) {
   Rational e("-4563486/64231864");
   Rational f("15646431/16542313");
   EXPECT_EQ(e + f, Rational("464754407147133/531271799430716"));
+}
+
+TEST(RationalTest, Subtraction) {
+  Rational a("1/3");
+  Rational b("1/6");
+  a -= b;
+  EXPECT_EQ(a, Rational("1/6"));
+
+  Rational c("-3/4");
+  Rational d("1/10");
+  c -= d;
+  EXPECT_EQ(c, Rational("-17/20"));
+
+  Rational e("-4563486/64231864");
+  Rational f("15646431/16542313");
+  e -= f;
+  EXPECT_EQ(e, Rational("-540245020930251/531271799430716"));
 }
 
 TEST(RationalTest, Division) {
