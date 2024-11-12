@@ -92,3 +92,20 @@ TEST(RationalTest, Subtraction) {
   e -= f;
   EXPECT_EQ(e, Rational("-540245020930251/531271799430716"));
 }
+
+TEST(RationalTest, Multiplication) {
+  Rational a("1/3");
+  Rational b("1/6");
+  a *= b;
+  EXPECT_EQ(a, Rational("1/18"));
+
+  Rational c("-3/4");
+  Rational d("1/10");
+  c *= d;
+  EXPECT_EQ(c, Rational("-3/40"));
+
+  Rational e("-1345/45");
+  Rational f("453165/456");
+  e *= f;
+  EXPECT_EQ(e, Rational("-91/1368"));
+}

@@ -92,12 +92,12 @@ Rational Rational::operator-(const Rational &rhs) const {
   return result;
 }
 
-// Умножение дробей
+// Умножение дробей "*"
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Rational Rational::operator*(const Rational &rhs) const {
-    Rational result = *this;
-    result *= rhs;
-    return result;
+  Rational result = *this;
+  result *= rhs;
+  return result;
 }
 
 Rational Rational::operator/(const Rational &rhs) const { return {}; }
@@ -135,12 +135,14 @@ Rational Rational::operator-=(const Rational &rhs) {
   return *this;
 }
 
-// Умножение дробей
+// Умножение дробей "*="
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Rational Rational::operator*=(const Rational &rhs) {
-    numerator_ *= rhs.numerator_;
-    denominator_ *= rhs.denominator_;
-    return *this;
+  numerator_ *= rhs.numerator_;
+  denominator_ *= rhs.denominator_;
+  // Сокращаем дробь
+  Reduce();
+  return *this;
 }
 
 Rational Rational::operator/=(const Rational &rhs) { return {}; }
