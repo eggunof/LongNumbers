@@ -20,6 +20,7 @@ class Rational {
   explicit Rational(const Integer &integer)
       : numerator_(integer), denominator_(Natural()) {}  // TRANS_Z_Q
   explicit operator Integer() const;                     // TRANS_Q_Z
+
   bool operator==(const Rational &rhs) const;
   bool operator!=(const Rational &rhs) const;
 
