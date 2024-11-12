@@ -16,12 +16,6 @@ class Rational {
   explicit Rational(const std::string &string);
   Rational(const Rational &other) = default;
   Rational &operator=(const Rational &other) = default;
-  bool operator==(const Rational &rhs) const;
-  bool operator!=(const Rational &rhs) const;
-  bool operator<(const Rational &rhs) const;
-  bool operator>(const Rational &rhs) const;
-  bool operator<=(const Rational &rhs) const;
-  bool operator>=(const Rational &rhs) const;
 
   explicit Rational(const Integer &integer)
       : numerator_(integer), denominator_(Natural("1")) {}  // TRANS_Z_Q
@@ -29,6 +23,10 @@ class Rational {
 
   bool operator==(const Rational &rhs) const;
   bool operator!=(const Rational &rhs) const;
+  bool operator<(const Rational &rhs) const;
+  bool operator>(const Rational &rhs) const;
+  bool operator<=(const Rational &rhs) const;
+  bool operator>=(const Rational &rhs) const;
 
   Rational &Reduce();  // RED_Q_Q
   bool IsInteger();    // INT_Q_B

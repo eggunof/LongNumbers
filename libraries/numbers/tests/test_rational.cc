@@ -3,6 +3,20 @@
 
 #include "rational.h"
 
+TEST(RationalTest, Compare) {
+  Rational a("123456789/987654321");
+  Rational b("1/8");
+  Rational g("111111111/222222222");
+  Rational d("1/2");
+
+  EXPECT_TRUE(a < b);
+  EXPECT_TRUE(a <= d);
+  EXPECT_TRUE(g == d);
+  EXPECT_TRUE(b != d);
+  EXPECT_FALSE(b > d);
+  EXPECT_TRUE(d >= b);
+}
+
 TEST(RationalTest, IntegerToRational) {
   Integer a("46532186");
   EXPECT_EQ(static_cast<Rational>(a), Rational("46532186"));
@@ -137,18 +151,4 @@ TEST(RationalTest, Division) {
   Rational k("10/2");
   Rational l("0");
   EXPECT_THROW(k / l, std::invalid_argument);
-}
-
-TEST(RationalTest, LargeComparisonOperators) {
-  Rational e("123456789/987654321");
-  Rational f("1/8");
-  Rational g("111111111/222222222");
-  Rational h("1/2");
-
-  EXPECT_TRUE(e < f);
-  EXPECT_FALSE(e == h);
-  EXPECT_TRUE(g == h);
-  EXPECT_TRUE(f != h);
-  EXPECT_FALSE(f > h);
-  EXPECT_TRUE(h >= f);
 }

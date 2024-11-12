@@ -43,44 +43,19 @@ bool Rational::operator==(const Rational &rhs) const {
   return numerator_ * static_cast<Integer>(rhs.denominator_) ==
          rhs.numerator_ * static_cast<Integer>(denominator_);
 }
-bool Rational::operator==(const Rational &rhs) const {
-    return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
-}
 
 bool Rational::operator!=(const Rational &rhs) const { return !(*this == rhs); }
 
 bool Rational::operator<(const Rational &rhs) const {
-  if (denominator_ == rhs.denominator_ && numerator_ == rhs.numerator_) {
-    return false;
-  }
-  if (denominator_ == rhs.denominator_) {
-    return numerator_ < rhs.numerator_;
-  }
-  if (numerator_ == rhs.numerator_) {
-    return denominator_ > rhs.denominator_;
-  }
-  // Находим НОК для знаменателей
-  Natural lcm_denominator = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
-
-  // Приводим обе дроби к общему знаменателю
-  Integer left_numerator = numerator_ * Integer(lcm_denominator / denominator_);
-  Integer right_numerator = rhs.numerator_ * Integer(lcm_denominator / rhs.denominator_);
-
-  // Сравниваем числители
-  return left_numerator < right_numerator;
+  return numerator_ * static_cast<Integer>(rhs.denominator_) <
+         rhs.numerator_ * static_cast<Integer>(denominator_);
 }
 
-bool Rational::operator>(const Rational &rhs) const {
-  return rhs < *this; // Используем оператор <
-}
+bool Rational::operator>(const Rational &rhs) const { return rhs < *this; }
 
-bool Rational::operator<=(const Rational &rhs) const {
-  return !(*this > rhs); // Используем оператор >
-}
+bool Rational::operator<=(const Rational &rhs) const { return !(*this > rhs); }
 
-bool Rational::operator>=(const Rational &rhs) const {
-  return !(*this < rhs); // Используем оператор <
-}
+bool Rational::operator>=(const Rational &rhs) const { return !(*this < rhs); }
 
 // Сокращение дроби
 // Над модулем работала Дмитриева Дарья, гр. 3383
