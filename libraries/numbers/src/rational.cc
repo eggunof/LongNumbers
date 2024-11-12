@@ -100,7 +100,7 @@ Rational Rational::operator*(const Rational &rhs) const {
   return result;
 }
 
-// Деление дробей (делитель отличен от нуля) "/"
+// Деление дробей "/"
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Rational Rational::operator/(const Rational &rhs) const {
   Rational result = *this;
@@ -151,23 +151,15 @@ Rational Rational::operator*=(const Rational &rhs) {
   return *this;
 }
 
-// Деление дробей (делитель отличен от нуля) "/="
+// Деление дробей "/="
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Rational Rational::operator/=(const Rational &rhs) {
-  // Определяем знак, сравнив знаки числителей
-  // Если знаки числителей операндов различны, дробь отрицательная;
-  // Иначе если знак числителя отрицательный, меняем на положительный
-  if (numerator_.GetSign() != rhs.numerator_.GetSign()) {
-    numerator_ = -numerator_;
-  } else {
-    if (numerator_.GetSign() == Sign::NEGATIVE) {
-      numerator_ = -numerator_;
-    }
+  if (rhs.numerator_ == Integer("0")) {
+    throw std::invalid_argument(
+        "Invalid input: Division by zero is not allowed");
   }
-  // Перемножаем числитель левого операнда и знаменатель правого
-  numerator_ *= Integer(rhs.denominator_);
-  // Перемножаем числитель правого операнда и знаменатель левого
-  denominator_ *= Natural(Integer::AbsoluteValue(rhs.numerator_));
+  numerator_ *= Integer(rhs.denominator_, rhs.numerator_.GetSign());
+  denominator_ *= static_cast<Natural>(Integer::AbsoluteValue(rhs.numerator_));
   // Сокращаем получившуюся дробь
   Reduce();
   return *this;

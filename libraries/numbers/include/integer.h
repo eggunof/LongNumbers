@@ -13,8 +13,9 @@ class Integer {
 
  public:
   Integer() : natural_(), sign_(Sign::ZERO) {}
-  Integer(const Natural &natural, Sign sign) : natural_(natural), sign_(sign) {}
-  Integer(const std::vector<Digit> &digits, Sign sign);
+  Integer(const Natural &natural, Sign sign);
+  Integer(const std::vector<Digit> &digits, Sign sign)
+      : Integer(Natural(digits), sign) {}
   explicit Integer(const std::string &string);
   explicit Integer(int32_t number) : Integer(std::to_string(number)) {}
   Integer(const Integer &other) = default;

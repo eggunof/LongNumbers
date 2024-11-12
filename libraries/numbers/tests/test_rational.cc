@@ -109,15 +109,32 @@ TEST(RationalTest, Multiplication) {
 }
 
 TEST(RationalTest, Division) {
-  Rational a("-9/2");
+  Rational a("9/2");
   Rational b("7/4");
-  EXPECT_EQ(a /= b, Rational("-18/7"));
+  a /= b;
+  EXPECT_EQ(a, Rational("18/7"));
 
-  Rational c("1500000000000000/120000000000001");
-  Rational d("50000000000000/24400000000000000");
-  EXPECT_EQ(c /= d, Rational("732000000000000000/120000000000001"));
+  Rational c("-3/4");
+  Rational d("1/10");
+  c /= d;
+  EXPECT_EQ(c, Rational("-30/4"));
 
-  Rational e("-18000000000000000/9000000000000000");
-  Rational f("-3000000000000000/200000000000");
-  EXPECT_EQ(e /= f, Rational("1/7500"));
+  Rational e("145/45");
+  Rational f("-165/15");
+  e /= f;
+  EXPECT_EQ(e, Rational("-29/99"));
+
+  Rational g("-54/32");
+  Rational h("-455/25");
+  g /= h;
+  EXPECT_EQ(g, Rational("135/1456"));
+
+  Rational i("0");
+  Rational j("10");
+  i /= j;
+  EXPECT_EQ(i, Rational("0"));
+
+  Rational k("10/2");
+  Rational l("0");
+  EXPECT_THROW(k / l, std::invalid_argument);
 }
