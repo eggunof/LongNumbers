@@ -11,7 +11,23 @@ Polynomial Polynomial::operator*(const Polynomial &rhs) const { return {}; }
 
 Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
 
-Polynomial Polynomial::operator%(const Polynomial &rhs) const { return {}; }
+// Остаток от деления многочлена на многочлен при делении с остатком
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
+    // Проверяем, не является ли многочлен rhs нулевым
+    if (rhs.coefficients_.empty() ||  rhs.GetLeadingCoefficient() == Rational("0")) {
+        throw std::invalid_argument("Division by zero polynomial");
+    }
+    // Если степень текущего многочлена меньше степени rhs, возвращаем текущий многочлен как остаток
+    if (this->GetDegree() < rhs.GetDegree()) {
+        return *this;
+    }
+    // Вычисляем частное (this / rhs) и умножаем его на rhs
+    // Затем вычитаем это значение из текущего многочлена для получения остатка.
+    Polynomial remainder = *this - ((*this /  rhs) * rhs);
+    *this = remainder;
+    return *this;
+}
 
 Polynomial &Polynomial::operator+=(const Polynomial &rhs) { return *this; }
 
