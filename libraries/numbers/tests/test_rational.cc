@@ -59,3 +59,19 @@ TEST(RationalTest, IsInteger) {
   Rational e("0");
   EXPECT_TRUE(e.IsInteger());
 }
+
+TEST(RationalTest, AddDenominators) {
+  Rational a("1/3");
+  Rational b("1/6");
+  a += b;
+  EXPECT_EQ(a, Rational("1/2"));
+
+  Rational c("-3/4");
+  Rational d("1/10");
+  c += d;
+  EXPECT_EQ(c, Rational("-13/20"));
+
+  Rational e("-4563486/64231864");
+  Rational f("15646431/16542313");
+  EXPECT_EQ(e + f, Rational("464754407147133/531271799430716"));
+}

@@ -69,7 +69,14 @@ bool Rational::IsInteger() {
   return denominator_ == Natural("1");
 }
 
-Rational Rational::operator+(const Rational &rhs) const { return {}; }
+// Сложение дробей "+"
+// Над модулем работала Майская Вероника, гр. 3384
+Rational Rational::operator+(const Rational &rhs) const {
+  // Складываем копию текущего объекта
+  Rational result = *this;
+  result += rhs;
+  return result;
+}
 
 Rational Rational::operator-(const Rational &rhs) const { return {}; }
 
@@ -77,7 +84,24 @@ Rational Rational::operator*(const Rational &rhs) const { return {}; }
 
 Rational Rational::operator/(const Rational &rhs) const { return {}; }
 
-Rational Rational::operator+=(const Rational &rhs) { return {}; }
+// Сложение дробей "+="
+// Над модулем работала Майская Вероника, гр. 3384
+Rational Rational::operator+=(const Rational &rhs) {
+  // Находим НОК знаменателей
+  Natural lcm = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
+  // Определяем множители для каждого числителя
+  Natural lhs_multiplier = lcm / denominator_;
+  Natural rhs_multiplier = lcm / rhs.denominator_;
+  // Умножаем числитель левого операнда
+  numerator_ *= static_cast<Integer>(lhs_multiplier);
+  // Прибавляем умноженный числитель правого операнда
+  numerator_ += rhs.numerator_ * static_cast<Integer>(rhs_multiplier);
+  // Обновляем знаменатель
+  denominator_ = lcm;
+  // Сокращаем дробь
+  Reduce();
+  return *this;
+}
 
 Rational Rational::operator-=(const Rational &rhs) { return {}; }
 
