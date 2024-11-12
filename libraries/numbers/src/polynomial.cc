@@ -13,6 +13,22 @@ Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
 
 // Остаток от деления многочлена на многочлен при делении с остатком
 // Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator%(const Polynomial &rhs) const {
+    Polynomial result = *this;
+    result %= rhs;
+    return result;
+}
+
+Polynomial &Polynomial::operator+=(const Polynomial &rhs) { return *this; }
+
+Polynomial &Polynomial::operator-=(const Polynomial &rhs) { return *this; }
+
+Polynomial &Polynomial::operator*=(const Rational &scalar) { return *this; }
+
+Polynomial &Polynomial::operator*=(const Polynomial &rhs) { return *this; }
+
+// Остаток от деления многочлена на многочлен при делении с остатком
+// Над модулем работала Дмитриева Дарья, гр. 3383
 Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
     // Проверяем, не является ли многочлен rhs нулевым
     if (rhs.coefficients_.empty() ||  rhs.GetLeadingCoefficient() == Rational("0")) {
@@ -28,16 +44,6 @@ Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
     *this = remainder;
     return *this;
 }
-
-Polynomial &Polynomial::operator+=(const Polynomial &rhs) { return *this; }
-
-Polynomial &Polynomial::operator-=(const Polynomial &rhs) { return *this; }
-
-Polynomial &Polynomial::operator*=(const Rational &scalar) { return *this; }
-
-Polynomial &Polynomial::operator*=(const Polynomial &rhs) { return *this; }
-
-Polynomial &Polynomial::operator/=(const Polynomial &rhs) { return *this; }
 
 Polynomial &Polynomial::operator%=(const Polynomial &rhs) { return *this; }
 
