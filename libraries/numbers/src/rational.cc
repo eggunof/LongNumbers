@@ -69,6 +69,11 @@ bool Rational::IsInteger() {
   return denominator_ == Natural("1");
 }
 
+Rational Rational::operator-() const {
+  Rational result = *this;
+  return -result;
+}
+
 // Сложение дробей "+"
 // Над модулем работала Майская Вероника, гр. 3384
 Rational Rational::operator+(const Rational &rhs) const {
@@ -78,11 +83,24 @@ Rational Rational::operator+(const Rational &rhs) const {
   return result;
 }
 
-Rational Rational::operator-(const Rational &rhs) const { return {}; }
+// Вычитание дробей "-"
+// Над модулем работала Кадникова Анна, гр. 3384
+Rational Rational::operator-(const Rational &rhs) const {
+  // Вычитаем копию текущего объекта
+  Rational result = *this;
+  result += rhs;
+  return result;
+}
 
 Rational Rational::operator*(const Rational &rhs) const { return {}; }
 
 Rational Rational::operator/(const Rational &rhs) const { return {}; }
+
+Rational &Rational::operator-() {
+  // Меняем знак числителя
+  -numerator_;
+  return *this;
+}
 
 // Сложение дробей "+="
 // Над модулем работала Майская Вероника, гр. 3384
@@ -103,7 +121,13 @@ Rational Rational::operator+=(const Rational &rhs) {
   return *this;
 }
 
-Rational Rational::operator-=(const Rational &rhs) { return {}; }
+// Вычитание дробей "-="
+// Над модулем работала Кадникова Анна, гр. 3384
+Rational Rational::operator-=(const Rational &rhs) {
+  // Применяем сложение с противоположным знаком
+  *this += -rhs;
+  return *this;
+}
 
 Rational Rational::operator*=(const Rational &rhs) { return {}; }
 
