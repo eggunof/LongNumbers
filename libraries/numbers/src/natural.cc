@@ -45,6 +45,8 @@ Natural::Natural(const std::string &string) {
   digits_.shrink_to_fit();
 }
 
+bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
+
 // Сравнение натуральных чисел
 // Над модулем работала Майская Вероника, гр. 3384
 Comparison Natural::Compare(const Natural &first, const Natural &second) {
@@ -76,8 +78,6 @@ bool Natural::operator<=(const Natural &rhs) const { return !(*this > rhs); }
 
 bool Natural::operator>=(const Natural &rhs) const { return !(*this < rhs); }
 
-bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
-
 // Инкремент натурального числа "++n"
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Natural &Natural::operator++() {
@@ -101,71 +101,6 @@ Natural &Natural::operator++() {
     digits_.insert(digits_.begin(), 1);
   }
   return *this;
-}
-
-// Инкремент натурального числа "n++"
-// Над модулем работала Солдунова Екатерина, гр. 3383
-Natural Natural::operator++(int) {
-  // Сохраняем текущее состояние числа для возвращения
-  Natural old_value = *this;
-  // Инкремент текущего объекта
-  ++(*this);
-  // Возвращаем значение до инкремента
-  return old_value;
-}
-
-// Сложение натуральных чисел "+"
-// Над модулем работала Варфоломеева Арина, гр. 3383
-Natural Natural::operator+(const Natural &rhs) const {
-  // Складываем копию текущего объекта
-  Natural result = *this;
-  result += rhs;
-  return result;
-}
-
-// Вычитание натуральных чисел "-"
-// Над модулем работала Дмитриева Дарья, гр. 3383
-Natural Natural::operator-(const Natural &rhs) const {
-  // Вычитаем копию текущего объекта
-  Natural result = *this;
-  result -= rhs;
-  return result;
-}
-
-// Умножение натуральных чисел на цифру "*"
-// Над модулем работал Матвеев Никита, гр. 3383
-Natural Natural::operator*(Digit d) const {
-  // Умножаем копию текущего объекта
-  Natural result = *this;
-  result *= d;
-  return result;
-}
-
-// Умножение натуральных чисел "*"
-// Над модулем работал Егунов Даниил, гр. 3383
-Natural Natural::operator*(const Natural &rhs) const {
-  // Умножаем копию текущего объекта
-  Natural result = *this;
-  result *= rhs;
-  return result;
-}
-
-// Целое от деления натуральных чисел "/"
-// Над модулем работала Дмитриева Дарья, гр. 3383
-Natural Natural::operator/(const Natural &rhs) const {
-  // Вычисляем частное от деления копии
-  Natural result = *this;
-  result /= rhs;
-  return result;
-}
-
-// Остаток от деления натуральных чисел "%"
-// Над модулем работал Егунов Даниил, гр. 3383
-Natural Natural::operator%(const Natural &rhs) const {
-  // Вычисляем остаток от деления копии
-  Natural result = *this;
-  result %= rhs;
-  return result;
 }
 
 // Сложение натуральных чисел "+="
@@ -320,6 +255,71 @@ Natural &Natural::operator%=(const Natural &rhs) {
   Natural quotient = *this / rhs;
   *this -= rhs * quotient;
   return *this;
+}
+
+// Инкремент натурального числа "n++"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Natural Natural::operator++(int) {
+  // Сохраняем текущее состояние числа для возвращения
+  Natural old_value = *this;
+  // Инкремент текущего объекта
+  ++(*this);
+  // Возвращаем значение до инкремента
+  return old_value;
+}
+
+// Сложение натуральных чисел "+"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Natural Natural::operator+(const Natural &rhs) const {
+  // Складываем копию текущего объекта
+  Natural result = *this;
+  result += rhs;
+  return result;
+}
+
+// Вычитание натуральных чисел "-"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural Natural::operator-(const Natural &rhs) const {
+  // Вычитаем копию текущего объекта
+  Natural result = *this;
+  result -= rhs;
+  return result;
+}
+
+// Умножение натуральных чисел на цифру "*"
+// Над модулем работал Матвеев Никита, гр. 3383
+Natural Natural::operator*(Digit d) const {
+  // Умножаем копию текущего объекта
+  Natural result = *this;
+  result *= d;
+  return result;
+}
+
+// Умножение натуральных чисел "*"
+// Над модулем работал Егунов Даниил, гр. 3383
+Natural Natural::operator*(const Natural &rhs) const {
+  // Умножаем копию текущего объекта
+  Natural result = *this;
+  result *= rhs;
+  return result;
+}
+
+// Целое от деления натуральных чисел "/"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Natural Natural::operator/(const Natural &rhs) const {
+  // Вычисляем частное от деления копии
+  Natural result = *this;
+  result /= rhs;
+  return result;
+}
+
+// Остаток от деления натуральных чисел "%"
+// Над модулем работал Егунов Даниил, гр. 3383
+Natural Natural::operator%(const Natural &rhs) const {
+  // Вычисляем остаток от деления копии
+  Natural result = *this;
+  result %= rhs;
+  return result;
 }
 
 // Вычитание из натурального умноженного на цифру натурального
