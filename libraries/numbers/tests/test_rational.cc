@@ -21,15 +21,19 @@ TEST(RationalTest, Reduce) {
   EXPECT_EQ(d, Rational("-42171780866875/29842803049"));
 }
 
-TEST(RationalTest, IsIntTest){
-    Rational rational1("1/3");
-    EXPECT_FALSE(rational1.IsInteger());
-    Rational rational2("-5322/1");
-    EXPECT_TRUE(rational2.IsInteger());
-    Rational rational3("10/2");
-    EXPECT_TRUE(rational3.IsInteger());
-    Rational rational4("17/34");
-    EXPECT_FALSE(rational4.IsInteger());
-    Rational rational5("0");
-    EXPECT_TRUE(rational5.IsInteger());
+TEST(RationalTest, IsInteger) {
+  Rational a("1/3");
+  EXPECT_FALSE(a.IsInteger());
+
+  Rational b("-5322/1");
+  EXPECT_TRUE(b.IsInteger());
+
+  Rational c("10/2");
+  EXPECT_TRUE(c.IsInteger());
+
+  Rational d("17/34");
+  EXPECT_FALSE(d.IsInteger());
+
+  Rational e("0");
+  EXPECT_TRUE(e.IsInteger());
 }
