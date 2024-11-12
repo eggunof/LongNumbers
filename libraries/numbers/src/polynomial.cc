@@ -5,8 +5,6 @@ Polynomial Polynomial::operator+(const Polynomial &rhs) const { return {}; }
 
 Polynomial Polynomial::operator-(const Polynomial &rhs) const { return {}; }
 
-Polynomial Polynomial::operator*(const Rational &scalar) const { return {}; }
-
 // Умножение многочленов
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Polynomial Polynomial::operator*(const Polynomial &rhs) const {
@@ -23,11 +21,9 @@ Polynomial &Polynomial::operator+=(const Polynomial &rhs) { return *this; }
 
 Polynomial &Polynomial::operator-=(const Polynomial &rhs) { return *this; }
 
-Polynomial &Polynomial::operator*=(const Rational &scalar) { return *this; }
-
 // Умножение многочленов
 // Над модулем работала Дмитриева Дарья, гр. 3383
-Polynomial &Polynomial::operator+=(const Polynomial &rhs) {
+Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
     // Создаем временной многочлен для хранения результата
     std::map<Natural, Rational, Comparator> resultCoefficients;
     // Перебираем все коэффициенты текущего многочлена
