@@ -14,6 +14,17 @@ TEST(RationalTest, IntegerToRational) {
   EXPECT_EQ(static_cast<Rational>(c), Rational("-65431864"));
 }
 
+TEST(RationalTest, RationalToInteger) {
+  Rational a("1564/4");
+  EXPECT_EQ(static_cast<Integer>(a), Integer("391"));
+
+  Rational b("-7087572768/453");
+  EXPECT_EQ(static_cast<Integer>(b), Integer("-15645856"));
+
+  Rational c("1/2");
+  EXPECT_THROW(auto d = static_cast<Integer>(c), std::invalid_argument);
+}
+
 TEST(RationalTest, Reduce) {
   Rational a("25/5");
   a.Reduce();
