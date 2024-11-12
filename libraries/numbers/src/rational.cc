@@ -25,68 +25,178 @@ Rational::Rational(const std::string &string) {
   }
 }
 
+// Преобразование дробного в целое
+// Над модулем работал Егунов Даниил, гр. 3383
+Rational::operator Integer() const {
+  Integer denominator = static_cast<Integer>(denominator_);
+  // Если не делится нацело, выбрасываем исключение
+  if (numerator_ % denominator != Integer("0")) {
+    throw std::invalid_argument(
+        "Invalid input: Rational cannot be converted to an Integer without a "
+        "remainder");
+  }
+  // Если делится нацело, возвращаем целое частное
+  return numerator_ / denominator;
+}
+
+bool Rational::operator==(const Rational &rhs) const {
+  return numerator_ * static_cast<Integer>(rhs.denominator_) ==
+         rhs.numerator_ * static_cast<Integer>(denominator_);
+}
 bool Rational::operator==(const Rational &rhs) const {
     return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
 }
 
-bool Rational::operator!=(const Rational &rhs) const {
-    return numerator_ != rhs.numerator_ || denominator_ != rhs.denominator_;
-}
+bool Rational::operator!=(const Rational &rhs) const { return !(*this == rhs); }
 
 bool Rational::operator<(const Rational &rhs) const {
-    if (denominator_ == rhs.denominator_ && numerator_ == rhs.numerator_) {
-        return false;
-    }
-    if (denominator_ == rhs.denominator_) {
-        return numerator_ < rhs.numerator_;
-    }
-    if (numerator_ == rhs.numerator_) {
-        return denominator_ > rhs.denominator_;
-    }
-    // Находим НОК для знаменателей
-    Natural lcm_denominator = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
-    
-    // Приводим обе дроби к общему знаменателю
-    Integer left_numerator = numerator_ * Integer(lcm_denominator / denominator_);
-    Integer right_numerator = rhs.numerator_ * Integer(lcm_denominator / rhs.denominator_);
-    
-    // Сравниваем числители
-    return left_numerator < right_numerator;
+  if (denominator_ == rhs.denominator_ && numerator_ == rhs.numerator_) {
+    return false;
+  }
+  if (denominator_ == rhs.denominator_) {
+    return numerator_ < rhs.numerator_;
+  }
+  if (numerator_ == rhs.numerator_) {
+    return denominator_ > rhs.denominator_;
+  }
+  // Находим НОК для знаменателей
+  Natural lcm_denominator = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
+
+  // Приводим обе дроби к общему знаменателю
+  Integer left_numerator = numerator_ * Integer(lcm_denominator / denominator_);
+  Integer right_numerator = rhs.numerator_ * Integer(lcm_denominator / rhs.denominator_);
+
+  // Сравниваем числители
+  return left_numerator < right_numerator;
 }
 
 bool Rational::operator>(const Rational &rhs) const {
-    return rhs < *this; // Используем оператор <
+  return rhs < *this; // Используем оператор <
 }
 
 bool Rational::operator<=(const Rational &rhs) const {
-    return !(*this > rhs); // Используем оператор >
+  return !(*this > rhs); // Используем оператор >
 }
 
 bool Rational::operator>=(const Rational &rhs) const {
-    return !(*this < rhs); // Используем оператор <
+  return !(*this < rhs); // Используем оператор <
 }
 
-Rational::operator Integer() const { return {}; }
+// Сокращение дроби
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Rational &Rational::Reduce() {
+  // Находим НОД числителя и знаменателя
+  Natural gcd = Natural::GreatestCommonDivisor(
+      static_cast<Natural>(Integer::AbsoluteValue(numerator_)), denominator_);
+  // Если НОД равен единице, дробь уже сокращена
+  if (gcd == Natural("1")) return *this;
+  // Сокращаем дробь
+  numerator_ /= Integer(gcd);
+  denominator_ /= gcd;
+  return *this;
+}
 
-Rational &Rational::Reduce() { return *this; }
-
+// Проверка сокращённого дробного на целое
+// Над модулем работал Матвеев Никита, гр. 3383
 bool Rational::IsInteger() {
+  // Сокращаем
   Reduce();
-  return false;
+  // Сокращённое дробное является целым, если знаменатель равен 1
+  return denominator_ == Natural("1");
 }
 
-Rational Rational::operator+(const Rational &rhs) const { return {}; }
+Rational Rational::operator-() const {
+  Rational result = *this;
+  return -result;
+}
 
-Rational Rational::operator-(const Rational &rhs) const { return {}; }
+// Сложение дробей "+"
+// Над модулем работала Майская Вероника, гр. 3384
+Rational Rational::operator+(const Rational &rhs) const {
+  // Складываем копию текущего объекта
+  Rational result = *this;
+  result += rhs;
+  return result;
+}
 
-Rational Rational::operator*(const Rational &rhs) const { return {}; }
+// Вычитание дробей "-"
+// Над модулем работала Кадникова Анна, гр. 3384
+Rational Rational::operator-(const Rational &rhs) const {
+  // Вычитаем копию текущего объекта
+  Rational result = *this;
+  result -= rhs;
+  return result;
+}
 
-Rational Rational::operator/(const Rational &rhs) const { return {}; }
+// Умножение дробей "*"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Rational Rational::operator*(const Rational &rhs) const {
+  Rational result = *this;
+  result *= rhs;
+  return result;
+}
 
-Rational Rational::operator+=(const Rational &rhs) { return {}; }
+// Деление дробей "/"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Rational Rational::operator/(const Rational &rhs) const {
+  Rational result = *this;
+  result /= rhs;
+  return result;
+}
 
-Rational Rational::operator-=(const Rational &rhs) { return {}; }
+Rational &Rational::operator-() {
+  // Меняем знак числителя
+  -numerator_;
+  return *this;
+}
 
-Rational Rational::operator*=(const Rational &rhs) { return {}; }
+// Сложение дробей "+="
+// Над модулем работала Майская Вероника, гр. 3384
+Rational Rational::operator+=(const Rational &rhs) {
+  // Находим НОК знаменателей
+  Natural lcm = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
+  // Определяем множители для каждого числителя
+  Natural lhs_multiplier = lcm / denominator_;
+  Natural rhs_multiplier = lcm / rhs.denominator_;
+  // Умножаем числитель левого операнда
+  numerator_ *= static_cast<Integer>(lhs_multiplier);
+  // Прибавляем умноженный числитель правого операнда
+  numerator_ += rhs.numerator_ * static_cast<Integer>(rhs_multiplier);
+  // Обновляем знаменатель
+  denominator_ = lcm;
+  // Сокращаем дробь
+  Reduce();
+  return *this;
+}
 
-Rational Rational::operator/=(const Rational &rhs) { return {}; }
+// Вычитание дробей "-="
+// Над модулем работала Кадникова Анна, гр. 3384
+Rational Rational::operator-=(const Rational &rhs) {
+  // Применяем сложение с противоположным знаком
+  *this += -rhs;
+  return *this;
+}
+
+// Умножение дробей "*="
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Rational Rational::operator*=(const Rational &rhs) {
+  numerator_ *= rhs.numerator_;
+  denominator_ *= rhs.denominator_;
+  // Сокращаем дробь
+  Reduce();
+  return *this;
+}
+
+// Деление дробей "/="
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Rational Rational::operator/=(const Rational &rhs) {
+  if (rhs.numerator_ == Integer("0")) {
+    throw std::invalid_argument(
+        "Invalid input: Division by zero is not allowed");
+  }
+  numerator_ *= Integer(rhs.denominator_, rhs.numerator_.GetSign());
+  denominator_ *= static_cast<Natural>(Integer::AbsoluteValue(rhs.numerator_));
+  // Сокращаем получившуюся дробь
+  Reduce();
+  return *this;
+}
