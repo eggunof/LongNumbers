@@ -20,6 +20,16 @@ TEST(NaturalTest, Compare) {
   EXPECT_FALSE(first >= second);
 }
 
+TEST(NaturalTest, Increment) {
+  Natural a("1234569999");
+  EXPECT_EQ(a++, Natural("1234569999"));
+  EXPECT_EQ(a, Natural("1234570000"));
+
+  Natural b("165999999");
+  EXPECT_EQ(++b, Natural("166000000"));
+  EXPECT_EQ(b, Natural("166000000"));
+}
+
 TEST(NaturalTest, Addition) {
   Natural a("1046");
   Natural b("599999");

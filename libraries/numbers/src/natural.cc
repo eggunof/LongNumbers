@@ -78,9 +78,41 @@ bool Natural::operator>=(const Natural &rhs) const { return !(*this < rhs); }
 
 bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
 
-Natural &Natural::operator++() { return *this; }
+// Инкремент натурального числа "++n"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Natural &Natural::operator++() {
+  // Изначально добавляем 1
+  Digit surplus = 1;
+  // Проходим по разрядам числа справа налево
+  for (Digit &digit : std::ranges::reverse_view(digits_)) {
+    // Если при сложении получается меньше 10
+    if (digit + surplus < 10) {
+      // Складываем с переносом
+      digit += surplus;
+      // Обнуляем перенос и выходим из цикла
+      surplus = 0;
+      break;
+    }
+    // Если при сложении получается 10
+    digit = 0;
+  }
+  // Если остался перенос, добавляем новый разряд в начало
+  if (surplus != 0) {
+    digits_.insert(digits_.begin(), 1);
+  }
+  return *this;
+}
 
-Natural &Natural::operator++(int) { return *this; }
+// Инкремент натурального числа "n++"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Natural Natural::operator++(int) {
+  // Сохраняем текущее состояние числа для возвращения
+  Natural old_value = *this;
+  // Инкремент текущего объекта
+  ++(*this);
+  // Возвращаем значение до инкремента
+  return old_value;
+}
 
 // Сложение натуральных чисел "+"
 // Над модулем работала Варфоломеева Арина, гр. 3383
