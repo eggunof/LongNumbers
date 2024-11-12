@@ -88,11 +88,17 @@ Rational Rational::operator+(const Rational &rhs) const {
 Rational Rational::operator-(const Rational &rhs) const {
   // Вычитаем копию текущего объекта
   Rational result = *this;
-  result += rhs;
+  result -= rhs;
   return result;
 }
 
-Rational Rational::operator*(const Rational &rhs) const { return {}; }
+// Умножение дробей "*"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Rational Rational::operator*(const Rational &rhs) const {
+  Rational result = *this;
+  result *= rhs;
+  return result;
+}
 
 // Деление дробей (делитель отличен от нуля) "/"
 // Над модулем работала Варфоломеева Арина, гр. 3383
@@ -135,7 +141,15 @@ Rational Rational::operator-=(const Rational &rhs) {
   return *this;
 }
 
-Rational Rational::operator*=(const Rational &rhs) { return {}; }
+// Умножение дробей "*="
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Rational Rational::operator*=(const Rational &rhs) {
+  numerator_ *= rhs.numerator_;
+  denominator_ *= rhs.denominator_;
+  // Сокращаем дробь
+  Reduce();
+  return *this;
+}
 
 // Деление дробей (делитель отличен от нуля) "/="
 // Над модулем работала Варфоломеева Арина, гр. 3383
