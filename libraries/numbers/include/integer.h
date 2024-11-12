@@ -33,20 +33,19 @@ class Integer {
   bool operator<=(const Integer &rhs) const;
   bool operator>=(const Integer &rhs) const;
 
-  Integer operator-() const;  // MUL_ZM_Z
-  Integer &operator-();       // MUL_ZM_Z
-
-  Integer operator+(const Integer &rhs) const;  // ADD_ZZ_Z
-  Integer operator-(const Integer &rhs) const;  // SUB_ZZ_Z
-  Integer operator*(const Integer &rhs) const;  // MUL_ZZ_Z
-  Integer operator/(const Integer &rhs) const;  // DIV_ZZ_Z
-  Integer operator%(const Integer &rhs) const;  // MOD_ZZ_Z
-
+  Integer &operator-();                     // MUL_ZM_Z
   Integer &operator+=(const Integer &rhs);  // ADD_ZZ_Z
   Integer &operator-=(const Integer &rhs);  // SUB_ZZ_Z
   Integer &operator*=(const Integer &rhs);  // MUL_ZZ_Z
   Integer &operator/=(const Integer &rhs);  // DIV_ZZ_Z
   Integer &operator%=(const Integer &rhs);  // MOD_ZZ_Z
+
+  Integer operator-() const;                    // MUL_ZM_Z
+  Integer operator+(const Integer &rhs) const;  // ADD_ZZ_Z
+  Integer operator-(const Integer &rhs) const;  // SUB_ZZ_Z
+  Integer operator*(const Integer &rhs) const;  // MUL_ZZ_Z
+  Integer operator/(const Integer &rhs) const;  // DIV_ZZ_Z
+  Integer operator%(const Integer &rhs) const;  // MOD_ZZ_Z
 };
 
 #endif  // NUMBERS_INTEGER_H_
