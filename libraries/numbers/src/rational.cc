@@ -68,9 +68,9 @@ Rational Rational::operator/=(const Rational &rhs) {
     }
   }
   // Перемножаем числитель левого операнда и знаменатель правого
-  numerator_ *= rhs.denominator_;
+  numerator_ *= Integer(rhs.denominator_);
   // Перемножаем числитель правого операнда и знаменатель левого
-  denominator_ *= rhs.numerator_;
+  denominator_ *= Natural(Integer::AbsoluteValue(rhs.numerator_));
   // Сокращаем получившуюся дробь
   Reduce();
   return *this;
