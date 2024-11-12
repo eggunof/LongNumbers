@@ -58,19 +58,19 @@ Rational Rational::operator*=(const Rational &rhs) { return {}; }
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Rational Rational::operator/=(const Rational &rhs) {
   // Определяем знак, сравнив знаки числителей
-  // Если числитель левого операнда равен 0, дробь равна 0;
-  // Если знаки числителей операндов равны, то дробь положительна, иначе отрицательная
-  if (numerator_.GetSign() == Sign::ZERO) {
-    numerator_.sign_ = Sign::ZERO;
-  } else if (numerator_.GetSign() == rhs.numerator_.GetSign()) {
-    numerator_.sign_ = Sign::POSITIVE;
+  // Если знаки числителей операндов различны, дробь отрицательная;
+  // Иначе если знак числителя отрицательный, меняем на положительный
+  if (numerator_.GetSign() != rhs.numerator_.GetSign()) {
+    numerator_ = -numerator_;
   } else {
-    numerator_.sign_ = Sign::NEGATIVE;
+    if (numerator_.GetSign() == Sign::NEGATIVE) {
+      numerator_ = -numerator_;
+    }
   }
   // Перемножаем числитель левого операнда и знаменатель правого
-  numerator_.natural_ *= rhs.denominator_;
+  numerator_ *= rhs.denominator_;
   // Перемножаем числитель правого операнда и знаменатель левого
-  denominator_ *= rhs.numerator_.natural_;
+  denominator_ *= rhs.numerator_;
   // Сокращаем получившуюся дробь
   Reduce();
   return *this;
