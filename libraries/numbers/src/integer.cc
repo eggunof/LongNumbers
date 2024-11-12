@@ -119,7 +119,13 @@ Integer Integer::operator/(const Integer &rhs) const {
   return result;
 }
 
-Integer Integer::operator%(const Integer &rhs) const { return {}; }
+// Остаток от деления целых чисел "%"
+// Над модулем работал Матвеев Никита, гр. 3383
+Integer Integer::operator%(const Integer &rhs) const {
+  Integer result = *this;
+  result %= rhs;
+  return result;
+}
 
 // Сложение целых чисел "+="
 // Над модулем работала Кадникова Анна, гр. 3384
@@ -189,4 +195,12 @@ Integer &Integer::operator/=(const Integer &rhs) {
   return *this;
 }
 
-Integer &Integer::operator%=(const Integer &rhs) { return *this; }
+// Остаток от деления целых чисел "%="
+// Над модулем работал Матвеев Никита, гр. 3383
+Integer &Integer::operator%=(const Integer &rhs) {
+  // Вычисляем неполное частное
+  Integer quotient = *this / rhs;
+  // Вычитаем из делимого неполное частное, умноженное на делитель
+  *this -= rhs * quotient;
+  return *this;
+}

@@ -159,3 +159,29 @@ TEST(IntegerTest, Division) {
   Integer n("0");
   EXPECT_THROW(m / n, std::invalid_argument);
 }
+
+TEST(IntegerTest, DivisionRemainder) {
+  Integer a("78");
+  Integer b("33");
+  a %= b;
+  EXPECT_EQ(a, Integer("12"));
+
+  Integer c("-78");
+  Integer d("33");
+  c %= d;
+  EXPECT_EQ(c, Integer("21"));
+
+  Integer e("10");
+  Integer f("33");
+  e %= f;
+  EXPECT_EQ(e, Integer("10"));
+
+  Integer g("-10");
+  Integer h("33");
+  g %= h;
+  EXPECT_EQ(g, Integer("23"));
+
+  Integer i("123");
+  Integer j("0");
+  EXPECT_THROW(i % j, std::invalid_argument);
+}
