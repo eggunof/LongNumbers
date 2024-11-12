@@ -27,11 +27,13 @@ class Rational {
   Rational &Reduce();  // RED_Q_Q
   bool IsInteger();    // INT_Q_B
 
+  Rational operator-() const;
   Rational operator+(const Rational &rhs) const;  // ADD_QQ_Q
   Rational operator-(const Rational &rhs) const;  // SUB_QQ_Q
   Rational operator*(const Rational &rhs) const;  // MUL_QQ_Q
   Rational operator/(const Rational &rhs) const;  // DIV_QQ_Q
 
+  Rational& operator-();
   Rational operator+=(const Rational &rhs);  // ADD_QQ_Q
   Rational operator-=(const Rational &rhs);  // SUB_QQ_Q
   Rational operator*=(const Rational &rhs);  // MUL_QQ_Q

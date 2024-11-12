@@ -69,6 +69,11 @@ bool Rational::IsInteger() {
   return denominator_ == Natural("1");
 }
 
+Rational Rational::operator-() const {
+  Rational result = *this;
+  return -result;
+}
+
 // Сложение дробей "+"
 // Над модулем работала Майская Вероника, гр. 3384
 Rational Rational::operator+(const Rational &rhs) const {
@@ -78,14 +83,24 @@ Rational Rational::operator+(const Rational &rhs) const {
   return result;
 }
 
+// Вычитание дробей "-"
+// Над модулем работала Кадникова Анна, гр. 3384
 Rational Rational::operator-(const Rational &rhs) const {
-  *this -= rhs;
-  return *this;
- }
+  // Вычитаем копию текущего объекта
+  Rational result = *this;
+  result += rhs;
+  return result;
+}
 
 Rational Rational::operator*(const Rational &rhs) const { return {}; }
 
 Rational Rational::operator/(const Rational &rhs) const { return {}; }
+
+Rational &Rational::operator-() {
+  // Меняем знак числителя
+  -numerator_;
+  return *this;
+}
 
 // Сложение дробей "+="
 // Над модулем работала Майская Вероника, гр. 3384
@@ -106,22 +121,12 @@ Rational Rational::operator+=(const Rational &rhs) {
   return *this;
 }
 
+// Вычитание дробей "-="
+// Над модулем работала Кадникова Анна, гр. 3384
 Rational Rational::operator-=(const Rational &rhs) {
-  /// Находим общий знаменатель
-  Natural Denum = denominator_.LeastCommonMultiple(denominator_, rhs.denominator_);
-
-  // Находим числители с учетом дополнительных множителей
-  Integer Num1 =
-      numerator_*=(Integer(Denum/=(this->denominator_)));
-  Integer Num2 =
-      rhs.numerator_*(Integer(Denum/=(rhs.denominator_)));
-
-  // Вычитаем числитель второй дроби из первой
-  Integer Num = Num1-=Num2;
-
-  // Создаем результат
-  Rational result(Num, Denum);
-  return result;
+  // Применяем сложение с противоположным знаком
+  *this += -rhs;
+  return *this;
 }
 
 Rational Rational::operator*=(const Rational &rhs) { return {}; }
