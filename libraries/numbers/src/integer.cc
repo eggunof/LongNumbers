@@ -24,7 +24,9 @@ Integer::Integer(const std::string &string)
 
 // Преобразование натурального числа в целое
 // Над модулем работала Дмитриева Дарья, гр. 3383
-Integer::Integer(const Natural &natural) : natural_(natural), sign_(Sign::POSITIVE) {}
+Integer::Integer(const Natural &natural)
+    : natural_(natural),
+      sign_(natural_.IsZero() ? Sign::ZERO : Sign::POSITIVE) {}
 
 // Преобразование целого неотрицательного в натуральное
 // Над модулем работала Варфоломеева Арина, гр. 3383
