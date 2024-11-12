@@ -46,6 +46,17 @@ bool Rational::operator==(const Rational &rhs) const {
 
 bool Rational::operator!=(const Rational &rhs) const { return !(*this == rhs); }
 
+bool Rational::operator<(const Rational &rhs) const {
+  return numerator_ * static_cast<Integer>(rhs.denominator_) <
+         rhs.numerator_ * static_cast<Integer>(denominator_);
+}
+
+bool Rational::operator>(const Rational &rhs) const { return rhs < *this; }
+
+bool Rational::operator<=(const Rational &rhs) const { return !(*this > rhs); }
+
+bool Rational::operator>=(const Rational &rhs) const { return !(*this < rhs); }
+
 // Сокращение дроби
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Rational &Rational::Reduce() {

@@ -23,6 +23,10 @@ class Rational {
 
   bool operator==(const Rational &rhs) const;
   bool operator!=(const Rational &rhs) const;
+  bool operator<(const Rational &rhs) const;
+  bool operator>(const Rational &rhs) const;
+  bool operator<=(const Rational &rhs) const;
+  bool operator>=(const Rational &rhs) const;
 
   Rational &Reduce();  // RED_Q_Q
   bool IsInteger();    // INT_Q_B
