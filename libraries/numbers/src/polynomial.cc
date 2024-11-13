@@ -43,7 +43,7 @@ Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
     // и для данной степени вычисляем коэффициент, при котором старший член при вычитании сократится
     result[remainder_degree-rhs_degree] = remainder_leading/rhs_leading;
     // Вычитаем из многочлена произведение делителя и вышеописанного члена
-    remainder -= (rhs*remainder_leading/rhs_leading).MultiplyByPower(remainder_degree-rhs_degree);
+    remainder -= (rhs*(remainder_leading/rhs_leading)).MultiplyByPower(remainder_degree-rhs_degree);
   }
   *this = result;
   return *this;
