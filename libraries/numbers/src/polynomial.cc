@@ -35,13 +35,15 @@ Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   Polynomial remainder = *this;
   // До момента, пока степень делителя меньше или равна степени многочлена, продолжаем деление
   while (rhs.GetDegree() <= remainder.GetDegree()){
-    remainder.GetLeadingCoefficient();
-    remainder.GetDegree();
+    remainder_leading = remainder.GetLeadingCoefficient();
+    remainder_degree = remainder.GetDegree();
+    rhs_leading = rhs.GetLeadingCoefficient();
+    rhs_degree = rhs.GetDegree();
     // Подсчитываем, на сколько нужно увеличить степень делителя для того, чтоюы сравнять её со степенью многочлена 
     // и для данной степени вычисляем коэффициент, при котором старший член при вычитании сократится
-    result[remainder.GetDegree()-rhs.GetDegree()] = remainder.GetLeadingCoefficient()/rhs.GetLeadingCoefficient();
+    result[remainder_degree-rhs_degree] = remainder_leading/rhs_leading;
     // Вычитаем из многочлена произведение делителя и вышеописанного члена
-    remainder -= (rhs*remainder.GetLeadingCoefficient()/rhs.GetLeadingCoefficient()).MultiplyByPower(remainder.GetDegree()-rhs.GetDegree());
+    remainder -= (rhs*remainder_leading/rhs_leading).MultiplyByPower(remainder_degree-rhs_degree);
   }
   *this = result;
   return *this;
