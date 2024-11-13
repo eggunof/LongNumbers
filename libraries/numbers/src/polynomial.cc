@@ -24,7 +24,7 @@ Polynomial &Polynomial::operator+=(const Polynomial &rhs) { return *this; }
 // Вычитание многочленов
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Polynomial &Polynomial::operator-=(const Polynomial &rhs) { 
-  for (auto & coefficient : rhs.coefficients_) coefficients_[coefficient] -= rhs.coefficients_[coefficient];
+  for (auto & coefficient : rhs.coefficients_) coefficients_[coefficient.first] -= coefficient.second;
   return *this; 
 }
 
