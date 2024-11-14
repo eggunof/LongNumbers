@@ -76,12 +76,13 @@ Polynomial Polynomial::operator*(const Rational &scalar) const {
   return result;
 }
 
-// Умножение многочленов
+// Умножение многочленов "*"
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Polynomial Polynomial::operator*(const Polynomial &rhs) const {
-    Polynomial result = *this;
-    result *= rhs;
-    return result;
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= rhs;
+  return result;
 }
 
 Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
@@ -132,25 +133,24 @@ Polynomial &Polynomial::operator*=(const Rational &scalar) {
   return *this;
 }
 
-// Умножение многочленов
+// Умножение многочленов "*="
 // Над модулем работала Дмитриева Дарья, гр. 3383
 Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
-    // Создаем временной многочлен для хранения результата
-    std::map<Natural, Rational, Comparator> resultCoefficients;
-    // Перебираем все коэффициенты текущего многочлена
-    for (const auto &[thisDegree, thisCoefficient] : coefficients_) {
-        // Перебираем все коэффициенты многочлена rhs
-        for (const auto &[rhsDegree, rhsCoefficient] : rhs.coefficients_) {
-            // Вычисляем новую степень
-            Natural newDegree = thisDegree + rhsDegree;
-            // Вычисляем новый коэффициент
-            Rational newCoefficient = thisCoefficient * rhsCoefficient;
-            // Суммируем коэффициенты при одинаковых степенях
-            resultCoefficients[newDegree] += newCoefficient;
-        }
+  std::map<Natural, Rational, Comparator> result;
+  // Перебираем все коэффициенты текущего многочлена
+  for (const auto &[lhs_deg, lhs_coefficient] : coefficients_) {
+    // Перебираем все коэффициенты многочлена rhs
+    for (const auto &[rhs_deg, rhs_coefficient] : rhs.coefficients_) {
+      // Складываем произведения коэффициентов при одинаковых степенях
+      auto new_degree = lhs_deg + rhs_deg;
+      auto new_coefficient = lhs_coefficient * rhs_coefficient;
+      if ((result[new_degree] += new_coefficient) == Rational("0")) {
+        result.erase(new_degree);
+      }
     }
-    coefficients_ = std::move(resultCoefficients);
-    return *this;
+  }
+  coefficients_ = std::move(result);
+  return *this;
 }
 
 Polynomial &Polynomial::operator/=(const Polynomial &rhs) { return *this; }

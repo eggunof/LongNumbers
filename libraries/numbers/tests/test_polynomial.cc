@@ -200,30 +200,37 @@ TEST(PolynomialTest, MultiplyByXPower) {
 }
 
 TEST(PolynomialTest, Multiplication) {
-    Polynomial pol1({{Natural(0), Rational(Integer(1), Natural(1))},
-                     {Natural(1), Rational(Integer(2), Natural(1))},
-                     {Natural(2), Rational(Integer(3), Natural(1))}});
-    Polynomial pol2({
-        {Natural(0), Rational(Integer(2), Natural(1))},
-        {Natural(1), Rational(Integer(6), Natural(1))},
-    });
-    pol1 *= pol2;
-    Polynomial pol_expexted1({
-    {Natural(0), Rational(Integer(2), Natural(1))},
-    {Natural(1), Rational(Integer(10), Natural(1))},
-    {Natural(2), Rational(Integer(18), Natural(1))},
-    {Natural(3), Rational(Integer(18), Natural(1))}
-    });
+  Polynomial a("3/2*x^2 - 2*x + 1");
+  Polynomial b("x + 1");
+  Polynomial c("3/2*x^3 - 1/2*x^2 - x + 1");
+  a *= b;
+  EXPECT_EQ(a, c);
 
-    EXPECT_EQ(pol1, pol_expected);
+  Polynomial d("x^2 + 2*x + 1");
+  Polynomial e("x + 3");
+  Polynomial f("x^3 + 5*x^2 + 7*x + 3");
+  d *= e;
+  EXPECT_EQ(d, f);
 
-    Polynomial pol3({{Natural(0), Rational(Integer(10), Natural(1))},
-                     {Natural(1), Rational(Integer(16), Natural(1))}});
-    Polynomial pol4({{Natural(0), Rational(Integer(16), Natural(1))}});
-    pol3 *= pol4;
-    Polynomial pol_expexted2({
-    {Natural(0), Rational(Integer(160), Natural(1))},
-    {Natural(1), Rational(Integer(256), Natural(1))}
-    });
-    EXPECT_EQ(pol3, pol_expexted2);
+  Polynomial g("2*x^2 - x + 3");
+  Polynomial h("x^2 + 1");
+  Polynomial i("2*x^4 - x^3 + 5*x^2 - x + 3");
+  g *= h;
+  EXPECT_EQ(g, i);
+
+  Polynomial j("x^3 + 3");
+  Polynomial k("0");
+  Polynomial l("0");
+  j *= k;
+  EXPECT_EQ(j, l);
+
+  Polynomial m("1/2*x + 1");
+  Polynomial n("2*x^2 - x + 1/2");
+  Polynomial o("x^3 + 3/2*x^2 - 3/4*x + 1/2");
+  EXPECT_EQ(m * n, o);
+
+  Polynomial p("x + 2");
+  Polynomial q("x - 2");
+  Polynomial r("x^2 - 4");
+  EXPECT_EQ(p * q, r);
 }
