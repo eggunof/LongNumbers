@@ -132,23 +132,31 @@ Polynomial &Polynomial::operator/=(const Polynomial &rhs) { return *this; }
 
 Polynomial &Polynomial::operator%=(const Polynomial &rhs) { return *this; }
 
-// Умножение многочлена на x^k, k-натуральное или 0
+// Умножение многочлена на x^k
 // Над модулем работала Майская Вероника, гр. 3384
 Polynomial &Polynomial::MultiplyByXPower(uint32_t k) {
-  // Если k = 0, то умножение на x^0 не меняет многочлен
   if (k == 0) {
     return *this;
   }
-  // Создаем временное хранилище для коэффициентов
-  std::map<Natural, Rational, Comparator> new_coefficients;
+  auto multiplier_degree = Natural(k);
   // Проходим по каждому члену многочлена
-  for (const auto &term : this->coefficients_) {
-    Natural new_degree = term.first + k;  // Новая степень после смещения на k
-    new_coefficients[new_degree] = term.second;  // Добавляем коэффициент в новую степень
+  for (auto &[degree, _] : coefficients_) {
+    // Достаём узел
+    auto node = coefficients_.extract(degree);
+    // Изменяем ключ
+    node.key() += multiplier_degree;
+    // Вставляем обратно
+    coefficients_.insert(std::move(node));
   }
-  // Обновляем текущий многочлен новыми коэффициентами
-  this->coefficients_ = new_coefficients;
   return *this;
+}
+
+// Умножение многочлена на x^k
+// Над модулем работала Майская Вероника, гр. 3384
+Polynomial Polynomial::MultiplyByXPower(uint32_t k) const {
+  Polynomial result = *this;
+  result.MultiplyByXPower(k);
+  return result;
 }
 
 Rational Polynomial::ToIntegerCoefficients(const Polynomial &polynomial) {

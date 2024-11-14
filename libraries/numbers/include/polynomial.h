@@ -52,7 +52,8 @@ class Polynomial {
   Polynomial &operator/=(const Polynomial &rhs);   // DIV_PP_P
   Polynomial &operator%=(const Polynomial &rhs);   // MOD_PP_P
 
-  Polynomial &MultiplyByXPower(uint32_t k);  // MUL_Pxk_P
+  Polynomial &MultiplyByXPower(uint32_t k);                     // MUL_Pxk_P
+  [[nodiscard]] Polynomial MultiplyByXPower(uint32_t k) const;  // MUL_Pxk_P
 
   Rational ToIntegerCoefficients(const Polynomial &polynomial);  // FAC_P_Q
 
