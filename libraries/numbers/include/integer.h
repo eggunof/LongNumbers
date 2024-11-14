@@ -47,6 +47,8 @@ class Integer {
   Integer operator*(const Integer &rhs) const;  // MUL_ZZ_Z
   Integer operator/(const Integer &rhs) const;  // DIV_ZZ_Z
   Integer operator%(const Integer &rhs) const;  // MOD_ZZ_Z
+
+  explicit operator std::string() const;
 };
 
 #endif  // NUMBERS_INTEGER_H_

@@ -18,10 +18,11 @@ class Polynomial {
   std::map<Natural, Rational, Comparator> coefficients_;
 
  public:
-  Polynomial() : coefficients_() {}
+  Polynomial() = default;
   explicit Polynomial(
       const std::map<Natural, Rational, Comparator> &coefficients)
       : coefficients_(coefficients) {}
+  explicit Polynomial(std::string string);
   Polynomial(const Polynomial &other) = default;
   Polynomial &operator=(const Polynomial &other) = default;
 
@@ -31,6 +32,9 @@ class Polynomial {
   [[nodiscard]] Rational GetLeadingCoefficient() const {
     return coefficients_.begin()->second;
   }  // LED_P_N
+
+  bool operator==(const Polynomial &rhs) const;
+  bool operator!=(const Polynomial &rhs) const;
 
   Polynomial operator+(const Polynomial &rhs) const;   // ADD_PP_P
   Polynomial operator-(const Polynomial &rhs) const;   // SUB_PP_P
@@ -54,6 +58,8 @@ class Polynomial {
       const Polynomial &first, const Polynomial &second);          // GCD_PP_P
   static Polynomial Derivative(const Polynomial &polynomial);      // DER_P_P
   static Polynomial NormalizeRoots(const Polynomial &polynomial);  // NMR_P_P
+
+  explicit operator std::string() const;
 };
 
 #endif  // NUMBERS_POLYNOMIAL_H_

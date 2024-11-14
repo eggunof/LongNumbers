@@ -61,6 +61,8 @@ class Natural {
                                        const Natural &second);  // GCD_NN_N
   static Natural LeastCommonMultiple(const Natural &first,
                                      const Natural &second);  // LCM_NN_N
+
+  explicit operator std::string() const;
 };
 
 #endif  // NUMBERS_NATURAL_H

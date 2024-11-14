@@ -40,6 +40,8 @@ class Rational {
   Rational operator-(const Rational &rhs) const;  // SUB_QQ_Q
   Rational operator*(const Rational &rhs) const;  // MUL_QQ_Q
   Rational operator/(const Rational &rhs) const;  // DIV_QQ_Q
+
+  explicit operator std::string() const;
 };
 
 #endif  // NUMBERS_RATIONAL_H_
