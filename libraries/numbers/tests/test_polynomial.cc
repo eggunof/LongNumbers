@@ -198,3 +198,39 @@ TEST(PolynomialTest, MultiplyByXPower) {
   Polynomial l("1/2*x^7 + 3/4*x^6 - 1/3*x^5");
   EXPECT_EQ(k.MultiplyByXPower(5), l);
 }
+
+TEST(PolynomialTest, Multiplication) {
+  Polynomial a("3/2*x^2 - 2*x + 1");
+  Polynomial b("x + 1");
+  Polynomial c("3/2*x^3 - 1/2*x^2 - x + 1");
+  a *= b;
+  EXPECT_EQ(a, c);
+
+  Polynomial d("x^2 + 2*x + 1");
+  Polynomial e("x + 3");
+  Polynomial f("x^3 + 5*x^2 + 7*x + 3");
+  d *= e;
+  EXPECT_EQ(d, f);
+
+  Polynomial g("2*x^2 - x + 3");
+  Polynomial h("x^2 + 1");
+  Polynomial i("2*x^4 - x^3 + 5*x^2 - x + 3");
+  g *= h;
+  EXPECT_EQ(g, i);
+
+  Polynomial j("x^3 + 3");
+  Polynomial k("0");
+  Polynomial l("0");
+  j *= k;
+  EXPECT_EQ(j, l);
+
+  Polynomial m("1/2*x + 1");
+  Polynomial n("2*x^2 - x + 1/2");
+  Polynomial o("x^3 + 3/2*x^2 - 3/4*x + 1/2");
+  EXPECT_EQ(m * n, o);
+
+  Polynomial p("x + 2");
+  Polynomial q("x - 2");
+  Polynomial r("x^2 - 4");
+  EXPECT_EQ(p * q, r);
+}

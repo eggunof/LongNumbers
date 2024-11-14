@@ -76,7 +76,14 @@ Polynomial Polynomial::operator*(const Rational &scalar) const {
   return result;
 }
 
-Polynomial Polynomial::operator*(const Polynomial &rhs) const { return {}; }
+// Умножение многочленов "*"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator*(const Polynomial &rhs) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= rhs;
+  return result;
+}
 
 Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
 
@@ -126,7 +133,25 @@ Polynomial &Polynomial::operator*=(const Rational &scalar) {
   return *this;
 }
 
-Polynomial &Polynomial::operator*=(const Polynomial &rhs) { return *this; }
+// Умножение многочленов "*="
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
+  std::map<Natural, Rational, Comparator> result;
+  // Перебираем все коэффициенты текущего многочлена
+  for (const auto &[lhs_deg, lhs_coefficient] : coefficients_) {
+    // Перебираем все коэффициенты многочлена rhs
+    for (const auto &[rhs_deg, rhs_coefficient] : rhs.coefficients_) {
+      // Складываем произведения коэффициентов при одинаковых степенях
+      auto new_degree = lhs_deg + rhs_deg;
+      auto new_coefficient = lhs_coefficient * rhs_coefficient;
+      if ((result[new_degree] += new_coefficient) == Rational("0")) {
+        result.erase(new_degree);
+      }
+    }
+  }
+  coefficients_ = std::move(result);
+  return *this;
+}
 
 Polynomial &Polynomial::operator/=(const Polynomial &rhs) { return *this; }
 
