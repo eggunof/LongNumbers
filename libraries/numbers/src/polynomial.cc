@@ -1,7 +1,13 @@
 
 #include "polynomial.h"
 
-Polynomial Polynomial::operator+(const Polynomial &rhs) const { return {}; }
+// Сложение многочленов "+"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Polynomial Polynomial::operator+(const Polynomial &rhs) const {
+  Polynomial result = *this;
+  result += rhs;
+  return result;
+}
 
 Polynomial Polynomial::operator-(const Polynomial &rhs) const { return {}; }
 
@@ -13,7 +19,18 @@ Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
 
 Polynomial Polynomial::operator%(const Polynomial &rhs) const { return {}; }
 
-Polynomial &Polynomial::operator+=(const Polynomial &rhs) { return *this; }
+// Сложение многочленов "+="
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Polynomial &Polynomial::operator+=(const Polynomial &rhs) {
+  // Проходим по всем коэффициентам многочлена rhs
+  for (auto &coefficient : rhs.coefficients_) {
+    // Для каждого коэффициента из rhs (coefficient.first - степень,
+    // coefficient.second - коэффициент) увеличиваем соответствующий коэффициент
+    // текущего многочлена
+    coefficients_[coefficient.first] += coefficient.second;
+  }
+  return *this;
+}
 
 Polynomial &Polynomial::operator-=(const Polynomial &rhs) { return *this; }
 
