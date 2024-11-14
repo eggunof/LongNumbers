@@ -4,7 +4,7 @@
 #include <regex>
 #include <sstream>
 
-Polynomial::Polynomial(std::string string) {
+Polynomial::Polynomial(const std::string &string) {
   std::regex term_regex(
       R"((((?:[+-]+\s*)?(?:(\d+\s*)(?:\/\s*\d+\s*)?)?)?\*?x(?:\^?\s*(\d+\s*))?)|((?:[+-]+\s*)?\d+\s*(?:\/\s*\d+\s*)?))");
   std::sregex_iterator term_begin(string.begin(), string.end(), term_regex),
@@ -44,6 +44,11 @@ bool Polynomial::operator!=(const Polynomial &rhs) const {
   return !(rhs == *this);
 }
 
+Polynomial Polynomial::operator-() const {
+  Polynomial result = *this;
+  return -result;
+}
+
 // Сложение многочленов "+"
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Polynomial Polynomial::operator+(const Polynomial &rhs) const {
@@ -53,9 +58,10 @@ Polynomial Polynomial::operator+(const Polynomial &rhs) const {
   return result;
 }
 
-// Вычитание многочленов
+// Вычитание многочленов "-"
 // Над модулем работала Солдунова Екатерина, гр. 3383
-Polynomial Polynomial::operator-(const Polynomial &rhs) const { 
+Polynomial Polynomial::operator-(const Polynomial &rhs) const {
+  // Вычитаем копию текущего объекта
   Polynomial result = *this;
   result -= rhs;
   return result;
@@ -68,6 +74,13 @@ Polynomial Polynomial::operator*(const Polynomial &rhs) const { return {}; }
 Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
 
 Polynomial Polynomial::operator%(const Polynomial &rhs) const { return {}; }
+
+Polynomial Polynomial::operator-() {
+  for (auto &[_, coefficient] : coefficients_) {
+    -coefficient;
+  }
+  return *this;
+}
 
 // Сложение многочленов "+="
 // Над модулем работала Варфоломеева Арина, гр. 3383
@@ -83,11 +96,12 @@ Polynomial &Polynomial::operator+=(const Polynomial &rhs) {
   return *this;
 }
 
-// Вычитание многочленов
+// Вычитание многочленов "-="
 // Над модулем работала Солдунова Екатерина, гр. 3383
-Polynomial &Polynomial::operator-=(const Polynomial &rhs) { 
-  for (auto & coefficient : rhs.coefficients_) coefficients_[coefficient.first] -= coefficient.second;
-  return *this; 
+Polynomial &Polynomial::operator-=(const Polynomial &rhs) {
+  // Применяем сложение с противоположным знаком
+  *this += -rhs;
+  return *this;
 }
 
 Polynomial &Polynomial::operator*=(const Rational &scalar) { return *this; }
