@@ -4,6 +4,7 @@
 // Сложение многочленов "+"
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Polynomial Polynomial::operator+(const Polynomial &rhs) const {
+  // Складываем копию текущего объекта
   Polynomial result = *this;
   result += rhs;
   return result;
@@ -22,12 +23,13 @@ Polynomial Polynomial::operator%(const Polynomial &rhs) const { return {}; }
 // Сложение многочленов "+="
 // Над модулем работала Варфоломеева Арина, гр. 3383
 Polynomial &Polynomial::operator+=(const Polynomial &rhs) {
-  // Проходим по всем коэффициентам многочлена rhs
-  for (auto &coefficient : rhs.coefficients_) {
-    // Для каждого коэффициента из rhs (coefficient.first - степень,
-    // coefficient.second - коэффициент) увеличиваем соответствующий коэффициент
-    // текущего многочлена
-    coefficients_[coefficient.first] += coefficient.second;
+  // Проходимся по коэффициентам правого многочлена
+  for (auto &[degree, coefficient] : rhs.coefficients_) {
+    // Складываем и проверяем, не стал ли коэффициент равным нулю
+    if ((coefficients_[degree] += coefficient) == Rational("0")) {
+      // Если стал, удаляем
+      coefficients_.erase(degree);
+    }
   }
   return *this;
 }
