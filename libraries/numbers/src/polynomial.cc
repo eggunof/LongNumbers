@@ -67,16 +67,14 @@ Polynomial Polynomial::operator-(const Polynomial &rhs) const {
   return result;
 }
 
-Polynomial Polynomial::operator*(const Rational &scalar) const { 
-  std::map<Natural, Rational, Comparator> temp = this->coefficients_;
-  // Пройдемся по коэффициентам многочлена домножая каждый на рациональное число
-  for (auto it = temp.begin(); it != temp.end(); it++)
-    temp[it->first] = (temp[it->first]) *= (scalar);
-
-  Polynomial *MUL = new Polynomial(temp);
-
-  return *MUL;
-  return *this; }
+// Умножение многочлена на рациональное "*"
+// Над модулем работала Кадникова Анна, гр. 3384
+Polynomial Polynomial::operator*(const Rational &scalar) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= scalar;
+  return result;
+}
 
 Polynomial Polynomial::operator*(const Polynomial &rhs) const { return {}; }
 
@@ -113,15 +111,18 @@ Polynomial &Polynomial::operator-=(const Polynomial &rhs) {
   return *this;
 }
 
+// Умножение многочлена на рациональное "*="
+// Над модулем работала Кадникова Анна, гр. 3384
 Polynomial &Polynomial::operator*=(const Rational &scalar) {
-  std::map<Natural, Rational, Comparator> temp = this->coefficients_;
-  // Пройдемся по коэффициентам многочлена домножая каждый на рациональное число
-  for (auto it = temp.begin(); it != temp.end(); it++)
-    temp[it->first] = (temp[it->first]) *= (scalar);
+  if (scalar == Rational("0")) {
+    coefficients_ = {};
+    return *this;
+  }
+  // Пройдёмся по коэффициентам многочлена, умножая каждый на скаляр
+  for (auto &[_, coefficient] : coefficients_) {
+    coefficient *= scalar;
+  }
 
-  Polynomial *MUL = new Polynomial(temp);
-
-  return *MUL;
   return *this;
 }
 

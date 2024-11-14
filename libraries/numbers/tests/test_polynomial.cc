@@ -138,3 +138,33 @@ TEST(PolynomialTest, Subtraction) {
   Polynomial r("-1/6*x^2 + 3/2*x - 1/2");
   EXPECT_EQ(p - q, r);
 }
+
+TEST(PolynomialTest, MultiplicationByRational) {
+  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
+  Polynomial b("3*x^5 - 8*x^3 + x - 4");
+  a *= Rational("2");
+  EXPECT_EQ(a, b);
+
+  Polynomial c("x^3 - 2*x + 5");
+  Polynomial d("-3*x^3 + 6*x - 15");
+  c *= Rational("-3");
+  EXPECT_EQ(c, d);
+
+  Polynomial e("3*x^4 + x^2 - x");
+  Polynomial f("3/2*x^4 + 1/2*x^2 - 1/2*x");
+  e *= Rational("1/2");
+  EXPECT_EQ(e, f);
+
+  Polynomial g("2*x^3 + 3*x^2 - x + 7");
+  Polynomial h("0");
+  g *= Rational("0");
+  EXPECT_EQ(g, h);
+
+  Polynomial i("x^4 - 3*x^2 + x - 6");
+  Polynomial j("x^4 - 3*x^2 + x - 6");
+  EXPECT_EQ(i * Rational("1"), j);
+
+  Polynomial k("1/2*x^2 + 3/4*x - 1/3");
+  Polynomial l("-1/3*x^2 - 1/2*x + 2/9");
+  EXPECT_EQ(k * Rational("-2/3"), l);
+}
