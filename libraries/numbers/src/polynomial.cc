@@ -103,7 +103,13 @@ Polynomial Polynomial::operator/(const Polynomial &rhs) const {
   return result;
 }
 
-Polynomial Polynomial::operator%(const Polynomial &rhs) const { return {}; }
+// Остаток от деления многочленов "%="
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator%(const Polynomial &rhs) const {
+  Polynomial result = *this;
+  result %= rhs;
+  return result;
+}
 
 Polynomial Polynomial::operator-() {
   for (auto &[_, coefficient] : coefficients_) {
@@ -186,7 +192,15 @@ Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   return *this;
 }
 
-Polynomial &Polynomial::operator%=(const Polynomial &rhs) { return *this; }
+// Остаток от деления многочленов "%="
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
+  // Вычисляем неполное частное
+  Polynomial quotient = *this / rhs;
+  // Вычитаем из делимого неполное частное, умноженное на делитель
+  *this -= rhs * quotient;
+  return *this;
+}
 
 // Умножение многочлена на x^k
 // Над модулем работала Майская Вероника, гр. 3384

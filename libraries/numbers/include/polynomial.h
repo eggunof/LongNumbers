@@ -3,6 +3,7 @@
 #define NUMBERS_POLYNOMIAL_H_
 
 #include <map>
+#include <stdexcept>
 
 #include "natural.h"
 #include "rational.h"

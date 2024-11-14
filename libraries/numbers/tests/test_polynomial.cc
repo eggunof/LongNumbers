@@ -235,7 +235,7 @@ TEST(PolynomialTest, Multiplication) {
   EXPECT_EQ(p * q, r);
 }
 
-TEST(PolynomialTest, Division) {
+TEST(PolynomialTest, DivisionQuotient) {
   Polynomial a("x^2 + 2*x + 1");
   Polynomial b("x + 1");
   Polynomial c("x + 1");
@@ -262,4 +262,36 @@ TEST(PolynomialTest, Division) {
   Polynomial m("x + 2");
   Polynomial n("0");
   EXPECT_THROW(m / n, std::invalid_argument);
+}
+
+TEST(PolynomialTest, DivisionRemainder) {
+  Polynomial a("x^3 + 3*x^2 + 3*x + 1");
+  Polynomial b("x + 1");
+  Polynomial c("0");
+  a %= b;
+  EXPECT_EQ(a, c);
+
+  Polynomial d("x^4 - 2*x^3 + x^2 + 3*x - 1");
+  Polynomial e("x^2 - 1");
+  Polynomial f("x + 1");
+  d %= e;
+  EXPECT_EQ(d, f);
+
+  Polynomial g("2*x^3 + 3*x^2 + 4*x + 5");
+  Polynomial h("x + 2");
+  Polynomial i("-7");
+  g %= h;
+  EXPECT_EQ(g, i);
+
+  Polynomial j("3*x^5 - x^4 + 2*x^3 - x + 4");
+  Polynomial k("x^2 + 1");
+  Polynomial l("3");
+  j %= k;
+  EXPECT_EQ(j, l);
+
+  Polynomial m("5*x^3 - 3*x^2 + 2");
+  Polynomial n("x^2 + 1");
+  Polynomial o("-5*x + 5");
+  m %= n;
+  EXPECT_EQ(m, o);
 }
