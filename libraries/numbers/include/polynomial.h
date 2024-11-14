@@ -23,15 +23,13 @@ class Polynomial {
       const std::map<Natural, Rational, Comparator> &coefficients)
       : coefficients_(coefficients) {}
   explicit Polynomial(const std::string &string);
+  Polynomial(const Natural &degree, const Rational &coefficient)
+      : coefficients_({{degree, coefficient}}) {}
   Polynomial(const Polynomial &other) = default;
   Polynomial &operator=(const Polynomial &other) = default;
 
-  [[nodiscard]] Natural GetDegree() const {
-    return coefficients_.begin()->first;
-  }  // DEG_P_N
-  [[nodiscard]] Rational GetLeadingCoefficient() const {
-    return coefficients_.begin()->second;
-  }  // LED_P_N
+  [[nodiscard]] Natural GetDegree() const;               // DEG_P_N
+  [[nodiscard]] Rational GetLeadingCoefficient() const;  // LED_P_N
 
   bool operator==(const Polynomial &rhs) const;
   bool operator!=(const Polynomial &rhs) const;

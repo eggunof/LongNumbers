@@ -36,6 +36,16 @@ Polynomial::Polynomial(const std::string &string) {
   }
 }
 
+Natural Polynomial::GetDegree() const {
+  if (coefficients_.begin() == coefficients_.end()) return Natural("0");
+  return coefficients_.begin()->first;
+}
+
+Rational Polynomial::GetLeadingCoefficient() const {
+  if (coefficients_.begin() == coefficients_.end()) return Rational("0");
+  return coefficients_.begin()->second;
+}
+
 bool Polynomial::operator==(const Polynomial &rhs) const {
   return coefficients_ == rhs.coefficients_;
 }
@@ -85,7 +95,13 @@ Polynomial Polynomial::operator*(const Polynomial &rhs) const {
   return result;
 }
 
-Polynomial Polynomial::operator/(const Polynomial &rhs) const { return {}; }
+// Частное от деления многочленов "/"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Polynomial Polynomial::operator/(const Polynomial &rhs) const {
+  Polynomial result = *this;
+  result /= rhs;
+  return result;
+}
 
 Polynomial Polynomial::operator%(const Polynomial &rhs) const { return {}; }
 
@@ -153,7 +169,22 @@ Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
   return *this;
 }
 
-Polynomial &Polynomial::operator/=(const Polynomial &rhs) { return *this; }
+// Частное от деления многочленов "/="
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
+  Polynomial result;
+  while (GetDegree() >= rhs.GetDegree()) {
+    // Делим старшие мономы
+    Polynomial monomial(GetDegree() - rhs.GetDegree(),
+                        GetLeadingCoefficient() / rhs.GetLeadingCoefficient());
+    // Прибавляем к результату
+    result += monomial;
+    // Вычитаем из делимого произведение найденного монома и делителя
+    *this -= rhs * monomial;
+  }
+  *this = result;
+  return *this;
+}
 
 Polynomial &Polynomial::operator%=(const Polynomial &rhs) { return *this; }
 

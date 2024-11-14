@@ -234,3 +234,32 @@ TEST(PolynomialTest, Multiplication) {
   Polynomial r("x^2 - 4");
   EXPECT_EQ(p * q, r);
 }
+
+TEST(PolynomialTest, Division) {
+  Polynomial a("x^2 + 2*x + 1");
+  Polynomial b("x + 1");
+  Polynomial c("x + 1");
+  a /= b;
+  EXPECT_EQ(a, c);
+
+  Polynomial d("x^3 + 3*x^2 + 3*x + 1");
+  Polynomial e("x + 1");
+  Polynomial f("x^2 + 2*x + 1");
+  d /= e;
+  EXPECT_EQ(d, f);
+
+  Polynomial g("x^4 - 2*x^3 + x^2 + 3*x - 1");
+  Polynomial h("x^2 - 1");
+  Polynomial i("x^2 - 2*x + 2");
+  g /= h;
+  EXPECT_EQ(g, i);
+
+  Polynomial j("2*x^3 + 3*x^2 + 4*x + 5");
+  Polynomial k("x + 2");
+  Polynomial l("2*x^2 - x + 6");
+  EXPECT_EQ(j / k, l);
+
+  Polynomial m("x + 2");
+  Polynomial n("0");
+  EXPECT_THROW(m / n, std::invalid_argument);
+}
