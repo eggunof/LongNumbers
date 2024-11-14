@@ -67,7 +67,14 @@ Polynomial Polynomial::operator-(const Polynomial &rhs) const {
   return result;
 }
 
-Polynomial Polynomial::operator*(const Rational &scalar) const { return {}; }
+// Умножение многочлена на рациональное "*"
+// Над модулем работала Кадникова Анна, гр. 3384
+Polynomial Polynomial::operator*(const Rational &scalar) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= scalar;
+  return result;
+}
 
 Polynomial Polynomial::operator*(const Polynomial &rhs) const { return {}; }
 
@@ -104,7 +111,20 @@ Polynomial &Polynomial::operator-=(const Polynomial &rhs) {
   return *this;
 }
 
-Polynomial &Polynomial::operator*=(const Rational &scalar) { return *this; }
+// Умножение многочлена на рациональное "*="
+// Над модулем работала Кадникова Анна, гр. 3384
+Polynomial &Polynomial::operator*=(const Rational &scalar) {
+  if (scalar == Rational("0")) {
+    coefficients_ = {};
+    return *this;
+  }
+  // Пройдёмся по коэффициентам многочлена, умножая каждый на скаляр
+  for (auto &[_, coefficient] : coefficients_) {
+    coefficient *= scalar;
+  }
+
+  return *this;
+}
 
 Polynomial &Polynomial::operator*=(const Polynomial &rhs) { return *this; }
 
