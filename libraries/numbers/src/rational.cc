@@ -1,6 +1,7 @@
 
 #include "rational.h"
 
+#include <sstream>
 #include <stdexcept>
 
 Rational::Rational(const Integer &numerator, const Natural &denominator)
@@ -178,4 +179,13 @@ Rational Rational::operator/(const Rational &rhs) const {
   Rational result = *this;
   result /= rhs;
   return result;
+}
+
+Rational::operator std::string() const {
+  std::ostringstream result;
+  result << std::string(numerator_);
+  if (denominator_ != Natural("1")) {
+    result << "/" << std::string(denominator_);
+  }
+  return result.str();
 }

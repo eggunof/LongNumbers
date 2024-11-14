@@ -2,6 +2,7 @@
 #include "integer.h"
 
 #include <algorithm>
+#include <sstream>
 #include <stdexcept>
 
 Integer::Integer(const Natural &natural, Sign sign)
@@ -207,4 +208,11 @@ Integer Integer::operator%(const Integer &rhs) const {
   Integer result = *this;
   result %= rhs;
   return result;
+}
+
+Integer::operator std::string() const {
+  std::ostringstream result;
+  if (sign_ == Sign::NEGATIVE) result << "-";
+  result << std::string(natural_);
+  return result.str();
 }
