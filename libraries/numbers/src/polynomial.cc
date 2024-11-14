@@ -36,6 +36,16 @@ Polynomial::Polynomial(const std::string &string) {
   }
 }
 
+Natural Polynomial::GetDegree() const {
+  if (coefficients_.begin() == coefficients_.end()) return Natural("0");
+  return coefficients_.begin()->first;
+}
+
+Rational Polynomial::GetLeadingCoefficient() const {
+  if (coefficients_.begin() == coefficients_.end()) return Rational("0");
+  return coefficients_.begin()->second;
+}
+
 bool Polynomial::operator==(const Polynomial &rhs) const {
   return coefficients_ == rhs.coefficients_;
 }
@@ -85,7 +95,7 @@ Polynomial Polynomial::operator*(const Polynomial &rhs) const {
   return result;
 }
 
-// Частное от деления многочлена на многочлен при делении с остатком
+// Частное от деления многочленов "/"
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Polynomial Polynomial::operator/(const Polynomial &rhs) const {
   Polynomial result = *this;
@@ -159,23 +169,18 @@ Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
   return *this;
 }
 
-// Частное от деления многочлена на многочлен при делении с остатком
+// Частное от деления многочленов "/="
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   Polynomial result;
-  // Остаток от деления
-  Polynomial remainder = *this;
-  // До момента, пока степень делителя меньше или равна степени многочлена, продолжаем деление
-  while (rhs.GetDegree() <= remainder.GetDegree()){
-    Rational remainder_leading = remainder.GetLeadingCoefficient();
-    Natural remainder_degree = remainder.GetDegree();
-    Rational rhs_leading = rhs.GetLeadingCoefficient();
-    Natural rhs_degree = rhs.GetDegree();
-    // Подсчитываем, на сколько нужно увеличить степень делителя для того, чтоюы сравнять её со степенью многочлена 
-    // и для данной степени вычисляем коэффициент, при котором старший член при вычитании сократится
-    result[remainder_degree-rhs_degree] = remainder_leading/rhs_leading;
-    // Вычитаем из многочлена произведение делителя и вышеописанного члена
-    remainder -= (rhs*(remainder_leading/rhs_leading)).MultiplyByXPower(remainder_degree-rhs_degree);
+  while (GetDegree() >= rhs.GetDegree()) {
+    // Делим старшие мономы
+    Polynomial monomial(GetDegree() - rhs.GetDegree(),
+                        GetLeadingCoefficient() / rhs.GetLeadingCoefficient());
+    // Прибавляем к результату
+    result += monomial;
+    // Вычитаем из делимого произведение найденного монома и делителя
+    *this -= rhs * monomial;
   }
   *this = result;
   return *this;
