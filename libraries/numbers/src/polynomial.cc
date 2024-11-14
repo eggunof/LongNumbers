@@ -132,7 +132,32 @@ Polynomial &Polynomial::operator/=(const Polynomial &rhs) { return *this; }
 
 Polynomial &Polynomial::operator%=(const Polynomial &rhs) { return *this; }
 
-Polynomial &Polynomial::MultiplyByXPower(uint32_t k) { return *this; }
+// Умножение многочлена на x^k
+// Над модулем работала Майская Вероника, гр. 3384
+Polynomial &Polynomial::MultiplyByXPower(uint32_t k) {
+  if (k == 0) {
+    return *this;
+  }
+  auto multiplier_degree = Natural(k);
+  // Проходим по каждому члену многочлена
+  for (auto &[degree, _] : coefficients_) {
+    // Достаём узел
+    auto node = coefficients_.extract(degree);
+    // Изменяем ключ
+    node.key() += multiplier_degree;
+    // Вставляем обратно
+    coefficients_.insert(std::move(node));
+  }
+  return *this;
+}
+
+// Умножение многочлена на x^k
+// Над модулем работала Майская Вероника, гр. 3384
+Polynomial Polynomial::MultiplyByXPower(uint32_t k) const {
+  Polynomial result = *this;
+  result.MultiplyByXPower(k);
+  return result;
+}
 
 Rational Polynomial::ToIntegerCoefficients(const Polynomial &polynomial) {
   return {};
