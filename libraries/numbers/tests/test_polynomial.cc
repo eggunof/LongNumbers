@@ -68,35 +68,37 @@ TEST(PolynomialTest, StringToPolynomial) {
 }
 
 TEST(PolynomialTest, Addition) {
-  Polynomial pol1({{Natural(0), Rational(Integer(1), Natural(1))},
-                   {Natural(1), Rational(Integer(2), Natural(1))},
-                   {Natural(2), Rational(Integer(3), Natural(1))},
-                   {Natural(3), Rational(Integer(4), Natural(1))}});
-  Polynomial pol2({{Natural(0), Rational(Integer(10), Natural(1))},
-                   {Natural(2), Rational(Integer(20), Natural(1))},
-                   {Natural(3), Rational(Integer(30), Natural(1))},
-                   {Natural(10), Rational(Integer(40), Natural(1))}});
-  Polynomial pol_expected1({{Natural(0), Rational(Integer(11), Natural(1))},
-                            {Natural(1), Rational(Integer(2), Natural(1))},
-                            {Natural(2), Rational(Integer(23), Natural(1))},
-                            {Natural(3), Rational(Integer(34), Natural(1))},
-                            {Natural(10), Rational(Integer(40), Natural(1))}});
+  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
+  Polynomial b("2*x^4 + x^3 - 1/2*x + 3");
+  Polynomial c("3/2*x^5 + 2*x^4 - 3*x^3 + 1");
+  a += b;
+  EXPECT_EQ(a, c);
 
-  EXPECT_EQ(pol1 += pol2, pol_expected1);
+  Polynomial d("x^3 - 2*x + 5");
+  Polynomial e("2*x^3 + 3*x - 1");
+  Polynomial f("3*x^3 + x + 4");
+  d += e;
+  EXPECT_EQ(d, f);
 
-  Polynomial pol3({{Natural(0), Rational(Integer(100), Natural(1))},
-                   {Natural(10), Rational(Integer(500), Natural(1))},
-                   {Natural(20), Rational(Integer(600), Natural(1))},
-                   {Natural(30), Rational(Integer(700), Natural(1))}});
-  Polynomial pol4({{Natural(0), Rational(Integer(-100), Natural(1))},
-                   {Natural(10), Rational(Integer(-200), Natural(1))},
-                   {Natural(20), Rational(Integer(400), Natural(1))},
-                   {Natural(30), Rational(Integer(-800), Natural(1))},
-                   {Natural(50), Rational(Integer(500), Natural(1))}});
-  Polynomial pol_expected2({{Natural(10), Rational(Integer(300), Natural(1))},
-                            {Natural(20), Rational(Integer(1000), Natural(1))},
-                            {Natural(30), Rational(Integer(-100), Natural(1))},
-                            {Natural(50), Rational(Integer(500), Natural(1))}});
+  Polynomial g("3*x^4 + x^2 - x");
+  Polynomial h("-3*x^4 - x^2 + 2*x + 5");
+  Polynomial i("x + 5");
+  g += h;
+  EXPECT_EQ(g, i);
 
-  EXPECT_EQ(pol3 += pol4, pol_expected2);
+  Polynomial j("2*x^3 + 3*x^2 - x + 7");
+  Polynomial k("0");
+  Polynomial l("2*x^3 + 3*x^2 - x + 7");
+  j += k;
+  EXPECT_EQ(j, l);
+
+  Polynomial m("x^4 - 3*x^2 + x - 6");
+  Polynomial n("-x^4 + 3*x^2 - x + 6");
+  Polynomial o("0");
+  EXPECT_EQ(m + n, o);
+
+  Polynomial p("1/2*x^2 + 3/4*x - 1/3");
+  Polynomial q("2/3*x^2 - 3/4*x + 1/6");
+  Polynomial r("7/6*x^2 - 1/6");
+  EXPECT_EQ(p + q, r);
 }
