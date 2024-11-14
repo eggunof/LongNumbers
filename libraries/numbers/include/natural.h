@@ -22,6 +22,8 @@ class Natural {
   Natural(const Natural &other) = default;
   Natural &operator=(const Natural &other) = default;
 
+  [[nodiscard]] bool IsZero() const;  // NZER_N_B
+
   static Comparison Compare(const Natural &first,
                             const Natural &second);  // COM_NN_D
   bool operator==(const Natural &rhs) const;         // COM_NN_D
@@ -31,18 +33,7 @@ class Natural {
   bool operator<=(const Natural &rhs) const;         // COM_NN_D
   bool operator>=(const Natural &rhs) const;         // COM_NN_D
 
-  [[nodiscard]] bool IsZero() const;  // NZER_N_B
-
-  Natural &operator++();     // ADD_1N_N
-  Natural &operator++(int);  // ADD_1N_N
-
-  Natural operator+(const Natural &rhs) const;  // ADD_NN_N
-  Natural operator-(const Natural &rhs) const;  // SUB_NN_N
-  Natural operator*(Digit d) const;             // MUL_ND_N
-  Natural operator*(const Natural &rhs) const;  // MUL_NN_N
-  Natural operator/(const Natural &rhs) const;  // DIV_NN_N
-  Natural operator%(const Natural &rhs) const;  // MOD_NN_N
-
+  Natural &operator++();                    // ADD_1N_N
   Natural &operator+=(const Natural &rhs);  // ADD_NN_N
   Natural &operator-=(const Natural &rhs);  // SUB_NN_N;
   Natural &operator*=(Digit d);             // MUL_ND_N
@@ -50,15 +41,28 @@ class Natural {
   Natural &operator/=(const Natural &rhs);  // DIV_NN_N
   Natural &operator%=(const Natural &rhs);  // MOD_NN_N
 
+  Natural operator++(int);                      // ADD_1N_N
+  Natural operator+(const Natural &rhs) const;  // ADD_NN_N
+  Natural operator-(const Natural &rhs) const;  // SUB_NN_N
+  Natural operator*(Digit d) const;             // MUL_ND_N
+  Natural operator*(const Natural &rhs) const;  // MUL_NN_N
+  Natural operator/(const Natural &rhs) const;  // DIV_NN_N
+  Natural operator%(const Natural &rhs) const;  // MOD_NN_N
+
   Natural &SubtractMultiplied(const Natural &rhs, Digit d);  // SUB_NDN_N
-  Natural &MultiplyBy10Power(uint32_t k);                    // MUL_Nk_N
-  Digit GetLeadingDigitAfterDivision(const Natural &rhs,
-                                     uint32_t k);  // DIV_NN_Dk
+
+  [[nodiscard]] Natural MultiplyBy10Power(uint32_t k) const;  // MUL_Nk_N
+  Natural &MultiplyBy10Power(uint32_t k);                     // MUL_Nk_N
+
+  [[nodiscard]] std::pair<Digit, uint32_t> GetLeadingQuotientDigit(
+      const Natural &rhs) const;  // DIV_NN_Dk
 
   static Natural GreatestCommonDivisor(const Natural &first,
                                        const Natural &second);  // GCD_NN_N
   static Natural LeastCommonMultiple(const Natural &first,
                                      const Natural &second);  // LCM_NN_N
+
+  explicit operator std::string() const;
 };
 
 #endif  // NUMBERS_NATURAL_H
