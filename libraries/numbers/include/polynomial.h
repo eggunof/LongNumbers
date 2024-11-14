@@ -22,7 +22,7 @@ class Polynomial {
   explicit Polynomial(
       const std::map<Natural, Rational, Comparator> &coefficients)
       : coefficients_(coefficients) {}
-  explicit Polynomial(std::string string);
+  explicit Polynomial(const std::string &string);
   Polynomial(const Polynomial &other) = default;
   Polynomial &operator=(const Polynomial &other) = default;
 
@@ -36,6 +36,7 @@ class Polynomial {
   bool operator==(const Polynomial &rhs) const;
   bool operator!=(const Polynomial &rhs) const;
 
+  Polynomial operator-() const;
   Polynomial operator+(const Polynomial &rhs) const;   // ADD_PP_P
   Polynomial operator-(const Polynomial &rhs) const;   // SUB_PP_P
   Polynomial operator*(const Rational &scalar) const;  // MUL_PQ_P
@@ -43,6 +44,7 @@ class Polynomial {
   Polynomial operator/(const Polynomial &rhs) const;   // DIV_PP_P
   Polynomial operator%(const Polynomial &rhs) const;   // MOD_PP_P
 
+  Polynomial operator-();
   Polynomial &operator+=(const Polynomial &rhs);   // ADD_PP_P
   Polynomial &operator-=(const Polynomial &rhs);   // SUB_PP_P
   Polynomial &operator*=(const Rational &scalar);  // MUL_PQ_P

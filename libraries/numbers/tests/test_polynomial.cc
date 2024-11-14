@@ -102,3 +102,39 @@ TEST(PolynomialTest, Addition) {
   Polynomial r("7/6*x^2 - 1/6");
   EXPECT_EQ(p + q, r);
 }
+
+TEST(PolynomialTest, Subtraction) {
+  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
+  Polynomial b("2*x^4 + x^3 - 1/2*x + 3");
+  Polynomial c("3/2*x^5 - 2*x^4 - 5*x^3 + x - 5");
+  a -= b;
+  EXPECT_EQ(a, c);
+
+  Polynomial d("x^3 - 2*x + 5");
+  Polynomial e("2*x^3 + 3*x - 1");
+  Polynomial f("-x^3 - 5*x + 6");
+  d -= e;
+  EXPECT_EQ(d, f);
+
+  Polynomial g("3*x^4 + x^2 - x");
+  Polynomial h("3*x^4 + x^2 - 2*x - 5");
+  Polynomial i("x + 5");
+  g -= h;
+  EXPECT_EQ(g, i);
+
+  Polynomial j("2*x^3 + 3*x^2 - x + 7");
+  Polynomial k("0");
+  Polynomial l("2*x^3 + 3*x^2 - x + 7");
+  j -= k;
+  EXPECT_EQ(j, l);
+
+  Polynomial m("x^4 - 3*x^2 + x - 6");
+  Polynomial n("-x^4 + 3*x^2 - x + 6");
+  Polynomial o("2*x^4 - 6*x^2 + 2*x - 12");
+  EXPECT_EQ(m - n, o);
+
+  Polynomial p("1/2*x^2 + 3/4*x - 1/3");
+  Polynomial q("2/3*x^2 - 3/4*x + 1/6");
+  Polynomial r("-1/6*x^2 + 3/2*x - 1/2");
+  EXPECT_EQ(p - q, r);
+}
