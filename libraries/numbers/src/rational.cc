@@ -1,6 +1,7 @@
 
 #include "rational.h"
 
+#include <sstream>
 #include <stdexcept>
 
 Rational::Rational(const Integer &numerator, const Natural &denominator)
@@ -92,7 +93,7 @@ Rational &Rational::operator-() {
 
 // Сложение дробей "+="
 // Над модулем работала Майская Вероника, гр. 3384
-Rational Rational::operator+=(const Rational &rhs) {
+Rational &Rational::operator+=(const Rational &rhs) {
   // Находим НОК знаменателей
   Natural lcm = Natural::LeastCommonMultiple(denominator_, rhs.denominator_);
   // Определяем множители для каждого числителя
@@ -111,7 +112,7 @@ Rational Rational::operator+=(const Rational &rhs) {
 
 // Вычитание дробей "-="
 // Над модулем работала Кадникова Анна, гр. 3384
-Rational Rational::operator-=(const Rational &rhs) {
+Rational &Rational::operator-=(const Rational &rhs) {
   // Применяем сложение с противоположным знаком
   *this += -rhs;
   return *this;
@@ -119,7 +120,7 @@ Rational Rational::operator-=(const Rational &rhs) {
 
 // Умножение дробей "*="
 // Над модулем работала Солдунова Екатерина, гр. 3383
-Rational Rational::operator*=(const Rational &rhs) {
+Rational &Rational::operator*=(const Rational &rhs) {
   numerator_ *= rhs.numerator_;
   denominator_ *= rhs.denominator_;
   // Сокращаем дробь
@@ -129,7 +130,7 @@ Rational Rational::operator*=(const Rational &rhs) {
 
 // Деление дробей "/="
 // Над модулем работала Варфоломеева Арина, гр. 3383
-Rational Rational::operator/=(const Rational &rhs) {
+Rational &Rational::operator/=(const Rational &rhs) {
   if (rhs.numerator_ == Integer("0")) {
     throw std::invalid_argument(
         "Invalid input: Division by zero is not allowed");
@@ -178,4 +179,13 @@ Rational Rational::operator/(const Rational &rhs) const {
   Rational result = *this;
   result /= rhs;
   return result;
+}
+
+Rational::operator std::string() const {
+  std::ostringstream result;
+  result << std::string(numerator_);
+  if (denominator_ != Natural("1")) {
+    result << "/" << std::string(denominator_);
+  }
+  return result.str();
 }

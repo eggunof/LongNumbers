@@ -2,6 +2,7 @@
 #include "integer.h"
 
 #include <algorithm>
+#include <sstream>
 #include <stdexcept>
 
 Integer::Integer(const Natural &natural, Sign sign)
@@ -207,4 +208,38 @@ Integer Integer::operator%(const Integer &rhs) const {
   Integer result = *this;
   result %= rhs;
   return result;
+}
+
+Integer Integer::GreatestCommonDivisor(const Integer &first,
+                                       const Integer &second) {
+  // Копируем числа
+  Integer a = first;
+  Integer b = second;
+  // Применим алгоритм Евклида
+  // Пока одно из чисел не станет равным нулю, продолжаем делить
+  while (b.GetSign() != Sign::ZERO) {
+    // Находим остаток от деления первого на второе
+    Integer remainder = a % b;
+    // Первое становится вторым
+    a = b;
+    // Второе становится остатком
+    b = remainder;
+  }
+  // Возвращается НОД
+  return a;
+}
+
+Integer Integer::LeastCommonMultiple(const Integer &first,
+                                     const Integer &second) {
+  // Вычисляем НОД двух чисел
+  Integer gcd = GreatestCommonDivisor(first, second);
+  Integer lcm = (first * second) / gcd;
+  return lcm;
+}
+
+Integer::operator std::string() const {
+  std::ostringstream result;
+  if (sign_ == Sign::NEGATIVE) result << "-";
+  result << std::string(natural_);
+  return result.str();
 }
