@@ -333,3 +333,33 @@ TEST(PolynomialTest, GreatestCommonDivisor) {
   Polynomial u("x^2 - x");
   EXPECT_EQ(Polynomial::GreatestCommonDivisor(s, t), u);
 }
+
+TEST(PolynomialTest, Derivative) {
+  Polynomial a("3*x^5 - 2*x^3 + x - 4");
+  Polynomial b("15*x^4 - 6*x^2 + 1");
+  EXPECT_EQ(Polynomial::Derivative(a), b);
+
+  Polynomial c("x^4 - 3*x^2 + 2*x");
+  Polynomial d("4*x^3 - 6*x + 2");
+  EXPECT_EQ(Polynomial::Derivative(c), d);
+
+  Polynomial e("7*x^3 - 5*x + 1");
+  Polynomial f("21*x^2 - 5");
+  EXPECT_EQ(Polynomial::Derivative(e), f);
+
+  Polynomial g("x^2 - x + 1");
+  Polynomial h("2*x - 1");
+  EXPECT_EQ(Polynomial::Derivative(g), h);
+
+  Polynomial i("5*x^2");
+  Polynomial j("10*x");
+  EXPECT_EQ(Polynomial::Derivative(i), j);
+
+  Polynomial k("x");
+  Polynomial l("1");
+  EXPECT_EQ(Polynomial::Derivative(k), l);
+
+  Polynomial m("7");
+  Polynomial n("0");
+  EXPECT_EQ(Polynomial::Derivative(m), n);
+}

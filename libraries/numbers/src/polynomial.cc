@@ -256,7 +256,22 @@ Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
   return a;
 }
 
-Polynomial Polynomial::Derivative(const Polynomial &polynomial) { return {}; }
+// Производная многочлена
+// Над модулем работала Кривошеина Дарья, группа 3383
+Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
+  Polynomial derivative;
+  // цикл идет по степеням слагаемых переданного многочлена и их коэффициентам
+  for (const auto &[degree, coefficient] : polynomial.coefficients_) {
+    // если степень слагаемого до взятия производной равна 0, оно не
+    // добавляется, так как обнулится
+    if (degree == Natural(0)) continue;
+    // коэффициент равен произведению старого коэффициента на степень слагаемого
+    Rational derivative_coefficient = coefficient * Rational(Integer(degree));
+    // степень понижается на единицу
+    derivative.coefficients_[degree - Natural("1")] = derivative_coefficient;
+  }
+  return derivative;
+}
 
 Polynomial Polynomial::NormalizeRoots(const Polynomial &polynomial) {
   return {};
