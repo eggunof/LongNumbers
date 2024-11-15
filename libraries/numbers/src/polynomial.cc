@@ -179,7 +179,7 @@ Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   Polynomial result;
-  while (GetDegree() >= rhs.GetDegree()) {
+  while (!coefficients_.empty() && GetDegree() >= rhs.GetDegree()) {
     // Делим старшие мономы
     Polynomial monomial(GetDegree() - rhs.GetDegree(),
                         GetLeadingCoefficient() / rhs.GetLeadingCoefficient());
@@ -233,9 +233,27 @@ Rational Polynomial::ToIntegerCoefficients(const Polynomial &polynomial) {
   return {};
 }
 
+// Наибольший общий делитель многочленов
+// Над модулем работал Матвеев Никита, гр. 3383
 Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
                                              const Polynomial &second) {
-  return {};
+  // Копируем многочлены
+  Polynomial a = first;
+  Polynomial b = second;
+  // Применим алгоритм Евклида
+  // Пока один из многочленов не станет равным нулю, продолжаем делить
+  while (!b.coefficients_.empty()) {
+    // Находим остаток от деления первого на второй
+    Polynomial remainder = a % b;
+    // Первый становится вторым
+    a = b;
+    // Второй становится остатком
+    b = remainder;
+  }
+  //
+  if (a.GetDegree().IsZero()) a.coefficients_[Natural()] = Rational("1");
+  // Возвращается НОД
+  return a;
 }
 
 Polynomial Polynomial::Derivative(const Polynomial &polynomial) { return {}; }

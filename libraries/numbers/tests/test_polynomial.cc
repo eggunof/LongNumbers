@@ -295,3 +295,41 @@ TEST(PolynomialTest, DivisionRemainder) {
   m %= n;
   EXPECT_EQ(m, o);
 }
+
+TEST(PolynomialTest, GreatestCommonDivisor) {
+  Polynomial a("x^3 - 3*x^2 + 3*x - 1");
+  Polynomial b("x^2 - 2*x + 1");
+  Polynomial c("x^2 - 2*x + 1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(a, b), c);
+
+  Polynomial d("x^4 - 4*x^3 + 6*x^2 - 4*x + 1");
+  Polynomial e("x^2 - 2*x + 1");
+  Polynomial f("x^2 - 2*x + 1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(d, e), f);
+
+  Polynomial g("x^3 + x + 1");
+  Polynomial h("x^2 + x + 1");
+  Polynomial i("1");
+  const Polynomial& polynomial = Polynomial::GreatestCommonDivisor(g, h);
+  EXPECT_EQ(polynomial, i);
+
+  Polynomial j("x^2 + 4*x + 4");
+  Polynomial k("2");
+  Polynomial l("1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(j, k), l);
+
+  Polynomial m("x^3 - x");
+  Polynomial n("3*x^2 - 1");
+  Polynomial o("1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(m, n), o);
+
+  Polynomial p("0");
+  Polynomial q("0");
+  Polynomial r("1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(p, q), r);
+
+  Polynomial s("x^2 - x");
+  Polynomial t("0");
+  Polynomial u("x^2 - x");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(s, t), u);
+}
