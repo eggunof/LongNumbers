@@ -11,7 +11,7 @@ class Rational {
   Natural denominator_;
 
  public:
-  Rational() : numerator_(0), denominator_(1) {}
+  Rational();
   Rational(const Integer &numerator, const Natural &denominator);
   explicit Rational(const std::string &string);
   Rational(const Rational &other) = default;
@@ -22,9 +22,10 @@ class Rational {
   Rational &Reduce();                         // RED_Q_Q
   bool IsInteger();                           // INT_Q_B
 
-  [[nodiscard]] const Integer &GetNumerator() const { return numerator_; }
-  [[nodiscard]] const Natural &GetDenominator() const { return denominator_; }
-  [[nodiscard]] Sign GetSign() const { return numerator_.GetSign(); };
+  [[nodiscard]] const Integer &GetNumerator() const;
+  [[nodiscard]] const Natural &GetDenominator() const;
+  [[nodiscard]] Sign GetSign() const;
+  ;
 
   bool operator==(const Rational &rhs) const;
   bool operator!=(const Rational &rhs) const;
