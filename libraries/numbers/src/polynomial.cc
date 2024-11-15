@@ -350,8 +350,12 @@ Polynomial::operator std::string() const {
       }
       result << std::string(coefficient);
       if (!degree.IsZero()) result << "*";
-    } else if (coefficient == Rational("-1")) {
-      result << "-";
+    } else {
+      if (coefficient == Rational("-1")) {
+        result << "-";
+      } else if (!first_monomial) {
+        result << "+";
+      }
       if (degree.IsZero()) result << "1";
     }
     if (!degree.IsZero()) {
