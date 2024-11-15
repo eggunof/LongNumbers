@@ -22,8 +22,9 @@ class Rational {
   Rational &Reduce();                         // RED_Q_Q
   bool IsInteger();                           // INT_Q_B
 
-  [[nodiscard]] Integer GetNumerator() const { return numerator_; }
-  [[nodiscard]] Natural GetDenominator() const { return denominator_; }
+  [[nodiscard]] const Integer &GetNumerator() const { return numerator_; }
+  [[nodiscard]] const Natural &GetDenominator() const { return denominator_; }
+  [[nodiscard]] Sign GetSign() const { return numerator_.GetSign(); };
 
   bool operator==(const Rational &rhs) const;
   bool operator!=(const Rational &rhs) const;

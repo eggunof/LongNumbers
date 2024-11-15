@@ -48,6 +48,11 @@ class Integer {
   Integer operator/(const Integer &rhs) const;  // DIV_ZZ_Z
   Integer operator%(const Integer &rhs) const;  // MOD_ZZ_Z
 
+  static Integer GreatestCommonDivisor(const Integer &first,
+                                       const Integer &second);
+  static Integer LeastCommonMultiple(const Integer &first,
+                                     const Integer &second);
+
   explicit operator std::string() const;
 };
 
