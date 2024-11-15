@@ -5,6 +5,8 @@
 #include <sstream>
 #include <stdexcept>
 
+Integer::Integer() : natural_(), sign_(Sign::ZERO) {}
+
 Integer::Integer(const Natural &natural, Sign sign)
     : natural_(natural), sign_(sign) {
   if (natural_.IsZero())
@@ -12,6 +14,9 @@ Integer::Integer(const Natural &natural, Sign sign)
   else if (sign_ == Sign::ZERO)
     natural_ = Natural("0");
 }
+
+Integer::Integer(const std::vector<Digit> &digits, Sign sign)
+    : Integer(Natural(digits), sign) {}
 
 Integer::Integer(const std::string &string)
     : natural_(string.substr(string.find_first_not_of("+-"))) {
@@ -23,6 +28,8 @@ Integer::Integer(const std::string &string)
     sign_ = (minus_count % 2 == 0) ? Sign::POSITIVE : Sign::NEGATIVE;
   }
 }
+
+Integer::Integer(int32_t number) : Integer(std::to_string(number)) {}
 
 // Преобразование натурального числа в целое
 // Над модулем работала Дмитриева Дарья, гр. 3383
@@ -48,6 +55,8 @@ Integer Integer::AbsoluteValue(const Integer &integer) {
   // Иначе устанавливаем положительный знак
   return {integer.natural_, Sign::POSITIVE};
 }
+
+Sign Integer::GetSign() const { return sign_; }
 
 bool Integer::operator==(const Integer &rhs) const {
   return natural_ == rhs.natural_ && sign_ == rhs.sign_;

@@ -5,6 +5,8 @@
 #include <sstream>
 #include <stdexcept>
 
+Natural::Natural() : digits_(1, 0) {}
+
 Natural::Natural(const std::vector<Digit> &digits) {
   if (digits.empty()) {
     throw std::invalid_argument("Invalid input: vector must not be empty");
@@ -46,6 +48,8 @@ Natural::Natural(const std::string &string) {
   }
   digits_.shrink_to_fit();
 }
+
+Natural::Natural(uint32_t number) : Natural(std::to_string(number)) {}
 
 bool Natural::IsZero() const { return digits_.size() == 1 && digits_[0] == 0; }
 

@@ -12,12 +12,11 @@ class Integer {
   Sign sign_;
 
  public:
-  Integer() : natural_(), sign_(Sign::ZERO) {}
+  Integer();
   Integer(const Natural &natural, Sign sign);
-  Integer(const std::vector<Digit> &digits, Sign sign)
-      : Integer(Natural(digits), sign) {}
+  Integer(const std::vector<Digit> &digits, Sign sign);
   explicit Integer(const std::string &string);
-  explicit Integer(int32_t number) : Integer(std::to_string(number)) {}
+  explicit Integer(int32_t number);
   Integer(const Integer &other) = default;
   Integer &operator=(const Integer &other) = default;
 
@@ -25,7 +24,7 @@ class Integer {
   explicit operator Natural() const;                     // TRANS_Z_N
   static Integer AbsoluteValue(const Integer &integer);  // ABS_Z_Z
 
-  [[nodiscard]] Sign GetSign() const { return sign_; }  // SGN_Z_D
+  [[nodiscard]] Sign GetSign() const;  // SGN_Z_D
 
   bool operator==(const Integer &rhs) const;
   bool operator!=(const Integer &rhs) const;

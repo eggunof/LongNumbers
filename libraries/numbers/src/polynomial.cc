@@ -4,6 +4,13 @@
 #include <regex>
 #include <sstream>
 
+Polynomial::Polynomial(
+    const std::map<Natural, Rational, Comparator> &coefficients)
+    : coefficients_(coefficients) {}
+
+Polynomial::Polynomial(const Natural &degree, const Rational &coefficient)
+    : coefficients_({{degree, coefficient}}) {}
+
 Polynomial::Polynomial(const std::string &string) {
   std::regex term_regex(
       R"((((?:[+-]+\s*)?(?:(\d+\s*)(?:\/\s*\d+\s*)?)?)?\*?x(?:\^?\s*(\d+\s*))?)|((?:[+-]+\s*)?\d+\s*(?:\/\s*\d+\s*)?))");

@@ -4,6 +4,8 @@
 #include <sstream>
 #include <stdexcept>
 
+Rational::Rational() : numerator_(0), denominator_(1) {}
+
 Rational::Rational(const Integer &numerator, const Natural &denominator)
     : numerator_(numerator), denominator_(denominator) {
   if (denominator_.IsZero()) {
@@ -66,6 +68,12 @@ bool Rational::IsInteger() {
   // Сокращённое дробное является целым, если знаменатель равен 1
   return denominator_ == Natural("1");
 }
+
+const Integer &Rational::GetNumerator() const { return numerator_; }
+
+const Natural &Rational::GetDenominator() const { return denominator_; }
+
+Sign Rational::GetSign() const { return numerator_.GetSign(); }
 
 bool Rational::operator==(const Rational &rhs) const {
   return numerator_ * static_cast<Integer>(rhs.denominator_) ==

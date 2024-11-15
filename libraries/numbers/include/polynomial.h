@@ -21,10 +21,8 @@ class Polynomial {
  public:
   Polynomial() = default;
   explicit Polynomial(
-      const std::map<Natural, Rational, Comparator> &coefficients)
-      : coefficients_(coefficients) {}
-  Polynomial(const Natural &degree, const Rational &coefficient)
-      : coefficients_({{degree, coefficient}}) {}
+      const std::map<Natural, Rational, Comparator> &coefficients);
+  Polynomial(const Natural &degree, const Rational &coefficient);
   explicit Polynomial(const std::string &string);
   Polynomial(const Polynomial &other) = default;
   Polynomial &operator=(const Polynomial &other) = default;
