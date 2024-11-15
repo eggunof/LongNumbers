@@ -2,6 +2,7 @@
 #include "natural.h"
 
 #include <ranges>
+#include <sstream>
 #include <stdexcept>
 
 Natural::Natural(const std::vector<Digit> &digits) {
@@ -30,6 +31,7 @@ Natural::Natural(const std::string &string) {
   }
   digits_.reserve(string.length());
   for (char digit : string) {
+    if (std::isspace(digit)) continue;
     Digit x = digit - '0';
     if (x >= 10) {
       throw std::invalid_argument(
@@ -429,4 +431,12 @@ Natural Natural::LeastCommonMultiple(const Natural &first,
   Natural gcd = GreatestCommonDivisor(first, second);
   Natural lcm = (first * second) / gcd;
   return lcm;
+}
+
+Natural::operator std::string() const {
+  std::ostringstream result;
+  for (Digit digit : digits_) {
+    result << static_cast<int>(digit);
+  }
+  return result.str();
 }
