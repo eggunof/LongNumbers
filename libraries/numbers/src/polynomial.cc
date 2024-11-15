@@ -303,40 +303,34 @@ Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
   return derivative;
 }
 
-// NMR_P_P - преобразование многочлена — кратные корни в простые
-// Над модулем работала Кривошеина Дарья, группа 3383
+// Преобразование многочлена — кратные корни в простые
+// Над модулем работала Кривошеина Дарья, гр. 3383
 Polynomial Polynomial::NormalizeRoots(const Polynomial &polynomial) {
-  // создаем объект для будущего нормализованного многочлена (равен 1)
-  Polynomial normalized_polynomial(
-      {{Natural(0), Rational(Integer(1), Natural(1))}});
-  // многочлен, равный переданному, который будет изменяться
-  Polynomial current_polynomial = polynomial;
-  // цикл, пока изменяемый многочлен не станет константой
-  while (current_polynomial.GetDegree() != Natural(0)) {
-    // берется производная от изменяемого многочлена
-    Polynomial derivative = Derivative(current_polynomial);
-    // находится gcd1 - НОД изменяемого многочлена и его производной
-    Polynomial gcd1 = GreatestCommonDivisor(current_polynomial, derivative);
-    // находится interim1 - результат деления изменяемого многочлена на
-    // найденный выше НОД
-    Polynomial interim1 = current_polynomial / gcd1;
-    // находится gcd2 - НОД временного многочлена и производной изменяемого
-    Polynomial gcd2 = GreatestCommonDivisor(interim1, derivative);
-    // находится interim2 - результат деления interim1 на gcd2
-    Polynomial interim2 = interim1 / gcd2;
-    // коэффициенты interim2 сокращаются на (НОД числителей / НОК знаменателей)
-    interim2.ToIntegerCoefficients();
-    // если старший коэффициент interim2 отрицательный, многочлен умножается на
-    // -1
-    if (interim2.GetLeadingCoefficient().GetNumerator().GetSign() ==
-        Sign::NEGATIVE) {
-      interim2 *= Rational("-1");
-    }
-    // нормализованный многочлен умножается на получившийся
-    normalized_polynomial *= interim2;
-    current_polynomial = gcd1;
+  // Создаём объект для будущего нормализованного многочлена
+  Polynomial normalized = Polynomial("1");
+  Polynomial current = polynomial;
+
+  // Пока текущий многочлен не станет константой
+  while (!current.GetDegree().IsZero()) {
+    // Вычисляем производную текущего многочлена
+    Polynomial derivative = Derivative(current);
+    // Находим НОД текущего многочлена и его производной
+    Polynomial gcd1 = GreatestCommonDivisor(current, derivative);
+    // Делим текущий многочлен на найденный НОД
+    current /= gcd1;
+    // Находим НОД упрощённого многочлена и производной текущего
+    Polynomial gcd2 = GreatestCommonDivisor(current, derivative);
+    // Вычисляем множитель, содержащий только простые корни
+    current /= gcd2;
+    // Приводим коэффициенты многочлена к целым числам
+    current.ToIntegerCoefficients();
+    // Умножаем нормализованный многочлен на текущий множитель
+    normalized *= current;
+    // Обновляем текущий многочлен как найденный НОД
+    current = gcd1;
   }
-  return normalized_polynomial;
+
+  return normalized;
 }
 
 Polynomial::operator std::string() const {

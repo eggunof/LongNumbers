@@ -401,37 +401,32 @@ TEST(PolynomialTest, ToIntegerCoefficients) {
   EXPECT_EQ(m, n);
 }
 
-TEST(PolynomialTest, NormalizeRootsTest){
-  Polynomial pol1({{Natural(0), Rational(Integer("-12"), Natural(1))},
-                   {Natural(1), Rational(Integer("-20"), Natural(1))},
-                   {Natural(2), Rational(Integer("5"), Natural(1))},
-                   {Natural(3), Rational(Integer("16"), Natural(1))},
-                   {Natural(4), Rational(Integer("-2"), Natural(1))},
-                   {Natural(5), Rational(Integer("-4"), Natural(1))},
-                   {Natural(6), Rational(Integer("1"), Natural(1))}});
-  pol1 = pol1.NormalizeRoots(pol1);
-  Polynomial pol2({{Natural(0), Rational(Integer("6"), Natural(1))},
-                   {Natural(1), Rational(Integer("1"), Natural(1))},
-                   {Natural(2), Rational(Integer("-4"), Natural(1))},
-                   {Natural(3), Rational(Integer("1"), Natural(1))}});
-  EXPECT_EQ(pol1, pol2);
+TEST(PolynomialTest, NormalizeRoots) {
+  Polynomial a("x^6 - 3*x^4 + 3*x^2 - 1");
+  Polynomial b("x^2 - 1");
+  EXPECT_EQ(Polynomial::NormalizeRoots(a), b);
 
-  Polynomial pol3({{Natural(0), Rational(Integer("25"), Natural(1))},
-                   {Natural(1), Rational(Integer("-1"), Natural(1))},
-                   {Natural(2), Rational(Integer("1"), Natural(1))}});
-  pol3 = pol3.NormalizeRoots(pol3);
-  Polynomial pol4({{Natural(0), Rational(Integer("25"), Natural(1))},
-                   {Natural(1), Rational(Integer("-1"), Natural(1))},
-                   {Natural(2), Rational(Integer("1"), Natural(1))}});
-  EXPECT_EQ(pol3, pol4);
+  Polynomial c("x^4 - 2*x^3 + x^2");
+  Polynomial d("x^2 - x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(c), d);
 
-  Polynomial pol5({{Natural(0), Rational(Integer("845"), Natural(1))},
-                   {Natural(1), Rational(Integer("39"), Natural(1))},
-                   {Natural(2), Rational(Integer("-21"), Natural(1))},
-                   {Natural(3), Rational(Integer("1"), Natural(1))}});
-  pol5 = pol5.NormalizeRoots(pol5);
-  Polynomial pol6({{Natural(0), Rational(Integer("-65"), Natural(1))},
-                   {Natural(1), Rational(Integer("-8"), Natural(1))},
-                   {Natural(2), Rational(Integer("1"), Natural(1))}});
-  EXPECT_EQ(pol5, pol6);
+  Polynomial e("x^8 - 4*x^6 + 6*x^4 - 4*x^2 + 1");
+  Polynomial f("x^2 - 1");
+  EXPECT_EQ(Polynomial::NormalizeRoots(e), f);
+
+  Polynomial g("x^3 - x");
+  Polynomial h("x^3 - x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(g), h);
+
+  Polynomial i("x^6 - 8*x^4 + 16*x^2");
+  Polynomial j("x^3 - 4x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(i), j);
+
+  Polynomial k("x^3 - 2*x^2 + x");
+  Polynomial l("x^2 - x)");
+  EXPECT_EQ(Polynomial::NormalizeRoots(k), l);
+
+  Polynomial m("x^4 - 2*x^3 + x^2");
+  Polynomial n("x^2 - x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(m), n);
 }
