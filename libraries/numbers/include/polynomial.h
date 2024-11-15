@@ -54,7 +54,7 @@ class Polynomial {
   Polynomial &MultiplyByXPower(uint32_t k);                     // MUL_Pxk_P
   [[nodiscard]] Polynomial MultiplyByXPower(uint32_t k) const;  // MUL_Pxk_P
 
-  Rational ToIntegerCoefficients(const Polynomial &polynomial);  // FAC_P_Q
+  Rational ToIntegerCoefficients();  // FAC_P_Q
 
   static Polynomial GreatestCommonDivisor(
       const Polynomial &first, const Polynomial &second);          // GCD_PP_P

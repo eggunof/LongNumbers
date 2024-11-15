@@ -229,8 +229,38 @@ Polynomial Polynomial::MultiplyByXPower(uint32_t k) const {
   return result;
 }
 
-Rational Polynomial::ToIntegerCoefficients(const Polynomial &polynomial) {
-  return {};
+// Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей
+// Над модулем работал Матвеев Никита, гр. 3383
+Rational Polynomial::ToIntegerCoefficients() {
+  // Если многочлен пуст, возвращаем множитель 1
+  if (coefficients_.empty()) {
+    return Rational("1");
+  }
+  // Инициализация НОД числителей и НОК знаменателей
+  auto gcd_numerators = Natural("0");
+  auto lcm_denominators = Natural("1");
+  // Проходим по коэффициентам многочлена
+  for (const auto &[_, coefficient] : coefficients_) {
+    // НОД всех числителей коэффициентов
+    gcd_numerators = Natural::GreatestCommonDivisor(
+        gcd_numerators,
+        Natural(Integer::AbsoluteValue(coefficient.GetNumerator())));
+    // НОК всех знаменателей коэффициентов
+    lcm_denominators = Natural::LeastCommonMultiple(
+        lcm_denominators, coefficient.GetDenominator());
+  }
+  // Формируем множитель как дробь из НОД числителей и НОК знаменателей
+  Rational multiplier(
+      Integer(gcd_numerators, GetLeadingCoefficient().GetSign()),
+      lcm_denominators);
+  multiplier.Reduce();
+
+  // Делим коэффициенты на множитель, приводя их к целым числам
+  for (auto &[_, coefficient] : coefficients_) {
+    coefficient /= multiplier;
+  }
+  // Возвращаем множитель
+  return multiplier;
 }
 
 // Наибольший общий делитель многочленов

@@ -363,3 +363,40 @@ TEST(PolynomialTest, Derivative) {
   Polynomial n("0");
   EXPECT_EQ(Polynomial::Derivative(m), n);
 }
+
+TEST(PolynomialTest, ToIntegerCoefficients) {
+  Polynomial a("1/2*x^3 - 3/4*x^2 + 5/6*x - 1/3");
+  Polynomial b("6*x^3 - 9*x^2 + 10*x - 4");
+  EXPECT_EQ(a.ToIntegerCoefficients(), Rational("1/12"));
+  EXPECT_EQ(a, b);
+
+  Polynomial c("2/3*x^2 + 4/5*x - 7/10");
+  Polynomial d("20*x^2 + 24*x - 21");
+  EXPECT_EQ(c.ToIntegerCoefficients(), Rational("1/30"));
+  EXPECT_EQ(c, d);
+
+  Polynomial e("3*x - 6");
+  Polynomial f("x - 2");
+  EXPECT_EQ(e.ToIntegerCoefficients(), Rational("3"));
+  EXPECT_EQ(e, f);
+
+  Polynomial g("0");
+  Polynomial h("0");
+  EXPECT_EQ(g.ToIntegerCoefficients(), Rational("1"));
+  EXPECT_EQ(g, h);
+
+  Polynomial i("1/4*x^5 + 3/8*x^3 - 9/16");
+  Polynomial j("4*x^5 + 6*x^3 - 9");
+  EXPECT_EQ(i.ToIntegerCoefficients(), Rational("1/16"));
+  EXPECT_EQ(i, j);
+
+  Polynomial k("-5/7*x^2 + 6/14*x - 3/21");
+  Polynomial l("5*x^2 - 3*x + 1");
+  EXPECT_EQ(k.ToIntegerCoefficients(), Rational("-1/7"));
+  EXPECT_EQ(k, l);
+
+  Polynomial m("1/2*x^4 - 1/3*x^3 + 1/4*x^2 - 1/6*x + 1/12");
+  Polynomial n("6*x^4 - 4*x^3 + 3*x^2 - 2*x + 1");
+  EXPECT_EQ(m.ToIntegerCoefficients(), Rational("1/12"));
+  EXPECT_EQ(m, n);
+}
