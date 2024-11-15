@@ -335,30 +335,31 @@ TEST(PolynomialTest, GreatestCommonDivisor) {
 }
 
 TEST(PolynomialTest, Derivative) {
-  Polynomial pol1({{Natural(0), Rational(Integer(1), Natural(1))},
-                   {Natural(1), Rational(Integer(2), Natural(1))},
-                   {Natural(2), Rational(Integer(3), Natural(1))}});
-  Polynomial pol2({
-      {Natural(0), Rational(Integer(2), Natural(1))},
-      {Natural(1), Rational(Integer(6), Natural(1))},
-  });
-  pol1 = pol1.Derivative(pol1);
-  EXPECT_EQ(pol1.GetDegree(), pol2.GetDegree());
+  Polynomial a("3*x^5 - 2*x^3 + x - 4");
+  Polynomial b("15*x^4 - 6*x^2 + 1");
+  EXPECT_EQ(Polynomial::Derivative(a), b);
 
-  Polynomial pol3({{Natural(0), Rational(Integer(10), Natural(1))},
-                   {Natural(1), Rational(Integer(16), Natural(1))}});
-  Polynomial pol4({{Natural(0), Rational(Integer(16), Natural(1))}});
-  pol3 = pol3.Derivative(pol3);
-  EXPECT_EQ(pol3.GetDegree(), pol4.GetDegree());
+  Polynomial c("x^4 - 3*x^2 + 2*x");
+  Polynomial d("4*x^3 - 6*x + 2");
+  EXPECT_EQ(Polynomial::Derivative(c), d);
 
-  Polynomial pol5({{Natural(1), Rational(Integer(6), Natural(1))},
-                   {Natural(12), Rational(Integer(2), Natural(1))}});
-  Polynomial pol6({{Natural(0), Rational(Integer(6), Natural(1))},
-                   {Natural(11), Rational(Integer(24), Natural(1))}});
-  pol5 = pol5.Derivative(pol5);
-  EXPECT_EQ(pol5.GetDegree(), pol6.GetDegree());
+  Polynomial e("7*x^3 - 5*x + 1");
+  Polynomial f("21*x^2 - 5");
+  EXPECT_EQ(Polynomial::Derivative(e), f);
 
-  Polynomial pol7({{Natural(10), Rational(Integer(264), Natural(1))}});
-  pol5 = pol5.Derivative(pol5);
-  EXPECT_EQ(pol5.GetDegree(), pol7.GetDegree());
+  Polynomial g("x^2 - x + 1");
+  Polynomial h("2*x - 1");
+  EXPECT_EQ(Polynomial::Derivative(g), h);
+
+  Polynomial i("5*x^2");
+  Polynomial j("10*x");
+  EXPECT_EQ(Polynomial::Derivative(i), j);
+
+  Polynomial k("x");
+  Polynomial l("1");
+  EXPECT_EQ(Polynomial::Derivative(k), l);
+
+  Polynomial m("7");
+  Polynomial n("0");
+  EXPECT_EQ(Polynomial::Derivative(m), n);
 }

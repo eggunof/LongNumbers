@@ -256,23 +256,19 @@ Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
   return a;
 }
 
-// DER_P_P - производная многочлена
+// Производная многочлена
 // Над модулем работала Кривошеина Дарья, группа 3383
 Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
-  Polynomial derivative;  // объект производной многочлена
+  Polynomial derivative;
   // цикл идет по степеням слагаемых переданного многочлена и их коэффициентам
   for (const auto &[degree, coefficient] : polynomial.coefficients_) {
     // если степень слагаемого до взятия производной равна 0, оно не
     // добавляется, так как обнулится
-    if (degree == Natural(0)) {
-      break;
-    }
+    if (degree == Natural(0)) continue;
     // коэффициент равен произведению старого коэффициента на степень слагаемого
-    // для умножения надо перевести натуральную степень в целое, а затем в
-    // рациональное число
-    Rational new_coefficient = Rational(Integer(degree)) * coefficient;
+    Rational derivative_coefficient = coefficient * Rational(Integer(degree));
     // степень понижается на единицу
-    derivative.coefficients_[degree - Natural(1)] = new_coefficient;
+    derivative.coefficients_[degree - Natural("1")] = derivative_coefficient;
   }
   return derivative;
 }
