@@ -54,64 +54,7 @@ bool Polynomial::operator!=(const Polynomial &rhs) const {
   return !(rhs == *this);
 }
 
-Polynomial Polynomial::operator-() const {
-  Polynomial result = *this;
-  return -result;
-}
-
-// Сложение многочленов "+"
-// Над модулем работала Варфоломеева Арина, гр. 3383
-Polynomial Polynomial::operator+(const Polynomial &rhs) const {
-  // Складываем копию текущего объекта
-  Polynomial result = *this;
-  result += rhs;
-  return result;
-}
-
-// Вычитание многочленов "-"
-// Над модулем работала Солдунова Екатерина, гр. 3383
-Polynomial Polynomial::operator-(const Polynomial &rhs) const {
-  // Вычитаем копию текущего объекта
-  Polynomial result = *this;
-  result -= rhs;
-  return result;
-}
-
-// Умножение многочлена на рациональное "*"
-// Над модулем работала Кадникова Анна, гр. 3384
-Polynomial Polynomial::operator*(const Rational &scalar) const {
-  // Умножаем копию текущего объекта
-  Polynomial result = *this;
-  result *= scalar;
-  return result;
-}
-
-// Умножение многочленов "*"
-// Над модулем работала Дмитриева Дарья, гр. 3383
-Polynomial Polynomial::operator*(const Polynomial &rhs) const {
-  // Умножаем копию текущего объекта
-  Polynomial result = *this;
-  result *= rhs;
-  return result;
-}
-
-// Частное от деления многочленов "/"
-// Над модулем работала Солдунова Екатерина, гр. 3383
-Polynomial Polynomial::operator/(const Polynomial &rhs) const {
-  Polynomial result = *this;
-  result /= rhs;
-  return result;
-}
-
-// Остаток от деления многочленов "%="
-// Над модулем работала Дмитриева Дарья, гр. 3383
-Polynomial Polynomial::operator%(const Polynomial &rhs) const {
-  Polynomial result = *this;
-  result %= rhs;
-  return result;
-}
-
-Polynomial Polynomial::operator-() {
+Polynomial &Polynomial::operator-() {
   for (auto &[_, coefficient] : coefficients_) {
     -coefficient;
   }
@@ -200,6 +143,63 @@ Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
   // Вычитаем из делимого неполное частное, умноженное на делитель
   *this -= rhs * quotient;
   return *this;
+}
+
+Polynomial Polynomial::operator-() const {
+  Polynomial result = *this;
+  return -result;
+}
+
+// Сложение многочленов "+"
+// Над модулем работала Варфоломеева Арина, гр. 3383
+Polynomial Polynomial::operator+(const Polynomial &rhs) const {
+  // Складываем копию текущего объекта
+  Polynomial result = *this;
+  result += rhs;
+  return result;
+}
+
+// Вычитание многочленов "-"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Polynomial Polynomial::operator-(const Polynomial &rhs) const {
+  // Вычитаем копию текущего объекта
+  Polynomial result = *this;
+  result -= rhs;
+  return result;
+}
+
+// Умножение многочлена на рациональное "*"
+// Над модулем работала Кадникова Анна, гр. 3384
+Polynomial Polynomial::operator*(const Rational &scalar) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= scalar;
+  return result;
+}
+
+// Умножение многочленов "*"
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator*(const Polynomial &rhs) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= rhs;
+  return result;
+}
+
+// Частное от деления многочленов "/"
+// Над модулем работала Солдунова Екатерина, гр. 3383
+Polynomial Polynomial::operator/(const Polynomial &rhs) const {
+  Polynomial result = *this;
+  result /= rhs;
+  return result;
+}
+
+// Остаток от деления многочленов "%="
+// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator%(const Polynomial &rhs) const {
+  Polynomial result = *this;
+  result %= rhs;
+  return result;
 }
 
 // Умножение многочлена на x^k

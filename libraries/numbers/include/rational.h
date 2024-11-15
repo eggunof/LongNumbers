@@ -34,10 +34,10 @@ class Rational {
   bool operator>=(const Rational &rhs) const;
 
   Rational &operator-();
-  Rational operator+=(const Rational &rhs);  // ADD_QQ_Q
-  Rational operator-=(const Rational &rhs);  // SUB_QQ_Q
-  Rational operator*=(const Rational &rhs);  // MUL_QQ_Q
-  Rational operator/=(const Rational &rhs);  // DIV_QQ_Q
+  Rational &operator+=(const Rational &rhs);  // ADD_QQ_Q
+  Rational &operator-=(const Rational &rhs);  // SUB_QQ_Q
+  Rational &operator*=(const Rational &rhs);  // MUL_QQ_Q
+  Rational &operator/=(const Rational &rhs);  // DIV_QQ_Q
 
   Rational operator-() const;
   Rational operator+(const Rational &rhs) const;  // ADD_QQ_Q
