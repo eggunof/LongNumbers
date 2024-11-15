@@ -303,8 +303,34 @@ Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
   return derivative;
 }
 
+// Преобразование многочлена — кратные корни в простые
+// Над модулем работала Кривошеина Дарья, гр. 3383
 Polynomial Polynomial::NormalizeRoots(const Polynomial &polynomial) {
-  return {};
+  // Создаём объект для будущего нормализованного многочлена
+  Polynomial normalized = Polynomial("1");
+  Polynomial current = polynomial;
+
+  // Пока текущий многочлен не станет константой
+  while (!current.GetDegree().IsZero()) {
+    // Вычисляем производную текущего многочлена
+    Polynomial derivative = Derivative(current);
+    // Находим НОД текущего многочлена и его производной
+    Polynomial gcd1 = GreatestCommonDivisor(current, derivative);
+    // Делим текущий многочлен на найденный НОД
+    current /= gcd1;
+    // Находим НОД упрощённого многочлена и производной текущего
+    Polynomial gcd2 = GreatestCommonDivisor(current, derivative);
+    // Вычисляем множитель, содержащий только простые корни
+    current /= gcd2;
+    // Приводим коэффициенты многочлена к целым числам
+    current.ToIntegerCoefficients();
+    // Умножаем нормализованный многочлен на текущий множитель
+    normalized *= current;
+    // Обновляем текущий многочлен как найденный НОД
+    current = gcd1;
+  }
+
+  return normalized;
 }
 
 Polynomial::operator std::string() const {

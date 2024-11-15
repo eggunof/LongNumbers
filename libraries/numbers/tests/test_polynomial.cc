@@ -400,3 +400,33 @@ TEST(PolynomialTest, ToIntegerCoefficients) {
   EXPECT_EQ(m.ToIntegerCoefficients(), Rational("1/12"));
   EXPECT_EQ(m, n);
 }
+
+TEST(PolynomialTest, NormalizeRoots) {
+  Polynomial a("x^6 - 3*x^4 + 3*x^2 - 1");
+  Polynomial b("x^2 - 1");
+  EXPECT_EQ(Polynomial::NormalizeRoots(a), b);
+
+  Polynomial c("x^4 - 2*x^3 + x^2");
+  Polynomial d("x^2 - x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(c), d);
+
+  Polynomial e("x^8 - 4*x^6 + 6*x^4 - 4*x^2 + 1");
+  Polynomial f("x^2 - 1");
+  EXPECT_EQ(Polynomial::NormalizeRoots(e), f);
+
+  Polynomial g("x^3 - x");
+  Polynomial h("x^3 - x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(g), h);
+
+  Polynomial i("x^6 - 8*x^4 + 16*x^2");
+  Polynomial j("x^3 - 4x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(i), j);
+
+  Polynomial k("x^3 - 2*x^2 + x");
+  Polynomial l("x^2 - x)");
+  EXPECT_EQ(Polynomial::NormalizeRoots(k), l);
+
+  Polynomial m("x^4 - 2*x^3 + x^2");
+  Polynomial n("x^2 - x");
+  EXPECT_EQ(Polynomial::NormalizeRoots(m), n);
+}
