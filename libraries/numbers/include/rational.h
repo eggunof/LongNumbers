@@ -17,25 +17,35 @@ class Rational {
   Rational(const Rational &other) = default;
   Rational &operator=(const Rational &other) = default;
 
-  explicit Rational(const Integer &integer)
-      : numerator_(integer), denominator_(Natural("1")) {}  // TRANS_Z_Q
-  explicit operator Integer() const;                        // TRANS_Q_Z
+  explicit Rational(const Integer &integer);  // TRANS_Z_Q
+  explicit operator Integer() const;          // TRANS_Q_Z
+  Rational &Reduce();                         // RED_Q_Q
+  bool IsInteger();                           // INT_Q_B
+
+  [[nodiscard]] const Integer &GetNumerator() const { return numerator_; }
+  [[nodiscard]] const Natural &GetDenominator() const { return denominator_; }
+  [[nodiscard]] Sign GetSign() const { return numerator_.GetSign(); };
 
   bool operator==(const Rational &rhs) const;
   bool operator!=(const Rational &rhs) const;
+  bool operator<(const Rational &rhs) const;
+  bool operator>(const Rational &rhs) const;
+  bool operator<=(const Rational &rhs) const;
+  bool operator>=(const Rational &rhs) const;
 
-  Rational &Reduce();  // RED_Q_Q
-  bool IsInteger();    // INT_Q_B
+  Rational &operator-();
+  Rational operator+=(const Rational &rhs);  // ADD_QQ_Q
+  Rational operator-=(const Rational &rhs);  // SUB_QQ_Q
+  Rational operator*=(const Rational &rhs);  // MUL_QQ_Q
+  Rational operator/=(const Rational &rhs);  // DIV_QQ_Q
 
+  Rational operator-() const;
   Rational operator+(const Rational &rhs) const;  // ADD_QQ_Q
   Rational operator-(const Rational &rhs) const;  // SUB_QQ_Q
   Rational operator*(const Rational &rhs) const;  // MUL_QQ_Q
   Rational operator/(const Rational &rhs) const;  // DIV_QQ_Q
 
-  Rational operator+=(const Rational &rhs);  // ADD_QQ_Q
-  Rational operator-=(const Rational &rhs);  // SUB_QQ_Q
-  Rational operator*=(const Rational &rhs);  // MUL_QQ_Q
-  Rational operator/=(const Rational &rhs);  // DIV_QQ_Q
+  explicit operator std::string() const;
 };
 
 #endif  // NUMBERS_RATIONAL_H_
