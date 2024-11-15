@@ -296,50 +296,40 @@ TEST(PolynomialTest, DivisionRemainder) {
   EXPECT_EQ(m, o);
 }
 
-TEST(PolynomialTest, GCDTest){
-    Polynomial pol1({
-        {Natural(0), Rational(Integer(1), Natural(1))},
-        {Natural(1), Rational(Integer(2), Natural(1))},
-        {Natural(2), Rational(Integer(1), Natural(1))}
-    });
-    Polynomial pol2({
-        {Natural(0), Rational(Integer(1), Natural(1))},
-        {Natural(1), Rational(Integer(1), Natural(1))},
-    });
-    EXPECT_EQ(Polynomial::GreatestCommonDivisor(pol1, pol2), pol2);
-    EXPECT_EQ(Polynomial::GreatestCommonDivisor(pol2, pol1), pol2);
-    Polynomial pol3({
-        {Natural(5), Rational(Integer(2), Natural(1))},
-        {Natural(4), Rational(Integer(-3), Natural(1))},
-        {Natural(3), Rational(Integer(-5), Natural(1))},
-        {Natural(2), Rational(Integer(1), Natural(1))},
-        {Natural(1), Rational(Integer(6), Natural(1))},
-        {Natural(0), Rational(Integer(3), Natural(1))}
-    });
-    Polynomial pol4({
-         {Natural(4), Rational(Integer(3), Natural(1))},
-         {Natural(3), Rational(Integer(2), Natural(1))},
-         {Natural(2), Rational(Integer(-3), Natural(1))},
-         {Natural(1), Rational(Integer(-5), Natural(1))},
-         {Natural(0), Rational(Integer(-2), Natural(1))}
-    });
-    Polynomial res({
-        {Natural(3), Rational(Integer(1), Natural(1))},
-        {Natural(1), Rational(Integer(-1), Natural(1))},
-        {Natural(0), Rational(Integer(-1), Natural(1))}
-    });
-    EXPECT_EQ(Polynomial::GreatestCommonDivisor(pol3, pol4), res);
-    EXPECT_EQ(Polynomial::GreatestCommonDivisor(pol4, pol3), res);
-    Polynomial pol5({
-        {Natural(2), Rational(Integer(1), Natural(1))},
-        {Natural(1), Rational(Integer(1), Natural(1))},
-        {Natural(0), Rational(Integer(1), Natural(1))}
-    });
-    Polynomial pol6({
-        {Natural(1), Rational(Integer(-1), Natural(1))},
-    });
-    Polynomial res2({
-        {Natural(0), Rational(Integer(1), Natural(1))},
-    });
-    EXPECT_EQ(Polynomial::GreatestCommonDivisor(pol5, pol6), res2);
+TEST(PolynomialTest, GreatestCommonDivisor) {
+  Polynomial a("x^3 - 3*x^2 + 3*x - 1");
+  Polynomial b("x^2 - 2*x + 1");
+  Polynomial c("x^2 - 2*x + 1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(a, b), c);
+
+  Polynomial d("x^4 - 4*x^3 + 6*x^2 - 4*x + 1");
+  Polynomial e("x^2 - 2*x + 1");
+  Polynomial f("x^2 - 2*x + 1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(d, e), f);
+
+  Polynomial g("x^3 + x + 1");
+  Polynomial h("x^2 + x + 1");
+  Polynomial i("1");
+  const Polynomial& polynomial = Polynomial::GreatestCommonDivisor(g, h);
+  EXPECT_EQ(polynomial, i);
+
+  Polynomial j("x^2 + 4*x + 4");
+  Polynomial k("2");
+  Polynomial l("1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(j, k), l);
+
+  Polynomial m("x^3 - x");
+  Polynomial n("3*x^2 - 1");
+  Polynomial o("1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(m, n), o);
+
+  Polynomial p("0");
+  Polynomial q("0");
+  Polynomial r("1");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(p, q), r);
+
+  Polynomial s("x^2 - x");
+  Polynomial t("0");
+  Polynomial u("x^2 - x");
+  EXPECT_EQ(Polynomial::GreatestCommonDivisor(s, t), u);
 }

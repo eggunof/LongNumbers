@@ -179,7 +179,7 @@ Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
 // Над модулем работала Солдунова Екатерина, гр. 3383
 Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   Polynomial result;
-  while (GetDegree() >= rhs.GetDegree()) {
+  while (!coefficients_.empty() && GetDegree() >= rhs.GetDegree()) {
     // Делим старшие мономы
     Polynomial monomial(GetDegree() - rhs.GetDegree(),
                         GetLeadingCoefficient() / rhs.GetLeadingCoefficient());
@@ -233,27 +233,27 @@ Rational Polynomial::ToIntegerCoefficients(const Polynomial &polynomial) {
   return {};
 }
 
-// НОД многочленов
-// Над модулем работал Матвеев Никита гр. 3383
-Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first, const Polynomial &second) {
-    Polynomial dividend; // делимое
-    Polynomial divisor; // делитель
-    Polynomial remains; // для хранения остатка
-    if (first.GetDegree() >= second.GetDegree()) { // если степень первого превосходи или равна второму
-        dividend = first; // делимое - первое число, делитель второе
-        divisor = second;
-    } else { // иначе числа меняются местами
-        dividend = second;
-        divisor = first;
-    }
-    remains = dividend % divisor; // первый раз находим остаток от деления первого на второго
-    while (!remains.coefficients_.empty()) { // пока отсаток не равен 0 (не пуст равнозначно)
-        dividend = divisor; // теперь делимое - бывший делитель
-        divisor = remains; // делитель - получившийся остаток
-        remains = dividend % divisor; // новый остаток от деления новых элементов
-    }
-    divisor.ToIntegerCoefficients(); // выносится общий множитель коэффициентов 
-    return divisor;
+// Наибольший общий делитель многочленов
+// Над модулем работал Матвеев Никита, гр. 3383
+Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
+                                             const Polynomial &second) {
+  // Копируем многочлены
+  Polynomial a = first;
+  Polynomial b = second;
+  // Применим алгоритм Евклида
+  // Пока один из многочленов не станет равным нулю, продолжаем делить
+  while (!b.coefficients_.empty()) {
+    // Находим остаток от деления первого на второй
+    Polynomial remainder = a % b;
+    // Первый становится вторым
+    a = b;
+    // Второй становится остатком
+    b = remainder;
+  }
+  //
+  if (a.GetDegree().IsZero()) a.coefficients_[Natural()] = Rational("1");
+  // Возвращается НОД
+  return a;
 }
 
 Polynomial Polynomial::Derivative(const Polynomial &polynomial) { return {}; }
