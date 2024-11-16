@@ -312,7 +312,7 @@ std::istream &operator>>(std::istream &is, Polynomial &polynomial) {
   std::getline(is, string);
 
   std::regex term_regex(
-      R"((((?:[+-]+)?(?:(\s*\d+)(?:\s*\/\s*\d+)?)?)?\s*\*?\s*x(?:\s*\^?\s*(\d+))?)|((?:[+-]+)?\s*\d+(?:\s*\/\s*\d+)?))");
+      R"((((?:[+-]+)?(?:(\s*\d+)(?:\s*\/\s*\d+)?)?)?\s*\*?\s*x(?:\s*\^\s*(\d+))?)|((?:[+-]+)?\s*\d+(?:\s*\/\s*\d+)?))");
   std::sregex_iterator term_begin(string.begin(), string.end(), term_regex),
       term_end;
 

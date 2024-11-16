@@ -14,5 +14,12 @@ endif ()
 
 add_subdirectory(libraries)
 
-add_executable(LongNumbers src/main.cc)
+add_executable(LongNumbers src/main.cc
+        src/menu.cc
+        src/input.cc
+        src/input.h
+        src/menu.cc
+        src/menu.h
+        src/operations.cc
+        src/operations.h)
 target_link_libraries(LongNumbers numbers)
