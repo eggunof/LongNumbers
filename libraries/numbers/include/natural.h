@@ -1,3 +1,4 @@
+
 #ifndef NUMBERS_NATURAL_H
 #define NUMBERS_NATURAL_H
 
