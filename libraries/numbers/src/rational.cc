@@ -12,6 +12,7 @@ Rational::Rational(Integer numerator, Natural denominator)
   if (denominator_.IsZero()) {
     throw std::invalid_argument("Invalid input: denominator cannot be zero");
   }
+  Reduce();
 }
 
 Rational::Rational(Integer integer)
@@ -177,6 +178,7 @@ std::istream &operator>>(std::istream &is, Rational &rational) {
   if (rational.denominator_.IsZero()) {
     throw std::invalid_argument("Invalid input: denominator cannot be zero");
   }
+  rational.Reduce();
   return is;
 }
 
