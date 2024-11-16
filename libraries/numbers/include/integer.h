@@ -12,7 +12,7 @@ enum class Sign { NEGATIVE = -1, ZERO = 0, POSITIVE = 1 };
 
 /**
  * @class Integer
- * @brief Класс для работы с целыми числами
+ * @brief Класс для работы с длинными целыми числами
  */
 class Integer {
  protected:
