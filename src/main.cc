@@ -3,13 +3,8 @@
 
 #include "menu.h"
 #include "operations.h"
-#include "polynomial.h"
 
 int main() {
-  //  Polynomial p("x   1000x");
-  //  std::cout << p;
-  //  return 0;
-
   while (true) {
     PrintModulesMenu();
     int main_choice;
