@@ -1,8 +1,10 @@
 #include <iostream>
+#include <limits>
 #include <string>
 
 #include "menu.h"
 #include "operations.h"
+#include "polynomial.h"
 
 int main() {
   while (true) {

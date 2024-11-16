@@ -12,9 +12,30 @@ Polynomial::Polynomial(const Natural &degree, const Rational &coefficient)
     : coefficients_({{degree, coefficient}}) {}
 
 Polynomial::Polynomial(const std::string &string) {
-  std::stringstream ss;
-  ss << string;
-  ss >> *this;
+  std::regex term_regex(
+      R"((((?:[+-]+\s*)?(?:(\d+\s*)(?:\/\s*\d+\s*)?)?)?\*?x(?:\^\s*(\d+\s*))?)|((?:[+-]+\s*)?\d+\s*(?:\/\s*\d+\s*)?))");
+  std::sregex_iterator term_begin(string.begin(), string.end(), term_regex),
+      term_end;
+  for (auto it = term_begin; it != term_end; ++it) {
+    const std::smatch &match = *it;
+    Rational coefficient;
+    Natural degree;
+    if (match[1].matched) {
+      std::string coefficient_str = match[2].matched ? match[2].str() : "1";
+      if (coefficient_str.find_first_not_of("+- ") == std::string::npos)
+        coefficient_str += "1";
+      coefficient = Rational(coefficient_str);
+      std::string degree_str = match[4].matched ? match[4].str() : "1";
+      degree = Natural(degree_str);
+    } else if (match[5].matched) {
+      coefficient = Rational(match[5].str());
+      degree = Natural("0");
+    }
+    coefficients_[degree] += coefficient;
+    if (coefficients_[degree] == Rational("0")) {
+      coefficients_.erase(degree);
+    }
+  }
 }
 
 Natural Polynomial::GetDegree() const {
@@ -310,36 +331,7 @@ std::ostream &operator<<(std::ostream &os, const Polynomial &polynomial) {
 std::istream &operator>>(std::istream &is, Polynomial &polynomial) {
   std::string string;
   std::getline(is, string);
-
-  std::regex term_regex(
-      R"((((?:[+-]+)?(?:(\s*\d+)(?:\s*\/\s*\d+)?)?)?\s*\*?\s*x(?:\s*\^\s*(\d+))?)|((?:[+-]+)?\s*\d+(?:\s*\/\s*\d+)?))");
-  std::sregex_iterator term_begin(string.begin(), string.end(), term_regex),
-      term_end;
-
-  for (auto it = term_begin; it != term_end; ++it) {
-    const std::smatch &match = *it;
-
-    Rational coefficient;
-    Natural degree;
-
-    if (match[1].matched) {
-      std::string coefficient_str = match[2].matched ? match[2].str() : "1";
-      if (coefficient_str.find_first_not_of("+- ") == std::string::npos)
-        coefficient_str += "1";
-      coefficient = Rational(coefficient_str);
-      std::string degree_str = match[4].matched ? match[4].str() : "1";
-      degree = Natural(degree_str);
-    } else if (match[5].matched) {
-      coefficient = Rational(match[5].str());
-      degree = Natural("0");
-    }
-
-    polynomial.coefficients_[degree] += coefficient;
-
-    if (polynomial.coefficients_[degree] == Rational("0")) {
-      polynomial.coefficients_.erase(degree);
-    }
-  }
+  polynomial = Polynomial(string);
   return is;
 }
 

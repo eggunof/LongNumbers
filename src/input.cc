@@ -2,6 +2,7 @@
 #include "input.h"
 
 #include <iostream>
+#include <limits>
 
 #include "integer.h"
 #include "natural.h"
@@ -30,9 +31,9 @@ Rational GetRationalInput() {
 }
 
 Polynomial GetPolynomialInput() {
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  Polynomial p;
   std::cout << "Введите многочлен: ";
-  std::string polynomial_string;
-  std::cin >> polynomial_string;
-  Polynomial p(polynomial_string);
+  std::cin >> p;
   return p;
 }
