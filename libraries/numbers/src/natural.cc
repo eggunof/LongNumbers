@@ -390,8 +390,9 @@ std::istream &operator>>(std::istream &is, Natural &natural) {
   is >> std::ws;
   natural.digits_.clear();
   while (true) {
-    uint8_t c = is.get();
+    uint8_t c = is.peek();
     if (!is.good() || !std::isdigit(c)) break;
+    is.get();
     Digit digit = c - '0';
     if (digit != 0 || !natural.digits_.empty()) {
       natural.digits_.push_back(digit);
