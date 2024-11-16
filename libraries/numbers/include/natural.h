@@ -318,18 +318,18 @@ class Natural {
   /**
    * @brief Оператор ввода из потока
    * @param is Поток ввода
-   * @param number Число
+   * @param natural Число
    * @returns Поток ввода
    */
-  friend std::istream &operator>>(std::istream &is, Natural &number);
+  friend std::istream &operator>>(std::istream &is, Natural &natural);
 
   /**
    * @brief Оператор вывода в поток
    * @param os Поток вывода
-   * @param number Число
+   * @param natural Число
    * @returns Поток вывода
    */
-  friend std::ostream &operator<<(std::ostream &os, const Natural &number);
+  friend std::ostream &operator<<(std::ostream &os, const Natural &natural);
 
   /**
    * @brief Преобразование числа в строку

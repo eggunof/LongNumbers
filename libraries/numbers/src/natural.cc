@@ -26,22 +26,9 @@ Natural::Natural(const std::vector<Digit> &digits) {
 }
 
 Natural::Natural(const std::string &string) {
-  digits_.reserve(string.length());
-  for (char digit : string) {
-    if (std::isspace(digit)) continue;
-    Digit x = digit - '0';
-    if (x >= kBase) {
-      throw std::invalid_argument(
-          "Invalid input: non-digit character in string");
-    }
-    if (!digits_.empty() || x != 0) {
-      digits_.push_back(x);
-    }
-  }
-  if (digits_.empty()) {
-    digits_.push_back(0);
-  }
-  digits_.shrink_to_fit();
+  std::stringstream ss;
+  ss << string;
+  ss >> *this;
 }
 
 Natural::Natural(uint32_t number) {
@@ -399,26 +386,26 @@ Natural Natural::LeastCommonMultiple(const Natural &first,
   return lcm;
 }
 
-std::istream &operator>>(std::istream &is, Natural &number) {
+std::istream &operator>>(std::istream &is, Natural &natural) {
   is >> std::ws;
-  number.digits_.clear();
+  natural.digits_.clear();
   while (true) {
     uint8_t c = is.get();
     if (!is.good() || !std::isdigit(c)) break;
     Digit digit = c - '0';
-    if (digit != 0 || !number.digits_.empty()) {
-      number.digits_.push_back(digit);
+    if (digit != 0 || !natural.digits_.empty()) {
+      natural.digits_.push_back(digit);
     }
   }
-  if (number.digits_.empty()) {
-    number.digits_.push_back(0);
+  if (natural.digits_.empty()) {
+    natural.digits_.push_back(0);
   }
-  number.digits_.shrink_to_fit();
+  natural.digits_.shrink_to_fit();
   return is;
 }
 
-std::ostream &operator<<(std::ostream &os, const Natural &number) {
-  for (Digit digit : number.digits_) {
+std::ostream &operator<<(std::ostream &os, const Natural &natural) {
+  for (Digit digit : natural.digits_) {
     os << static_cast<int16_t>(digit);
   }
   return os;
