@@ -20,7 +20,7 @@ class Integer {
   Natural natural_;
 
   /** @brief Знак числа */
-  Sign sign_;
+  Sign sign_{Sign::ZERO};
 
  public:
   /**
@@ -273,18 +273,18 @@ class Integer {
   /**
    * @brief Оператор ввода из потока
    * @param is Поток ввода
-   * @param number Число
+   * @param integer Число
    * @returns Поток ввода
    */
-  friend std::istream &operator>>(std::istream &is, Integer &number);
+  friend std::istream &operator>>(std::istream &is, Integer &integer);
 
   /**
    * @brief Оператор вывода в поток
    * @param os Поток вывода
-   * @param number Число
+   * @param integer Число
    * @returns Поток вывода
    */
-  friend std::ostream &operator<<(std::ostream &os, const Integer &number);
+  friend std::ostream &operator<<(std::ostream &os, const Integer &integer);
 
   /**
    * @brief Преобразование числа в строку

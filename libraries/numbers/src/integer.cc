@@ -19,15 +19,10 @@ Integer::Integer(Natural natural, Sign sign)
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
     : Integer(Natural(digits), sign) {}
 
-Integer::Integer(const std::string &string)
-    : natural_(string.substr(string.find_first_not_of("+- "))) {
-  if (natural_.IsZero()) {
-    sign_ = Sign::ZERO;
-  } else {
-    size_t minus_count = std::count_if(string.begin(), string.end(),
-                                       [](char c) { return c == '-'; });
-    sign_ = (minus_count % 2 == 0) ? Sign::POSITIVE : Sign::NEGATIVE;
-  }
+Integer::Integer(const std::string &string) {
+  std::stringstream ss;
+  ss << string;
+  ss >> *this;
 }
 
 Integer::Integer(int32_t number) {
@@ -227,7 +222,7 @@ Integer Integer::LeastCommonMultiple(const Integer &first,
   return lcm;
 }
 
-std::istream &operator>>(std::istream &is, Integer &number) {
+std::istream &operator>>(std::istream &is, Integer &integer) {
   size_t minus_count = 0;
   do {
     is >> std::ws;
@@ -236,16 +231,16 @@ std::istream &operator>>(std::istream &is, Integer &number) {
     is.get();
     ++minus_count;
   } while (true);
-  is >> number.natural_;
-  number.sign_ = number.natural_.IsZero() ? Sign::ZERO
-                 : minus_count % 2 == 0   ? Sign::POSITIVE
-                                          : Sign::NEGATIVE;
+  is >> integer.natural_;
+  integer.sign_ = integer.natural_.IsZero() ? Sign::ZERO
+                  : minus_count % 2 == 0    ? Sign::POSITIVE
+                                            : Sign::NEGATIVE;
   return is;
 }
 
-std::ostream &operator<<(std::ostream &os, const Integer &number) {
-  if (number.sign_ == Sign::NEGATIVE) os << "-";
-  os << number.natural_;
+std::ostream &operator<<(std::ostream &os, const Integer &integer) {
+  if (integer.sign_ == Sign::NEGATIVE) os << "-";
+  os << integer.natural_;
   return os;
 }
 
