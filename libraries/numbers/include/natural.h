@@ -55,21 +55,27 @@ class Natural {
 
   /**
    * @brief Конструктор копирования
+   * @param other Копируемое число
    */
   Natural(const Natural &other) = default;
 
   /**
    * @brief Оператор присваивания копированием
+   * @param other Число для присваивания
+   * @returns Ссылка на текущее число
    */
   Natural &operator=(const Natural &other) = default;
 
   /**
    * @brief Конструктор перемещения
+   * @param other Перемещаемое число
    */
   Natural(Natural &&other) = default;
 
   /**
    * @brief Оператор присваивания перемещением
+   * @param other Число для перемещения
+   * @returns Ссылка на текущее число
    */
   Natural &operator=(Natural &&other) = default;
 

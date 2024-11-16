@@ -404,7 +404,6 @@ std::istream &operator>>(std::istream &is, Natural &number) {
   number.digits_.clear();
   while (true) {
     uint8_t c = is.get();
-    if (std::isspace(c)) continue;
     if (!is.good() || !std::isdigit(c)) break;
     Digit digit = c - '0';
     if (digit != 0 || !number.digits_.empty()) {
