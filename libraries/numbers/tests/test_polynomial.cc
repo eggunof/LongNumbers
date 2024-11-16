@@ -1,432 +1,241 @@
-
 #include <gtest/gtest.h>
 
 #include "polynomial.h"
 
 TEST(PolynomialTest, StringToPolynomial) {
-  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
-  auto a_map = std::map<Natural, Rational, Comparator>{
-      {Natural("5"), Rational("3/2")},
-      {Natural("3"), Rational("-4")},
-      {Natural("1"), Rational("1/2")},
-      {Natural("0"), Rational("-2")},
-  };
-  EXPECT_EQ(a, Polynomial(a_map));
+  std::vector<std::pair<std::string, std::map<Natural, Rational, Comparator>>>
+      test_cases = {
+          {"3/2*x^5 - 4*x^3 + 1/2*x - 2",
+           {{Natural("5"), Rational("3/2")},
+            {Natural("3"), Rational("-4")},
+            {Natural("1"), Rational("1/2")},
+            {Natural("0"), Rational("-2")}}},
+          {"5/3*x^4 + 7*x + 2",
+           {{Natural("4"), Rational("5/3")},
+            {Natural("1"), Rational("7")},
+            {Natural("0"), Rational("2")}}},
+          {"-3*x^4 + 6/5*x^2 - x + 1/3",
+           {{Natural("4"), Rational("-3")},
+            {Natural("2"), Rational("6/5")},
+            {Natural("1"), Rational("-1")},
+            {Natural("0"), Rational("1/3")}}},
+          {"4*x^7 + 5 - x^5 + 1/2*x^2 - 7/8",
+           {{Natural("7"), Rational("4")},
+            {Natural("5"), Rational("-1")},
+            {Natural("2"), Rational("1/2")},
+            {Natural("0"), Rational("33/8")}}},
+          {"2*x^3 - 3*x^3 + x + x - 1",
+           {{Natural("3"), Rational("-1")},
+            {Natural("1"), Rational("2")},
+            {Natural("0"), Rational("-1")}}},
+          {"3*x^3 - 3*x^3 + x - x + 2 - 2", {}},
+          {"7*x^3 + 1/2*x - 3",
+           {{Natural("3"), Rational("7")},
+            {Natural("1"), Rational("1/2")},
+            {Natural("0"), Rational("-3")}}},
+          {"x^5 - x^2",
+           {{Natural("5"), Rational("1")}, {Natural("2"), Rational("-1")}}}};
 
-  Polynomial b("5/3*x^4 + 7*x + 2");
-  auto b_map = std::map<Natural, Rational, Comparator>{
-      {Natural("4"), Rational("5/3")},
-      {Natural("1"), Rational("7")},
-      {Natural("0"), Rational("2")},
-  };
-  EXPECT_EQ(b, Polynomial(b_map));
-
-  Polynomial c(" -3*x^4  + 6/5*x^2 - x +   1/3");
-  auto c_map = std::map<Natural, Rational, Comparator>{
-      {Natural("4"), Rational("-3")},
-      {Natural("2"), Rational("6/5")},
-      {Natural("1"), Rational("-1")},
-      {Natural("0"), Rational("1/3")},
-  };
-  EXPECT_EQ(c, Polynomial(c_map));
-
-  Polynomial d("4*x^7 + 5 - x^5 + 1/2*x^2 - 7/8");
-  auto d_map = std::map<Natural, Rational, Comparator>{
-      {Natural("7"), Rational("4")},
-      {Natural("5"), Rational("-1")},
-      {Natural("2"), Rational("1/2")},
-      {Natural("0"), Rational("33/8")},
-  };
-  EXPECT_EQ(d, Polynomial(d_map));
-
-  Polynomial e("2*x^3 - 3*x^3 + x + x - 1");
-  auto e_map = std::map<Natural, Rational, Comparator>{
-      {Natural("3"), Rational("-1")},
-      {Natural("1"), Rational("2")},
-      {Natural("0"), Rational("-1")},
-  };
-  EXPECT_EQ(e, Polynomial(e_map));
-
-  Polynomial f("3*x^3 - 3*x^3 + x - x + 2 - 2");
-  auto f_map = std::map<Natural, Rational, Comparator>{};
-  EXPECT_EQ(f, Polynomial(f_map));
-
-  Polynomial g(" 7 x^3 + 1 / 2 x  - 3 ");
-  auto g_map = std::map<Natural, Rational, Comparator>{
-      {Natural("3"), Rational("7")},
-      {Natural("1"), Rational("1/2")},
-      {Natural("0"), Rational("-3")},
-  };
-  EXPECT_EQ(g, Polynomial(g_map));
-
-  Polynomial h("x^5 - x^2");
-  auto h_map = std::map<Natural, Rational, Comparator>{
-      {Natural("5"), Rational("1")},
-      {Natural("2"), Rational("-1")},
-  };
-  EXPECT_EQ(h, Polynomial(h_map));
+  for (const auto& test_case : test_cases) {
+    Polynomial p(test_case.first);
+    EXPECT_EQ(p, Polynomial(test_case.second));
+  }
 }
 
 TEST(PolynomialTest, Addition) {
-  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
-  Polynomial b("2*x^4 + x^3 - 1/2*x + 3");
-  Polynomial c("3/2*x^5 + 2*x^4 - 3*x^3 + 1");
-  a += b;
-  EXPECT_EQ(a, c);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"3/2*x^5 - 4*x^3 + 1/2*x - 2", "2*x^4 + x^3 - 1/2*x + 3",
+       "3/2*x^5 + 2*x^4 - 3*x^3 + 1"},
+      {"x^3 - 2*x + 5", "2*x^3 + 3*x - 1", "3*x^3 + x + 4"},
+      {"3*x^4 + x^2 - x", "-3*x^4 - x^2 + 2*x + 5", "x + 5"},
+      {"2*x^3 + 3*x^2 - x + 7", "0", "2*x^3 + 3*x^2 - x + 7"},
+      {"x^4 - 3*x^2 + x - 6", "-x^4 + 3*x^2 - x + 6", "0"},
+      {"1/2*x^2 + 3/4*x - 1/3", "2/3*x^2 - 3/4*x + 1/6", "7/6*x^2 - 1/6"}};
 
-  Polynomial d("x^3 - 2*x + 5");
-  Polynomial e("2*x^3 + 3*x - 1");
-  Polynomial f("3*x^3 + x + 4");
-  d += e;
-  EXPECT_EQ(d, f);
-
-  Polynomial g("3*x^4 + x^2 - x");
-  Polynomial h("-3*x^4 - x^2 + 2*x + 5");
-  Polynomial i("x + 5");
-  g += h;
-  EXPECT_EQ(g, i);
-
-  Polynomial j("2*x^3 + 3*x^2 - x + 7");
-  Polynomial k("0");
-  Polynomial l("2*x^3 + 3*x^2 - x + 7");
-  j += k;
-  EXPECT_EQ(j, l);
-
-  Polynomial m("x^4 - 3*x^2 + x - 6");
-  Polynomial n("-x^4 + 3*x^2 - x + 6");
-  Polynomial o("0");
-  EXPECT_EQ(m + n, o);
-
-  Polynomial p("1/2*x^2 + 3/4*x - 1/3");
-  Polynomial q("2/3*x^2 - 3/4*x + 1/6");
-  Polynomial r("7/6*x^2 - 1/6");
-  EXPECT_EQ(p + q, r);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial b(std::get<1>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    a += b;
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(PolynomialTest, Subtraction) {
-  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
-  Polynomial b("2*x^4 + x^3 - 1/2*x + 3");
-  Polynomial c("3/2*x^5 - 2*x^4 - 5*x^3 + x - 5");
-  a -= b;
-  EXPECT_EQ(a, c);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"3/2*x^5 - 4*x^3 + 1/2*x - 2", "2*x^4 + x^3 - 1/2*x + 3",
+       "3/2*x^5 - 2*x^4 - 5*x^3 + x - 5"},
+      {"x^3 - 2*x + 5", "2*x^3 + 3*x - 1", "-x^3 - 5*x + 6"},
+      {"3*x^4 + x^2 - x", "3*x^4 + x^2 - 2*x - 5", "x + 5"},
+      {"2*x^3 + 3*x^2 - x + 7", "0", "2*x^3 + 3*x^2 - x + 7"},
+      {"x^4 - 3*x^2 + x - 6", "-x^4 + 3*x^2 - x + 6",
+       "2*x^4 - 6*x^2 + 2*x - 12"},
+      {"1/2*x^2 + 3/4*x - 1/3", "2/3*x^2 - 3/4*x + 1/6",
+       "-1/6*x^2 + 3/2*x - 1/2"}};
 
-  Polynomial d("x^3 - 2*x + 5");
-  Polynomial e("2*x^3 + 3*x - 1");
-  Polynomial f("-x^3 - 5*x + 6");
-  d -= e;
-  EXPECT_EQ(d, f);
-
-  Polynomial g("3*x^4 + x^2 - x");
-  Polynomial h("3*x^4 + x^2 - 2*x - 5");
-  Polynomial i("x + 5");
-  g -= h;
-  EXPECT_EQ(g, i);
-
-  Polynomial j("2*x^3 + 3*x^2 - x + 7");
-  Polynomial k("0");
-  Polynomial l("2*x^3 + 3*x^2 - x + 7");
-  j -= k;
-  EXPECT_EQ(j, l);
-
-  Polynomial m("x^4 - 3*x^2 + x - 6");
-  Polynomial n("-x^4 + 3*x^2 - x + 6");
-  Polynomial o("2*x^4 - 6*x^2 + 2*x - 12");
-  EXPECT_EQ(m - n, o);
-
-  Polynomial p("1/2*x^2 + 3/4*x - 1/3");
-  Polynomial q("2/3*x^2 - 3/4*x + 1/6");
-  Polynomial r("-1/6*x^2 + 3/2*x - 1/2");
-  EXPECT_EQ(p - q, r);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial b(std::get<1>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    a -= b;
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(PolynomialTest, MultiplicationByRational) {
-  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
-  Polynomial b("3*x^5 - 8*x^3 + x - 4");
-  a *= Rational("2");
-  EXPECT_EQ(a, b);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"3/2*x^5 - 4*x^3 + 1/2*x - 2", "2", "3*x^5 - 8*x^3 + x - 4"},
+      {"x^3 - 2*x + 5", "-3", "-3*x^3 + 6*x - 15"},
+      {"3*x^4 + x^2 - x", "1/2", "3/2*x^4 + 1/2*x^2 - 1/2*x"},
+      {"2*x^3 + 3*x^2 - x + 7", "0", "0"},
+      {"x^4 - 3*x^2 + x - 6", "1", "x^4 - 3*x^2 + x - 6"},
+      {"1/2*x^2 + 3/4*x - 1/3", "-2/3", "-1/3*x^2 - 1/2*x + 2/9"}};
 
-  Polynomial c("x^3 - 2*x + 5");
-  Polynomial d("-3*x^3 + 6*x - 15");
-  c *= Rational("-3");
-  EXPECT_EQ(c, d);
-
-  Polynomial e("3*x^4 + x^2 - x");
-  Polynomial f("3/2*x^4 + 1/2*x^2 - 1/2*x");
-  e *= Rational("1/2");
-  EXPECT_EQ(e, f);
-
-  Polynomial g("2*x^3 + 3*x^2 - x + 7");
-  Polynomial h("0");
-  g *= Rational("0");
-  EXPECT_EQ(g, h);
-
-  Polynomial i("x^4 - 3*x^2 + x - 6");
-  Polynomial j("x^4 - 3*x^2 + x - 6");
-  EXPECT_EQ(i * Rational("1"), j);
-
-  Polynomial k("1/2*x^2 + 3/4*x - 1/3");
-  Polynomial l("-1/3*x^2 - 1/2*x + 2/9");
-  EXPECT_EQ(k * Rational("-2/3"), l);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    a *= Rational(std::get<1>(test_case));
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(PolynomialTest, MultiplyByXPower) {
-  Polynomial a("3/2*x^5 - 4*x^3 + 1/2*x - 2");
-  Polynomial b("3/2*x^8 - 4*x^6 + 1/2*x^4 - 2*x^3");
-  a.MultiplyByXPower(3);
-  EXPECT_EQ(a, b);
+  std::vector<std::tuple<std::string, uint32_t, std::string>> test_cases = {
+      {"3/2*x^5 - 4*x^3 + 1/2*x - 2", 3, "3/2*x^8 - 4*x^6 + 1/2*x^4 - 2*x^3"},
+      {"x^3 - 2*x + 5", 2, "x^5 - 2*x^3 + 5*x^2"},
+      {"3*x^4 + x^2 - x", 2, "3*x^6 + x^4 - x^3"},
+      {"2*x^3 + 3*x^2 - x + 7", 0, "2*x^3 + 3*x^2 - x + 7"},
+      {"x^4 - 3*x^2 + x - 6", 3, "x^7 - 3*x^5 + x^4 - 6*x^3"},
+      {"1/2*x^2 + 3/4*x - 1/3", 5, "1/2*x^7 + 3/4*x^6 - 1/3*x^5"}};
 
-  Polynomial c("x^3 - 2*x + 5");
-  Polynomial d("x^5 - 2*x^3 + 5*x^2");
-  c.MultiplyByXPower(2);
-  EXPECT_EQ(c, d);
-
-  Polynomial e("3*x^4 + x^2 - x");
-  Polynomial f("3*x^6 + x^4 - x^3");
-  e.MultiplyByXPower(2);
-  EXPECT_EQ(e, f);
-
-  Polynomial g("2*x^3 + 3*x^2 - x + 7");
-  Polynomial h("2*x^3 + 3*x^2 - x + 7");
-  g.MultiplyByXPower(0);
-  EXPECT_EQ(g, h);
-
-  Polynomial i("x^4 - 3*x^2 + x - 6");
-  Polynomial j("x^7 - 3*x^5 + x^4 - 6*x^3");
-  EXPECT_EQ(i.MultiplyByXPower(3), j);
-
-  Polynomial k("1/2*x^2 + 3/4*x - 1/3");
-  Polynomial l("1/2*x^7 + 3/4*x^6 - 1/3*x^5");
-  EXPECT_EQ(k.MultiplyByXPower(5), l);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    a.MultiplyByXPower(std::get<1>(test_case));
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(PolynomialTest, Multiplication) {
-  Polynomial a("3/2*x^2 - 2*x + 1");
-  Polynomial b("x + 1");
-  Polynomial c("3/2*x^3 - 1/2*x^2 - x + 1");
-  a *= b;
-  EXPECT_EQ(a, c);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"3/2*x^2 - 2*x + 1", "x + 1", "3/2*x^3 - 1/2*x^2 - x + 1"},
+      {"x^2 + 2*x + 1", "x + 3", "x^3 + 5*x^2 + 7*x + 3"},
+      {"2*x^2 - x + 3", "x^2 + 1", "2*x^4 - x^3 + 5*x^2 - x + 3"},
+      {"x^3 + 3", "0", "0"},
+      {"1/2*x + 1", "2*x^2 - x + 1/2", "x^3 + 3/2*x^2 - 3/4*x + 1/2"},
+      {"x + 2", "x - 2", "x^2 - 4"}};
 
-  Polynomial d("x^2 + 2*x + 1");
-  Polynomial e("x + 3");
-  Polynomial f("x^3 + 5*x^2 + 7*x + 3");
-  d *= e;
-  EXPECT_EQ(d, f);
-
-  Polynomial g("2*x^2 - x + 3");
-  Polynomial h("x^2 + 1");
-  Polynomial i("2*x^4 - x^3 + 5*x^2 - x + 3");
-  g *= h;
-  EXPECT_EQ(g, i);
-
-  Polynomial j("x^3 + 3");
-  Polynomial k("0");
-  Polynomial l("0");
-  j *= k;
-  EXPECT_EQ(j, l);
-
-  Polynomial m("1/2*x + 1");
-  Polynomial n("2*x^2 - x + 1/2");
-  Polynomial o("x^3 + 3/2*x^2 - 3/4*x + 1/2");
-  EXPECT_EQ(m * n, o);
-
-  Polynomial p("x + 2");
-  Polynomial q("x - 2");
-  Polynomial r("x^2 - 4");
-  EXPECT_EQ(p * q, r);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial b(std::get<1>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    EXPECT_EQ(a * b, expected);
+  }
 }
 
 TEST(PolynomialTest, DivisionQuotient) {
-  Polynomial a("x^2 + 2*x + 1");
-  Polynomial b("x + 1");
-  Polynomial c("x + 1");
-  a /= b;
-  EXPECT_EQ(a, c);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"x^2 + 2*x + 1", "x + 1", "x + 1"},
+      {"x^3 + 3*x^2 + 3*x + 1", "x + 1", "x^2 + 2*x + 1"},
+      {"x^4 - 2*x^3 + x^2 + 3*x - 1", "x^2 - 1", "x^2 - 2*x + 2"},
+      {"2*x^3 + 3*x^2 + 4*x + 5", "x + 2", "2*x^2 - x + 6"},
+      {"x + 2", "0", "Invalid Argument"}};
 
-  Polynomial d("x^3 + 3*x^2 + 3*x + 1");
-  Polynomial e("x + 1");
-  Polynomial f("x^2 + 2*x + 1");
-  d /= e;
-  EXPECT_EQ(d, f);
-
-  Polynomial g("x^4 - 2*x^3 + x^2 + 3*x - 1");
-  Polynomial h("x^2 - 1");
-  Polynomial i("x^2 - 2*x + 2");
-  g /= h;
-  EXPECT_EQ(g, i);
-
-  Polynomial j("2*x^3 + 3*x^2 + 4*x + 5");
-  Polynomial k("x + 2");
-  Polynomial l("2*x^2 - x + 6");
-  EXPECT_EQ(j / k, l);
-
-  Polynomial m("x + 2");
-  Polynomial n("0");
-  EXPECT_THROW(m / n, std::invalid_argument);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial b(std::get<1>(test_case));
+    try {
+      EXPECT_EQ(a / b, Polynomial(std::get<2>(test_case)));
+    } catch (const std::invalid_argument&) {
+      EXPECT_EQ(std::get<2>(test_case), "Invalid Argument");
+    }
+  }
 }
 
 TEST(PolynomialTest, DivisionRemainder) {
-  Polynomial a("x^3 + 3*x^2 + 3*x + 1");
-  Polynomial b("x + 1");
-  Polynomial c("0");
-  a %= b;
-  EXPECT_EQ(a, c);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"x^3 + 3*x^2 + 3*x + 1", "x + 1", "0"},
+      {"x^4 - 2*x^3 + x^2 + 3*x - 1", "x^2 - 1", "x + 1"},
+      {"2*x^3 + 3*x^2 + 4*x + 5", "x + 2", "-7"},
+      {"3*x^5 - x^4 + 2*x^3 - x + 4", "x^2 + 1", "3"},
+      {"5*x^3 - 3*x^2 + 2", "x^2 + 1", "-5*x + 5"}};
 
-  Polynomial d("x^4 - 2*x^3 + x^2 + 3*x - 1");
-  Polynomial e("x^2 - 1");
-  Polynomial f("x + 1");
-  d %= e;
-  EXPECT_EQ(d, f);
-
-  Polynomial g("2*x^3 + 3*x^2 + 4*x + 5");
-  Polynomial h("x + 2");
-  Polynomial i("-7");
-  g %= h;
-  EXPECT_EQ(g, i);
-
-  Polynomial j("3*x^5 - x^4 + 2*x^3 - x + 4");
-  Polynomial k("x^2 + 1");
-  Polynomial l("3");
-  j %= k;
-  EXPECT_EQ(j, l);
-
-  Polynomial m("5*x^3 - 3*x^2 + 2");
-  Polynomial n("x^2 + 1");
-  Polynomial o("-5*x + 5");
-  m %= n;
-  EXPECT_EQ(m, o);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial b(std::get<1>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    a %= b;
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(PolynomialTest, GreatestCommonDivisor) {
-  Polynomial a("x^3 - 3*x^2 + 3*x - 1");
-  Polynomial b("x^2 - 2*x + 1");
-  Polynomial c("x^2 - 2*x + 1");
-  EXPECT_EQ(Polynomial::GreatestCommonDivisor(a, b), c);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"x^3 - 3*x^2 + 3*x - 1", "x^2 - 2*x + 1", "x^2 - 2*x + 1"},
+      {"x^4 - 4*x^3 + 6*x^2 - 4*x + 1", "x^2 - 2*x + 1", "x^2 - 2*x + 1"},
+      {"x^3 + x + 1", "x^2 + x + 1", "1"},
+      {"x^2 + 4*x + 4", "2", "1"},
+      {"x^3 - x", "3*x^2 - 1", "1"},
+      {"0", "0", "1"},
+      {"x^2 - x", "0", "x^2 - x"}};
 
-  Polynomial d("x^4 - 4*x^3 + 6*x^2 - 4*x + 1");
-  Polynomial e("x^2 - 2*x + 1");
-  Polynomial f("x^2 - 2*x + 1");
-  EXPECT_EQ(Polynomial::GreatestCommonDivisor(d, e), f);
-
-  Polynomial g("x^3 + x + 1");
-  Polynomial h("x^2 + x + 1");
-  Polynomial i("1");
-  const Polynomial& polynomial = Polynomial::GreatestCommonDivisor(g, h);
-  EXPECT_EQ(polynomial, i);
-
-  Polynomial j("x^2 + 4*x + 4");
-  Polynomial k("2");
-  Polynomial l("1");
-  EXPECT_EQ(Polynomial::GreatestCommonDivisor(j, k), l);
-
-  Polynomial m("x^3 - x");
-  Polynomial n("3*x^2 - 1");
-  Polynomial o("1");
-  EXPECT_EQ(Polynomial::GreatestCommonDivisor(m, n), o);
-
-  Polynomial p("0");
-  Polynomial q("0");
-  Polynomial r("1");
-  EXPECT_EQ(Polynomial::GreatestCommonDivisor(p, q), r);
-
-  Polynomial s("x^2 - x");
-  Polynomial t("0");
-  Polynomial u("x^2 - x");
-  EXPECT_EQ(Polynomial::GreatestCommonDivisor(s, t), u);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial b(std::get<1>(test_case));
+    Polynomial expected(std::get<2>(test_case));
+    EXPECT_EQ(Polynomial::GreatestCommonDivisor(a, b), expected);
+  }
 }
 
 TEST(PolynomialTest, Derivative) {
-  Polynomial a("3*x^5 - 2*x^3 + x - 4");
-  Polynomial b("15*x^4 - 6*x^2 + 1");
-  EXPECT_EQ(Polynomial::Derivative(a), b);
+  std::vector<std::tuple<std::string, std::string>> test_cases = {
+      {"3*x^5 - 2*x^3 + x - 4", "15*x^4 - 6*x^2 + 1"},
+      {"x^4 - 3*x^2 + 2*x", "4*x^3 - 6*x + 2"},
+      {"7*x^3 - 5*x + 1", "21*x^2 - 5"},
+      {"x^2 - x + 1", "2*x - 1"},
+      {"5*x^2", "10*x"},
+      {"x", "1"},
+      {"7", "0"}};
 
-  Polynomial c("x^4 - 3*x^2 + 2*x");
-  Polynomial d("4*x^3 - 6*x + 2");
-  EXPECT_EQ(Polynomial::Derivative(c), d);
-
-  Polynomial e("7*x^3 - 5*x + 1");
-  Polynomial f("21*x^2 - 5");
-  EXPECT_EQ(Polynomial::Derivative(e), f);
-
-  Polynomial g("x^2 - x + 1");
-  Polynomial h("2*x - 1");
-  EXPECT_EQ(Polynomial::Derivative(g), h);
-
-  Polynomial i("5*x^2");
-  Polynomial j("10*x");
-  EXPECT_EQ(Polynomial::Derivative(i), j);
-
-  Polynomial k("x");
-  Polynomial l("1");
-  EXPECT_EQ(Polynomial::Derivative(k), l);
-
-  Polynomial m("7");
-  Polynomial n("0");
-  EXPECT_EQ(Polynomial::Derivative(m), n);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial expected(std::get<1>(test_case));
+    EXPECT_EQ(Polynomial::Derivative(a), expected);
+  }
 }
 
 TEST(PolynomialTest, ToIntegerCoefficients) {
-  Polynomial a("1/2*x^3 - 3/4*x^2 + 5/6*x - 1/3");
-  Polynomial b("6*x^3 - 9*x^2 + 10*x - 4");
-  EXPECT_EQ(a.ToIntegerCoefficients(), Rational("1/12"));
-  EXPECT_EQ(a, b);
+  std::vector<std::tuple<std::string, std::string, std::string>> test_cases = {
+      {"1/2*x^3 - 3/4*x^2 + 5/6*x - 1/3", "6*x^3 - 9*x^2 + 10*x - 4", "1/12"},
+      {"2/3*x^2 + 4/5*x - 7/10", "20*x^2 + 24*x - 21", "1/30"},
+      {"3*x - 6", "x - 2", "3"},
+      {"0", "0", "1"},
+      {"1/4*x^5 + 3/8*x^3 - 9/16", "4*x^5 + 6*x^3 - 9", "1/16"},
+      {"-5/7*x^2 + 6/14*x - 3/21", "5*x^2 - 3*x + 1", "-1/7"},
+      {"1/2*x^4 - 1/3*x^3 + 1/4*x^2 - 1/6*x + 1/12",
+       "6*x^4 - 4*x^3 + 3*x^2 - 2*x + 1", "1/12"}};
 
-  Polynomial c("2/3*x^2 + 4/5*x - 7/10");
-  Polynomial d("20*x^2 + 24*x - 21");
-  EXPECT_EQ(c.ToIntegerCoefficients(), Rational("1/30"));
-  EXPECT_EQ(c, d);
-
-  Polynomial e("3*x - 6");
-  Polynomial f("x - 2");
-  EXPECT_EQ(e.ToIntegerCoefficients(), Rational("3"));
-  EXPECT_EQ(e, f);
-
-  Polynomial g("0");
-  Polynomial h("0");
-  EXPECT_EQ(g.ToIntegerCoefficients(), Rational("1"));
-  EXPECT_EQ(g, h);
-
-  Polynomial i("1/4*x^5 + 3/8*x^3 - 9/16");
-  Polynomial j("4*x^5 + 6*x^3 - 9");
-  EXPECT_EQ(i.ToIntegerCoefficients(), Rational("1/16"));
-  EXPECT_EQ(i, j);
-
-  Polynomial k("-5/7*x^2 + 6/14*x - 3/21");
-  Polynomial l("5*x^2 - 3*x + 1");
-  EXPECT_EQ(k.ToIntegerCoefficients(), Rational("-1/7"));
-  EXPECT_EQ(k, l);
-
-  Polynomial m("1/2*x^4 - 1/3*x^3 + 1/4*x^2 - 1/6*x + 1/12");
-  Polynomial n("6*x^4 - 4*x^3 + 3*x^2 - 2*x + 1");
-  EXPECT_EQ(m.ToIntegerCoefficients(), Rational("1/12"));
-  EXPECT_EQ(m, n);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial expected(std::get<1>(test_case));
+    EXPECT_EQ(a.ToIntegerCoefficients(), Rational(std::get<2>(test_case)));
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(PolynomialTest, NormalizeRoots) {
-  Polynomial a("x^6 - 3*x^4 + 3*x^2 - 1");
-  Polynomial b("x^2 - 1");
-  EXPECT_EQ(Polynomial::NormalizeRoots(a), b);
+  std::vector<std::tuple<std::string, std::string>> test_cases = {
+      {"x^6 - 3*x^4 + 3*x^2 - 1", "x^2 - 1"},
+      {"x^4 - 2*x^3 + x^2", "x^2 - x"},
+      {"x^8 - 4*x^6 + 6*x^4 - 4*x^2 + 1", "x^2 - 1"},
+      {"x^3 - x", "x^3 - x"},
+      {"x^6 - 8*x^4 + 16*x^2", "x^3 - 4x"},
+      {"x^3 - 2*x^2 + x", "x^2 - x"},
+      {"x^4 - 2*x^3 + x^2", "x^2 - x"}};
 
-  Polynomial c("x^4 - 2*x^3 + x^2");
-  Polynomial d("x^2 - x");
-  EXPECT_EQ(Polynomial::NormalizeRoots(c), d);
-
-  Polynomial e("x^8 - 4*x^6 + 6*x^4 - 4*x^2 + 1");
-  Polynomial f("x^2 - 1");
-  EXPECT_EQ(Polynomial::NormalizeRoots(e), f);
-
-  Polynomial g("x^3 - x");
-  Polynomial h("x^3 - x");
-  EXPECT_EQ(Polynomial::NormalizeRoots(g), h);
-
-  Polynomial i("x^6 - 8*x^4 + 16*x^2");
-  Polynomial j("x^3 - 4x");
-  EXPECT_EQ(Polynomial::NormalizeRoots(i), j);
-
-  Polynomial k("x^3 - 2*x^2 + x");
-  Polynomial l("x^2 - x)");
-  EXPECT_EQ(Polynomial::NormalizeRoots(k), l);
-
-  Polynomial m("x^4 - 2*x^3 + x^2");
-  Polynomial n("x^2 - x");
-  EXPECT_EQ(Polynomial::NormalizeRoots(m), n);
+  for (const auto& test_case : test_cases) {
+    Polynomial a(std::get<0>(test_case));
+    Polynomial expected(std::get<1>(test_case));
+    EXPECT_EQ(Polynomial::NormalizeRoots(a), expected);
+  }
 }

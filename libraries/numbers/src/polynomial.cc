@@ -12,35 +12,9 @@ Polynomial::Polynomial(const Natural &degree, const Rational &coefficient)
     : coefficients_({{degree, coefficient}}) {}
 
 Polynomial::Polynomial(const std::string &string) {
-  std::regex term_regex(
-      R"((((?:[+-]+\s*)?(?:(\d+\s*)(?:\/\s*\d+\s*)?)?)?\*?x(?:\^?\s*(\d+\s*))?)|((?:[+-]+\s*)?\d+\s*(?:\/\s*\d+\s*)?))");
-  std::sregex_iterator term_begin(string.begin(), string.end(), term_regex),
-      term_end;
-
-  for (auto it = term_begin; it != term_end; ++it) {
-    const std::smatch &match = *it;
-
-    Rational coefficient;
-    Natural degree;
-
-    if (match[1].matched) {
-      std::string coefficient_str = match[2].matched ? match[2].str() : "1";
-      if (coefficient_str.find_first_not_of("+- ") == std::string::npos)
-        coefficient_str += "1";
-      coefficient = Rational(coefficient_str);
-      std::string degree_str = match[4].matched ? match[4].str() : "1";
-      degree = Natural(degree_str);
-    } else if (match[5].matched) {
-      coefficient = Rational(match[5].str());
-      degree = Natural("0");
-    }
-
-    coefficients_[degree] += coefficient;
-
-    if (coefficients_[degree] == Rational("0")) {
-      coefficients_.erase(degree);
-    }
-  }
+  std::stringstream ss;
+  ss << string;
+  ss >> *this;
 }
 
 Natural Polynomial::GetDegree() const {
@@ -68,8 +42,11 @@ Polynomial &Polynomial::operator-() {
   return *this;
 }
 
-// Сложение многочленов "+="
-// Над модулем работала Варфоломеева Арина, гр. 3383
+Polynomial Polynomial::operator-() const {
+  Polynomial result = *this;
+  return -result;
+}
+
 Polynomial &Polynomial::operator+=(const Polynomial &rhs) {
   // Проходимся по коэффициентам правого многочлена
   for (auto &[degree, coefficient] : rhs.coefficients_) {
@@ -82,16 +59,26 @@ Polynomial &Polynomial::operator+=(const Polynomial &rhs) {
   return *this;
 }
 
-// Вычитание многочленов "-="
-// Над модулем работала Солдунова Екатерина, гр. 3383
+Polynomial Polynomial::operator+(const Polynomial &rhs) const {
+  // Складываем копию текущего объекта
+  Polynomial result = *this;
+  result += rhs;
+  return result;
+}
+
 Polynomial &Polynomial::operator-=(const Polynomial &rhs) {
   // Применяем сложение с противоположным знаком
   *this += -rhs;
   return *this;
 }
 
-// Умножение многочлена на рациональное "*="
-// Над модулем работала Кадникова Анна, гр. 3384
+Polynomial Polynomial::operator-(const Polynomial &rhs) const {
+  // Вычитаем копию текущего объекта
+  Polynomial result = *this;
+  result -= rhs;
+  return result;
+}
+
 Polynomial &Polynomial::operator*=(const Rational &scalar) {
   if (scalar == Rational("0")) {
     coefficients_ = {};
@@ -105,8 +92,13 @@ Polynomial &Polynomial::operator*=(const Rational &scalar) {
   return *this;
 }
 
-// Умножение многочленов "*="
-// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator*(const Rational &scalar) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= scalar;
+  return result;
+}
+
 Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
   std::map<Natural, Rational, Comparator> result;
   // Перебираем все коэффициенты текущего многочлена
@@ -125,8 +117,13 @@ Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
   return *this;
 }
 
-// Частное от деления многочленов "/="
-// Над модулем работала Солдунова Екатерина, гр. 3383
+Polynomial Polynomial::operator*(const Polynomial &rhs) const {
+  // Умножаем копию текущего объекта
+  Polynomial result = *this;
+  result *= rhs;
+  return result;
+}
+
 Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   Polynomial result;
   while (!coefficients_.empty() && GetDegree() >= rhs.GetDegree()) {
@@ -142,8 +139,12 @@ Polynomial &Polynomial::operator/=(const Polynomial &rhs) {
   return *this;
 }
 
-// Остаток от деления многочленов "%="
-// Над модулем работала Дмитриева Дарья, гр. 3383
+Polynomial Polynomial::operator/(const Polynomial &rhs) const {
+  Polynomial result = *this;
+  result /= rhs;
+  return result;
+}
+
 Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
   // Вычисляем неполное частное
   Polynomial quotient = *this / rhs;
@@ -152,65 +153,12 @@ Polynomial &Polynomial::operator%=(const Polynomial &rhs) {
   return *this;
 }
 
-Polynomial Polynomial::operator-() const {
-  Polynomial result = *this;
-  return -result;
-}
-
-// Сложение многочленов "+"
-// Над модулем работала Варфоломеева Арина, гр. 3383
-Polynomial Polynomial::operator+(const Polynomial &rhs) const {
-  // Складываем копию текущего объекта
-  Polynomial result = *this;
-  result += rhs;
-  return result;
-}
-
-// Вычитание многочленов "-"
-// Над модулем работала Солдунова Екатерина, гр. 3383
-Polynomial Polynomial::operator-(const Polynomial &rhs) const {
-  // Вычитаем копию текущего объекта
-  Polynomial result = *this;
-  result -= rhs;
-  return result;
-}
-
-// Умножение многочлена на рациональное "*"
-// Над модулем работала Кадникова Анна, гр. 3384
-Polynomial Polynomial::operator*(const Rational &scalar) const {
-  // Умножаем копию текущего объекта
-  Polynomial result = *this;
-  result *= scalar;
-  return result;
-}
-
-// Умножение многочленов "*"
-// Над модулем работала Дмитриева Дарья, гр. 3383
-Polynomial Polynomial::operator*(const Polynomial &rhs) const {
-  // Умножаем копию текущего объекта
-  Polynomial result = *this;
-  result *= rhs;
-  return result;
-}
-
-// Частное от деления многочленов "/"
-// Над модулем работала Солдунова Екатерина, гр. 3383
-Polynomial Polynomial::operator/(const Polynomial &rhs) const {
-  Polynomial result = *this;
-  result /= rhs;
-  return result;
-}
-
-// Остаток от деления многочленов "%="
-// Над модулем работала Дмитриева Дарья, гр. 3383
 Polynomial Polynomial::operator%(const Polynomial &rhs) const {
   Polynomial result = *this;
   result %= rhs;
   return result;
 }
 
-// Умножение многочлена на x^k
-// Над модулем работала Майская Вероника, гр. 3384
 Polynomial &Polynomial::MultiplyByXPower(uint32_t k) {
   if (k == 0) {
     return *this;
@@ -228,16 +176,12 @@ Polynomial &Polynomial::MultiplyByXPower(uint32_t k) {
   return *this;
 }
 
-// Умножение многочлена на x^k
-// Над модулем работала Майская Вероника, гр. 3384
 Polynomial Polynomial::MultiplyByXPower(uint32_t k) const {
   Polynomial result = *this;
   result.MultiplyByXPower(k);
   return result;
 }
 
-// Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей
-// Над модулем работал Матвеев Никита, гр. 3383
 Rational Polynomial::ToIntegerCoefficients() {
   // Если многочлен пуст, возвращаем множитель 1
   if (coefficients_.empty()) {
@@ -270,8 +214,6 @@ Rational Polynomial::ToIntegerCoefficients() {
   return multiplier;
 }
 
-// Наибольший общий делитель многочленов
-// Над модулем работал Матвеев Никита, гр. 3383
 Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
                                              const Polynomial &second) {
   // Копируем многочлены
@@ -293,8 +235,6 @@ Polynomial Polynomial::GreatestCommonDivisor(const Polynomial &first,
   return a;
 }
 
-// Производная многочлена
-// Над модулем работала Кривошеина Дарья, группа 3383
 Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
   Polynomial derivative;
   // цикл идет по степеням слагаемых переданного многочлена и их коэффициентам
@@ -310,8 +250,6 @@ Polynomial Polynomial::Derivative(const Polynomial &polynomial) {
   return derivative;
 }
 
-// Преобразование многочлена — кратные корни в простые
-// Над модулем работала Кривошеина Дарья, гр. 3383
 Polynomial Polynomial::NormalizeRoots(const Polynomial &polynomial) {
   // Создаём объект для будущего нормализованного многочлена
   Polynomial normalized = Polynomial("1");
@@ -340,32 +278,73 @@ Polynomial Polynomial::NormalizeRoots(const Polynomial &polynomial) {
   return normalized;
 }
 
-Polynomial::operator std::string() const {
-  std::ostringstream result;
+std::ostream &operator<<(std::ostream &os, const Polynomial &polynomial) {
   bool first_monomial = true;
-  for (auto &[degree, coefficient] : coefficients_) {
+  for (auto &[degree, coefficient] : polynomial.coefficients_) {
     if (coefficient != Rational("1") && coefficient != Rational("-1")) {
       if (!first_monomial && coefficient > Rational("0")) {
-        result << "+";
+        os << "+";
       }
-      result << std::string(coefficient);
-      if (!degree.IsZero()) result << "*";
+      os << coefficient;
+      if (!degree.IsZero()) os << "*";
     } else {
       if (coefficient == Rational("-1")) {
-        result << "-";
+        os << "-";
       } else if (!first_monomial) {
-        result << "+";
+        os << "+";
       }
-      if (degree.IsZero()) result << "1";
+      if (degree.IsZero()) os << "1";
     }
     if (!degree.IsZero()) {
-      result << "x";
+      os << "x";
       if (degree != Natural("1")) {
-        result << "^" << std::string(degree);
+        os << "^" << degree;
       }
     }
     first_monomial = false;
   }
-  if (result.tellp() == 0) return "0";
+  if (os.tellp() == 0) os << "0";
+  return os;
+}
+
+std::istream &operator>>(std::istream &is, Polynomial &polynomial) {
+  std::string string;
+  std::getline(is, string);
+
+  std::regex term_regex(
+      R"((((?:[+-]+)?(?:(\s*\d+)(?:\s*\/\s*\d+)?)?)?\s*\*?\s*x(?:\s*\^?\s*(\d+))?)|((?:[+-]+)?\s*\d+(?:\s*\/\s*\d+)?))");
+  std::sregex_iterator term_begin(string.begin(), string.end(), term_regex),
+      term_end;
+
+  for (auto it = term_begin; it != term_end; ++it) {
+    const std::smatch &match = *it;
+
+    Rational coefficient;
+    Natural degree;
+
+    if (match[1].matched) {
+      std::string coefficient_str = match[2].matched ? match[2].str() : "1";
+      if (coefficient_str.find_first_not_of("+- ") == std::string::npos)
+        coefficient_str += "1";
+      coefficient = Rational(coefficient_str);
+      std::string degree_str = match[4].matched ? match[4].str() : "1";
+      degree = Natural(degree_str);
+    } else if (match[5].matched) {
+      coefficient = Rational(match[5].str());
+      degree = Natural("0");
+    }
+
+    polynomial.coefficients_[degree] += coefficient;
+
+    if (polynomial.coefficients_[degree] == Rational("0")) {
+      polynomial.coefficients_.erase(degree);
+    }
+  }
+  return is;
+}
+
+std::string Polynomial::ToString() const {
+  std::ostringstream result;
+  result << *this;
   return result.str();
 }
