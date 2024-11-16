@@ -192,21 +192,21 @@ TEST(NaturalTest, SubtractionMultiplied) {
   EXPECT_THROW(g.SubtractMultiplied(h, 1), std::invalid_argument);
 }
 
-TEST(NaturalTest, MultiplyBy10Power) {
+TEST(NaturalTest, MultiplyByBasePower) {
   Natural a("5000000000");
-  a.MultiplyBy10Power(2);
+  a.MultiplyByBasePower(2);
   EXPECT_EQ(a, Natural("500000000000"));
 
   Natural b("5000000000");
-  b.MultiplyBy10Power(0);
+  b.MultiplyByBasePower(0);
   EXPECT_EQ(b, Natural("5000000000"));
 
   Natural c("0");
-  c.MultiplyBy10Power(3);
+  c.MultiplyByBasePower(3);
   EXPECT_EQ(c, Natural("0"));
 
   const Natural d("123");
-  EXPECT_EQ(d.MultiplyBy10Power(5), Natural("12300000"));
+  EXPECT_EQ(d.MultiplyByBasePower(5), Natural("12300000"));
 }
 
 TEST(NaturalTest, GetLeadingQuotientDigit) {
@@ -263,7 +263,7 @@ TEST(NaturalTest, GreatestCommonDivisor) {
 
   Natural k("123");
   Natural l("0");
-  EXPECT_EQ(Natural::GreatestCommonDivisor(k, l), Natural(123));
+  EXPECT_EQ(Natural::GreatestCommonDivisor(k, l), Natural("123"));
 }
 
 TEST(NaturalTest, LeastCommonMultiple) {
