@@ -2,183 +2,155 @@
 #include <gtest/gtest.h>
 
 #include "integer.h"
+#include "natural.h"
 
 TEST(IntegerTest, NaturalToInteger) {
-  Natural a("12345678901234567890");
-  EXPECT_EQ(Integer(a), Integer("12345678901234567890"));
+  std::vector<std::pair<Natural, Integer>> cases = {
+      {Natural("12345678901234567890"), Integer("12345678901234567890")},
+      {Natural("0"), Integer("0")},
+  };
 
-  Natural b("98877665255252626266266262525");
-  EXPECT_EQ(Integer(b), Integer("98877665255252626266266262525"));
-
-  Natural c("0");
-  EXPECT_EQ(Integer(c), Integer("0"));
+  for (const auto &[input, expected] : cases) {
+    EXPECT_EQ(Integer(input), expected);
+  }
 }
 
 TEST(IntegerTest, IntegerToNatural) {
-  Integer a("8641561246");
-  EXPECT_EQ(Natural(a), Natural("8641561246"));
+  std::vector<std::tuple<Integer, Natural, bool>> cases = {
+      {Integer("8641561246"), Natural("8641561246"), false},
+      {Integer("0"), Natural("0"), false},
+      {Integer("-8641561246"), Natural(), true},
+  };
 
-  Integer b("0");
-  EXPECT_EQ(Natural(b), Natural("0"));
-
-  Integer c("-8641561246");
-  EXPECT_THROW(auto d = Natural(c), std::invalid_argument);
+  for (const auto &[input, expected, throws] : cases) {
+    if (throws) {
+      EXPECT_THROW(auto result = Natural(input), std::invalid_argument);
+    } else {
+      EXPECT_EQ(Natural(input), expected);
+    }
+  }
 }
 
 TEST(IntegerTest, AbsoluteValue) {
-  Integer a("8641561246");
-  EXPECT_EQ(Integer::AbsoluteValue(a), Integer("8641561246"));
+  std::vector<std::pair<Integer, Integer>> cases = {
+      {Integer("8641561246"), Integer("8641561246")},
+      {Integer("0"), Integer("0")},
+      {Integer("-8641561246"), Integer("8641561246")},
+  };
 
-  Integer b("0");
-  EXPECT_EQ(Integer::AbsoluteValue(b), Integer("0"));
-
-  Integer c("-8641561246");
-  EXPECT_EQ(Integer::AbsoluteValue(c), Integer("8641561246"));
+  for (const auto &[input, expected] : cases) {
+    EXPECT_EQ(Integer::AbsoluteValue(input), expected);
+  }
 }
 
 TEST(IntegerTest, Sign) {
-  Integer a("123");
-  EXPECT_EQ(a.GetSign(), Sign::POSITIVE);
+  std::vector<std::pair<Integer, Sign>> cases = {
+      {Integer("123"), Sign::POSITIVE},
+      {Integer("0"), Sign::ZERO},
+      {Integer("-4846512846"), Sign::NEGATIVE},
+  };
 
-  Integer b("0");
-  EXPECT_EQ(b.GetSign(), Sign::ZERO);
-
-  Integer c("-4846512846");
-  EXPECT_EQ(c.GetSign(), Sign::NEGATIVE);
+  for (const auto &[input, expected] : cases) {
+    EXPECT_EQ(input.GetSign(), expected);
+  }
 }
 
 TEST(IntegerTest, Negation) {
-  Integer a("4846512846");
-  -a;
-  EXPECT_EQ(a, Integer("-4846512846"));
+  std::vector<std::pair<Integer, Integer>> cases = {
+      {Integer("4846512846"), Integer("-4846512846")},
+      {Integer("-4846512846"), Integer("4846512846")},
+      {Integer("0"), Integer("0")},
+  };
 
-  Integer b("-4846512846");
-  -b;
-  EXPECT_EQ(b, Integer("4846512846"));
-
-  Integer c("0");
-  -c;
-  EXPECT_EQ(c, Integer("0"));
+  for (auto &[input, expected] : cases) {
+    -input;
+    EXPECT_EQ(input, expected);
+  }
 }
 
 TEST(IntegerTest, Addition) {
-  Integer a("4846512846");
-  Integer b("98456198645");
-  a += b;
-  EXPECT_EQ(a, Integer("103302711491"));
+  std::vector<std::tuple<Integer, Integer, Integer>> cases = {
+      {Integer("4846512846"), Integer("98456198645"), Integer("103302711491")},
+      {Integer("4846512846"), Integer("-98456198645"), Integer("-93609685799")},
+      {Integer("-48462846"), Integer("-984561986"), Integer("-1033024832")},
+      {Integer("-1234567890"), Integer("1234567890"), Integer("0")},
+  };
 
-  Integer c("4846512846");
-  Integer d("-98456198645");
-  c += d;
-  EXPECT_EQ(c, Integer("-93609685799"));
-
-  Integer e("-4846512846");
-  Integer f("-98456198645");
-  e += f;
-  EXPECT_EQ(e, Integer("-103302711491"));
-
-  Integer g("1234567890");
-  Integer h("-1234567890");
-  EXPECT_EQ(g + h, Integer("0"));
+  for (auto &[a, b, expected] : cases) {
+    EXPECT_EQ(a + b, expected);
+    a += b;
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(IntegerTest, Subtraction) {
-  Integer a("1234567890");
-  Integer b("98456198645");
-  a -= b;
-  EXPECT_EQ(a, Integer("-97221630755"));
+  std::vector<std::tuple<Integer, Integer, Integer>> cases = {
+      {Integer("1234567890"), Integer("98456198645"), Integer("-97221630755")},
+      {Integer("1234567890"), Integer("-98456198645"), Integer("99690766535")},
+      {Integer("1234567890"), Integer("1234567890"), Integer("0")},
+      {Integer("0"), Integer("456"), Integer("-456")},
+  };
 
-  Integer c("1234567890");
-  Integer d("-98456198645");
-  c -= d;
-  EXPECT_EQ(c, Integer("99690766535"));
-
-  Integer e("1234567890");
-  Integer f("1234567890");
-  e -= f;
-  EXPECT_EQ(e, Integer("0"));
-
-  Integer g("0");
-  Integer h("456");
-  EXPECT_EQ(g - h, Integer("-456"));
+  for (auto &[a, b, expected] : cases) {
+    EXPECT_EQ(a - b, expected);
+    a -= b;
+    EXPECT_EQ(a, expected);
+  }
 }
 
 TEST(IntegerTest, Multiplication) {
-  Integer a("123");
-  Integer b("456");
-  EXPECT_EQ(a * b, Integer("56088"));
+  std::vector<std::tuple<Integer, Integer, Integer>> cases = {
+      {Integer("123"), Integer("456"), Integer("56088")},
+      {Integer("-123"), Integer("456"), Integer("-56088")},
+      {Integer("-123"), Integer("-456"), Integer("56088")},
+      {Integer("0"), Integer("456"), Integer("0")},
+  };
 
-  Integer c("-123");
-  Integer d("456");
-  EXPECT_EQ(c * d, Integer("-56088"));
-
-  Integer e("-123");
-  Integer f("-456");
-  EXPECT_EQ(e * f, Integer("56088"));
-
-  Integer g("0");
-  Integer h("456");
-  EXPECT_EQ(g * h, Integer("0"));
+  for (const auto &[a, b, expected] : cases) {
+    EXPECT_EQ(a * b, expected);
+  }
 }
 
 TEST(IntegerTest, DivisionQuotient) {
-  Integer a("78");
-  Integer b("33");
-  a /= b;
-  EXPECT_EQ(a, Integer("2"));
+  std::vector<std::tuple<Integer, Integer, Integer, bool>> cases = {
+      {Integer("78"), Integer("33"), Integer("2"), false},
+      {Integer("-78"), Integer("33"), Integer("-3"), false},
+      {Integer("-78"), Integer("-33"), Integer("3"), false},
+      {Integer("10"), Integer("33"), Integer("0"), false},
+      {Integer("-10"), Integer("33"), Integer("-1"), false},
+      {Integer("-10"), Integer("-33"), Integer("1"), false},
+      {Integer("123"), Integer("0"), Integer(), true},
+  };
 
-  Integer c("-78");
-  Integer d("33");
-  c /= d;
-  EXPECT_EQ(c, Integer("-3"));
-
-  Integer e("-78");
-  Integer f("-33");
-  e /= f;
-  EXPECT_EQ(e, Integer("3"));
-
-  Integer g("10");
-  Integer h("33");
-  g /= h;
-  EXPECT_EQ(g, Integer("0"));
-
-  Integer i("-10");
-  Integer j("33");
-  i /= j;
-  EXPECT_EQ(i, Integer("-1"));
-
-  Integer k("-10");
-  Integer l("-33");
-  k /= l;
-  EXPECT_EQ(k, Integer("1"));
-
-  Integer m("123");
-  Integer n("0");
-  EXPECT_THROW(m / n, std::invalid_argument);
+  for (const auto &[a, b, expected, throws] : cases) {
+    if (throws) {
+      EXPECT_THROW(a / b, std::invalid_argument);
+    } else {
+      EXPECT_EQ(a / b, expected);
+      Integer temp = a;
+      temp /= b;
+      EXPECT_EQ(temp, expected);
+    }
+  }
 }
 
 TEST(IntegerTest, DivisionRemainder) {
-  Integer a("78");
-  Integer b("33");
-  a %= b;
-  EXPECT_EQ(a, Integer("12"));
+  std::vector<std::tuple<Integer, Integer, Integer, bool>> cases = {
+      {Integer("78"), Integer("33"), Integer("12"), false},
+      {Integer("-78"), Integer("33"), Integer("21"), false},
+      {Integer("10"), Integer("33"), Integer("10"), false},
+      {Integer("-10"), Integer("33"), Integer("23"), false},
+      {Integer("123"), Integer("0"), Integer(), true},
+  };
 
-  Integer c("-78");
-  Integer d("33");
-  c %= d;
-  EXPECT_EQ(c, Integer("21"));
-
-  Integer e("10");
-  Integer f("33");
-  e %= f;
-  EXPECT_EQ(e, Integer("10"));
-
-  Integer g("-10");
-  Integer h("33");
-  g %= h;
-  EXPECT_EQ(g, Integer("23"));
-
-  Integer i("123");
-  Integer j("0");
-  EXPECT_THROW(i % j, std::invalid_argument);
+  for (const auto &[a, b, expected, throws] : cases) {
+    if (throws) {
+      EXPECT_THROW(a % b, std::invalid_argument);
+    } else {
+      EXPECT_EQ(a % b, expected);
+      Integer temp = a;
+      temp %= b;
+      EXPECT_EQ(temp, expected);
+    }
+  }
 }

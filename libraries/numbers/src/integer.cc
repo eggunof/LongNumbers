@@ -4,11 +4,12 @@
 #include <algorithm>
 #include <sstream>
 #include <stdexcept>
+#include <utility>
 
 Integer::Integer() : natural_(), sign_(Sign::ZERO) {}
 
-Integer::Integer(const Natural &natural, Sign sign)
-    : natural_(natural), sign_(sign) {
+Integer::Integer(Natural natural, Sign sign)
+    : natural_(std::move(natural)), sign_(sign) {
   if (natural_.IsZero())
     sign_ = Sign::ZERO;
   else if (sign_ == Sign::ZERO)
@@ -18,27 +19,26 @@ Integer::Integer(const Natural &natural, Sign sign)
 Integer::Integer(const std::vector<Digit> &digits, Sign sign)
     : Integer(Natural(digits), sign) {}
 
-Integer::Integer(const std::string &string)
-    : natural_(string.substr(string.find_first_not_of("+-"))) {
-  if (natural_.IsZero()) {
-    sign_ = Sign::ZERO;
+Integer::Integer(const std::string &string) {
+  std::stringstream ss;
+  ss << string;
+  ss >> *this;
+}
+
+Integer::Integer(int32_t number) {
+  if (number >= 0) {
+    sign_ = number != 0 ? Sign::POSITIVE : Sign::ZERO;
+    natural_ = Natural(number);
   } else {
-    size_t minus_count = std::count_if(string.begin(), string.end(),
-                                       [](char c) { return c == '-'; });
-    sign_ = (minus_count % 2 == 0) ? Sign::POSITIVE : Sign::NEGATIVE;
+    sign_ = Sign::NEGATIVE;
+    natural_ = Natural(-number);
   }
 }
 
-Integer::Integer(int32_t number) : Integer(std::to_string(number)) {}
-
-// Преобразование натурального числа в целое
-// Над модулем работала Дмитриева Дарья, гр. 3383
-Integer::Integer(const Natural &natural)
-    : natural_(natural),
+Integer::Integer(Natural natural)
+    : natural_(std::move(natural)),
       sign_(natural_.IsZero() ? Sign::ZERO : Sign::POSITIVE) {}
 
-// Преобразование целого неотрицательного в натуральное
-// Над модулем работала Варфоломеева Арина, гр. 3383
 Integer::operator Natural() const {
   if (sign_ == Sign::NEGATIVE) {
     throw std::invalid_argument(
@@ -47,8 +47,8 @@ Integer::operator Natural() const {
   return natural_;
 }
 
-// Абсолютная величина числа
-// Над модулем работал Егунов Даниил, гр. 3383
+Integer::operator bool() const { return sign_ == Sign::ZERO; }
+
 Integer Integer::AbsoluteValue(const Integer &integer) {
   // Если число равно нулю, возвращаем его
   if (integer.natural_.IsZero()) return integer;
@@ -77,8 +77,6 @@ bool Integer::operator<=(const Integer &rhs) const { return !(rhs < *this); }
 
 bool Integer::operator>=(const Integer &rhs) const { return !(*this < rhs); }
 
-// Умножение целых чисел на -1
-// Над модулем работал Матвеев Никита, гр. 3383
 Integer &Integer::operator-() {
   if (sign_ == Sign::NEGATIVE) {
     // Если знак был "-", то становится "+"
@@ -90,8 +88,12 @@ Integer &Integer::operator-() {
   return *this;
 }
 
-// Сложение целых чисел "+="
-// Над модулем работала Кадникова Анна, гр. 3384
+Integer Integer::operator-() const {
+  // Копия умножается на -1 и возвращается
+  Integer result = *this;
+  return -result;
+}
+
 Integer &Integer::operator+=(const Integer &rhs) {
   if (sign_ == rhs.sign_) {
     // Если знаки одинаковые — складываем натуральные части
@@ -113,16 +115,24 @@ Integer &Integer::operator+=(const Integer &rhs) {
   return *this;
 }
 
-// Вычитание целых чисел "-="
-// Над модулем работала Кадникова Анна, гр. 3384
+Integer Integer::operator+(const Integer &rhs) const {
+  Integer result = *this;
+  result += rhs;
+  return result;
+}
+
 Integer &Integer::operator-=(const Integer &rhs) {
   // Применяем сложение с противоположным знаком
   *this += -rhs;
   return *this;
 }
 
-// Умножение целых чисел "*="
-// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator-(const Integer &rhs) const {
+  Integer result = *this;
+  result -= rhs;
+  return result;
+}
+
 Integer &Integer::operator*=(const Integer &rhs) {
   // Перемножаем натуральные части
   natural_ *= rhs.natural_;
@@ -132,8 +142,12 @@ Integer &Integer::operator*=(const Integer &rhs) {
   return *this;
 }
 
-// Частное от деления целых чисел "/="
-// Над модулем работала Майская Вероника, гр. 3384
+Integer Integer::operator*(const Integer &rhs) const {
+  Integer result = *this;
+  result *= rhs;
+  return result;
+}
+
 Integer &Integer::operator/=(const Integer &rhs) {
   if (sign_ != Sign::NEGATIVE) {
     // Если делимое положительное, делим натуральные части
@@ -161,8 +175,12 @@ Integer &Integer::operator/=(const Integer &rhs) {
   return *this;
 }
 
-// Остаток от деления целых чисел "%="
-// Над модулем работал Матвеев Никита, гр. 3383
+Integer Integer::operator/(const Integer &rhs) const {
+  Integer result = *this;
+  result /= rhs;
+  return result;
+}
+
 Integer &Integer::operator%=(const Integer &rhs) {
   // Вычисляем неполное частное
   Integer quotient = *this / rhs;
@@ -171,48 +189,6 @@ Integer &Integer::operator%=(const Integer &rhs) {
   return *this;
 }
 
-// Умножение целых чисел на -1
-// Над модулем работал Матвеев Никита, гр. 3383
-Integer Integer::operator-() const {
-  // Копия умножается на -1 и возвращается
-  Integer result = *this;
-  return -result;
-}
-
-// Сложение целых чисел "+"
-// Над модулем работала Кадникова Анна, гр. 3384
-Integer Integer::operator+(const Integer &rhs) const {
-  Integer result = *this;
-  result += rhs;
-  return result;
-}
-
-// Вычитание целых чисел "-"
-// Над модулем работала Кадникова Анна, гр. 3384
-Integer Integer::operator-(const Integer &rhs) const {
-  Integer result = *this;
-  result -= rhs;
-  return result;
-}
-
-// Умножение целых чисел "*"
-// Над модулем работала Майская Вероника, гр. 3384
-Integer Integer::operator*(const Integer &rhs) const {
-  Integer result = *this;
-  result *= rhs;
-  return result;
-}
-
-// Частное от деления целых чисел "/"
-// Над модулем работала Майская Вероника, гр. 3384
-Integer Integer::operator/(const Integer &rhs) const {
-  Integer result = *this;
-  result /= rhs;
-  return result;
-}
-
-// Остаток от деления целых чисел "%"
-// Над модулем работал Матвеев Никита, гр. 3383
 Integer Integer::operator%(const Integer &rhs) const {
   Integer result = *this;
   result %= rhs;
@@ -246,9 +222,32 @@ Integer Integer::LeastCommonMultiple(const Integer &first,
   return lcm;
 }
 
-Integer::operator std::string() const {
+std::istream &operator>>(std::istream &is, Integer &integer) {
+  size_t minus_count = 0;
+  do {
+    is >> std::ws;
+    uint8_t c = is.peek();
+    if (c == '-')
+      ++minus_count;
+    else if (c != '+')
+      break;
+    is.get();
+  } while (true);
+  is >> integer.natural_;
+  integer.sign_ = integer.natural_.IsZero() ? Sign::ZERO
+                  : minus_count % 2 == 0    ? Sign::POSITIVE
+                                            : Sign::NEGATIVE;
+  return is;
+}
+
+std::ostream &operator<<(std::ostream &os, const Integer &integer) {
+  if (integer.sign_ == Sign::NEGATIVE) os << "-";
+  os << integer.natural_;
+  return os;
+}
+
+std::string Integer::ToString() const {
   std::ostringstream result;
-  if (sign_ == Sign::NEGATIVE) result << "-";
-  result << std::string(natural_);
+  result << *this;
   return result.str();
 }
