@@ -227,9 +227,11 @@ std::istream &operator>>(std::istream &is, Integer &integer) {
   do {
     is >> std::ws;
     uint8_t c = is.peek();
-    if (c != '-' && c != '+') break;
+    if (c == '-')
+      ++minus_count;
+    else if (c != '+')
+      break;
     is.get();
-    ++minus_count;
   } while (true);
   is >> integer.natural_;
   integer.sign_ = integer.natural_.IsZero() ? Sign::ZERO
