@@ -50,7 +50,7 @@ void PerformNaturalOperation(int choice) {
       int digit;
       std::cout << "Введите цифру (0-9): ";
       std::cin >> digit;
-      std::cout << "Результат умножения на цифру: " << (num1 * Digit(digit))
+      std::cout << "Результат умножения на цифру: " << (num1 * static_cast<Digit>(digit))
                 << std::endl;
       break;
     }
@@ -76,16 +76,17 @@ void PerformNaturalOperation(int choice) {
       std::cout << "Введите цифру (0-9): ";
       std::cin >> digit;
       std::cout << "Результат после вычитания: "
-                << num1.SubtractMultiplied(num2, Digit(digit)) << std::endl;
+                << num1.SubtractMultiplied(num2, static_cast<Digit>(digit)) << std::endl;
       break;
     }
     case 10: {
       num1 = GetNaturalInput();
       num2 = GetNaturalInput();
-      const std::pair<Digit, uint32_t>& result =
+      const auto& [digit, k] =
           num1.GetLeadingQuotientDigit(num2);
-      std::cout << "Первая цифра после деления: " << result.first
-                << " k: " << result.second << std::endl;
+      std::cout << "Первая цифра после деления: "
+                << static_cast<uint16_t>(digit)
+                << " k: " << k << std::endl;
       break;
     }
     case 11: {
